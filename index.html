@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply DDS</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <!-- <h1>Supply DDS</h1> -->
+        <div class="header-cogi-status">
+            <div class="status-box"> <span class="cogi-label">Batching:</span> <span class="cogi-value" id="cogiBatchingCount">0</span> </div>
+            <div class="status-box"> <span class="cogi-label">Packaging:</span> <span class="cogi-value" id="cogiPackagingCount">0</span> </div>
+        </div>
+        <div class="ingredient-status">
+            <h2>Ingredient Status</h2>
+            <div id="status-24hr" class="status-box">
+                <span>24hr:</span> <span class="status-indicator loading">Loading...</span>
+            </div>
+            <div id="status-48hr" class="status-box">
+                <span>48hr:</span> <span class="status-indicator loading">Loading...</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="material-shortages">
+            <h2>Material Shortages & ETAs</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Short Qty</th>
+                            <th>Next ETA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shortagesTableBody">
+                        <tr><td colspan="3">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="railcar-overview">
+            <h2>Railcar Overview</h2>
+            <div class="rail-summary">
+                <div class="summary-box">
+                    Total On Site: <span id="railOnSiteCount">0</span>
+                </div>
+                <div class="summary-box">
+                    Total In Yard: <span id="railInYardCount">0</span>
+                </div>
+                <div class="summary-box">
+                    Grand Total: <span id="railTotalCount">0</span>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rail #</th>
+                            <th>Material</th>
+                            <th>Location</th>
+                            <th>BOL</th>
+                            <th>Romer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="railcarsTableBody">
+                        <tr><td colspan="5">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="inventory-counts">
+            <h2>Inventory Accuracy</h2>
+            <div class="count-container">
+                <div class="count-box cycle-counts">
+                    <h3>Cycle Counts (PTD: <span id="cycleCountTotal">0</span>)</h3>
+                     <div class="table-container small-table">
+                        <table>
+                            <thead>
+                                <tr><th>W1</th><th>W2</th><th>W3</th><th>W4</th></tr>
+                            </thead>
+                            <tbody id="cycleCountsWeeklyBody">
+                                <tr><td colspan="4">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                     </div>
+                </div>
+                <div class="count-box scrap-transactions">
+                    <h3>Scrap Transactions (PTD: <span id="scrapTotal">0</span>)</h3>
+                    <div class="table-container small-table">
+                        <table>
+                            <thead>
+                                <tr><th>W1</th><th>W2</th><th>W3</th><th>W4</th></tr>
+                            </thead>
+                            <tbody id="scrapTransactionsWeeklyBody">
+                                <tr><td colspan="4">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                     </div>
+                </div>
+            </div>
+        </section>
+        <section id="coming-soon">
+            <h2>Coming Soon</h2>
+            <div class="coming-soon-content">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Under_construction_animated.gif" alt="Under Construction" style="display: block; margin: 20px auto; max-width: 100%; height: auto;">
+                <!-- You might want to add a message back if needed -->
+                <!-- <p>Stay tuned for updates!</p> -->
+            </div>
+
+        </section>
+
+        
+
+    </main>
+
+    <footer>
+        <p>Local Operations Dashboard | Last Updated: <span id="lastUpdated"></span></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

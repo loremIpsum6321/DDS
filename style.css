@@ -1,0 +1,591 @@
+/* ======================================== */
+/* == Professional Dark Theme - Revision == */
+/* ======================================== */
+/* New Feel: Refined blue-grey dark theme with teal/green accents. */
+/* Focus: Cleanliness, readability, modern professional aesthetic, expanded tables. */
+
+/* --- Global Styles & Color Palette --- */
+:root {
+    /* Core Palette */
+    --bg-color: #1f2937; /* Dark blue-grey */
+    --card-bg-color: #37474f; /* Medium blue-grey for cards/sections */
+    --text-color: #e5e7eb; /* Off-white / Light grey text */
+    --text-color-muted: #9ca3af; /* Muted grey for less important text (like footer) */
+
+    /* Accents */
+    --header-color: #4db6ac; /* Teal - Primary Accent */
+    --accent-color-alt: #81c784; /* Soft Green - Secondary Accent */
+
+    /* Borders & Shadows */
+    --border-color: #546e7a; /* Softer blue-grey border */
+    --shadow-color: rgba(0, 0, 0, 0.2); /* Softer shadow */
+
+    /* Table Specific */
+    --table-header-bg: #263238; /* Darker header background */
+    --table-row-odd-bg: #37474f; /* Matches card background */
+    --table-row-even-bg: #455a64; /* Slightly distinct grey */
+    --table-row-hover-bg: #546e7a; /* Hover color (matches border) */
+
+    /* Status Indicators */
+    --status-good: #66bb6a; /* Green */
+    --status-warning: #ffa726; /* Orange/Yellow */
+    --status-bad: #ef5350; /* Red */
+
+    /* Shine Effect */
+    /* --shine-color: rgba(156, 39, 176, 0.1); Subtle Purple for shine */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-bottom: 60px; /* Ensure space for fixed footer */
+    font-size: 16px;
+}
+
+/* --- Header --- */
+header {
+    background-color: var(--table-header-bg);
+    color: var(--header-color);
+    padding: 1rem 1.5rem; /* Slightly reduced padding */
+    border-bottom: 2px solid var(--header-color);
+    margin-bottom: 1.5rem; /* Reduced spacing below header */
+    box-shadow: 0 3px 8px var(--shadow-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem; /* Gap between title, status, and COGI */
+}
+
+header h1 {
+    font-weight: 600;
+    font-size: 2rem; /* Slightly smaller */
+    text-shadow: none;
+    flex-grow: 1; /* Allow title to take available space */
+    text-align: left; /* Keep title left-aligned */
+    /* No margin needed here due to flex gap */
+}
+
+/* Container for Status and COGI boxes */
+.header-info-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 1.5rem; /* Consistent gap */
+    align-items: center;
+}
+
+
+/* Original Ingredient Status Box */
+.ingredient-status {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 0.5rem 1rem; /* Reduced padding */
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    /* Removed width: 100% for flex behavior */
+    /* flex-grow: 1; */ /* Allow it to grow if needed, but not essential */
+}
+
+/* NEW: COGI Status Box Styling (Apply class="header-cogi-status" to the moved COGI container) */
+.header-cogi-status {
+    display: flex; /* Use flex for internal alignment */
+    gap: 1rem; /* Space between label and value(s) */
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem; /* Match status-box */
+    font-weight: 500; /* Match status-box */
+    /* flex-grow: 1; */ /* Allow it to grow if needed */
+}
+
+/* Style the label inside the new COGI header box */
+.header-cogi-status .cogi-label { /* Add this class to your COGI label span/div */
+    color: var(--text-color-muted);
+    font-weight: 400;
+    margin-right: 0.5rem;
+}
+
+/* Style the value(s) inside the new COGI header box */
+.header-cogi-status .cogi-value { /* Add this class to your COGI value span/div */
+    /* Color will be determined by .positive/.negative classes */
+    font-weight: 600; /* Make number stand out */
+}
+
+
+.ingredient-status h2 { /* Original hidden title for status */
+    font-size: 1.1rem;
+    color: var(--text-color-muted);
+    margin-right: 1rem;
+    font-weight: 400;
+    display: none; /* Hidden on small screens */
+}
+
+.status-box {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.status-box span:first-child {
+    color: var(--text-color-muted);
+    font-weight: 400;
+    margin-right: 0.5rem;
+}
+
+.status-indicator {
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    min-width: 60px;
+}
+
+/* Status Indicator Colors */
+.status-indicator.loading { background-color: var(--border-color); }
+.status-indicator.good { background-color: var(--status-good); }
+.status-indicator.warning { background-color: var(--status-warning); color: #212121; }
+.status-indicator.bad { background-color: var(--status-bad); }
+
+/* --- Main Content & Sections --- */
+main {
+    max-width: 98%; /* Use almost full width */
+    margin: 0 auto;
+    padding: 0 0.75rem; /* Small side padding */
+    display: grid;
+    gap: 1.25rem; /* Tightened gap between sections */
+    grid-template-columns: 1fr; /* Default to single column */
+}
+
+section {
+    background-color: var(--card-bg-color);
+    padding: 1.25rem; /* Reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Needed for shine pseudo-element */
+    overflow: hidden; /* Contain shine effect */
+}
+
+/* Subtle Shine Effect */
+@keyframes shine {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 20%,
+        var(--shine-color) 50%,
+        transparent 80%
+    );
+    background-size: 200% 100%; /* Make gradient wider than element */
+    animation: shine 15s linear infinite; /* Slow, looping animation */
+    pointer-events: none; /* Ensure it doesn't interfere with content */
+    z-index: 0; /* Position behind content */
+    opacity: 0.5; /* Make it subtle */
+}
+
+/* Ensure section content is above the shine */
+section > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+section:hover {
+    transform: translateY(-3px); /* Slightly less movement */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+section h2, section h3 {
+    margin-bottom: 1rem; /* Reduced spacing */
+    padding-bottom: 0.5rem; /* Reduced padding */
+    font-weight: 500;
+}
+
+section h2 {
+    color: var(--header-color);
+    border-bottom: 2px solid var(--accent-color-alt);
+    font-size: 1.4rem; /* Slightly smaller */
+}
+
+section h3 {
+    color: var(--accent-color-alt);
+    border-bottom: 2px solid var(--header-color);
+    font-size: 1.15rem; /* Adjusted size */
+    margin-top: 0.75rem; /* Reduced space above */
+}
+
+/* --- Specific Section Layouts (Responsive Grid) --- */
+/* Remove #cogi-overview from grid layout as it's moved to header */
+@media (min-width: 900px) {
+    main {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+    #material-shortages { grid-column: span 1; }
+    #railcar-overview { grid-column: span 1; }
+    #inventory-counts { grid-column: span 1; }
+    /* #cogi-overview { grid-column: span 1; } */ /* Removed */
+}
+
+@media (min-width: 1200px) {
+      main {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto; /* Adjust row definition if needed */
+        gap: 1.5rem; /* Slightly larger gap for wider screens */
+      }
+      #material-shortages { grid-column: 1 / 2; grid-row: 1 / 2; }
+      #railcar-overview { grid-column: 1 / 2; grid-row: 2 / 3; }
+      #inventory-counts { grid-column: 2 / 3; grid-row: 1 / 2; }
+      /* #cogi-overview removed - its original space is now free */
+      /* You might need to adjust the grid row spans of other items if */
+      /* #cogi-overview took up significant height previously */
+}
+
+/* --- Tables --- */
+.table-container {
+    overflow-x: auto;
+    max-height: 450px; /* Adjust as needed */
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    flex-grow: 1; /* Allow container to fill section space */
+    margin-top: 0.5rem;
+    /* Ensure container takes full width */
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.table-container.small-table {
+    max-height: none;
+    flex-grow: 0;
+}
+
+table {
+    width: 100%; /* Ensures table fills container */
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.7rem 0.9rem; /* Slightly adjusted padding */
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+    font-weight: bold; /* UPDATED: Make all table text bold */
+}
+
+th {
+    background-color: var(--table-header-bg);
+    color: var(--header-color);
+    /* font-weight: 600; */ /* Overridden by bold below */
+    position: sticky;
+    top: 0;
+    z-index: 2; /* Ensure headers are above section shine */
+    border-bottom-width: 2px;
+    font-weight: bold; /* Ensure header is also bold */
+}
+
+/* Remove bottom border from last row */
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--table-row-odd-bg);
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--table-row-even-bg);
+}
+
+tbody tr:hover {
+    background-color: var(--table-row-hover-bg);
+    cursor: default;
+    transition: background-color 0.15s ease;
+}
+
+/* --- Specific Table Styling --- */
+
+/* UPDATED: Material Shortages Table - Center all content */
+#shortagesTableBody th,
+#shortagesTableBody td {
+    text-align: center !important; /* Use !important to ensure override */
+}
+
+/* UPDATED: Material Shortages Table - Make 'Short Qty' column red */
+/* ASSUMPTION: Short Qty is the 2nd column. Change nth-child(2) if different */
+#shortagesTableBody td:nth-child(2) {
+    color: var(--status-bad) !important; /* Red color, !important if needed */
+    /* Boldness handled by general td rule */
+}
+
+/* Railcar Table Specific Alignments (Preserved & Adjusted) */
+#railcarsTableBody td:nth-child(4), #railcarsTableBody th:nth-child(4),
+#railcarsTableBody td:nth-child(5), #railcarsTableBody th:nth-child(5) {
+    text-align: center; /* Center status columns */
+}
+/* Explicitly right-align last column in railcar table if needed */
+#railcarsTableBody td:last-child, #railcarsTableBody th:last-child {
+    text-align: right;
+}
+
+/* Ensure status columns text is handled correctly (center alignment already done) */
+#railcarsTableBody td.status-yes, #railcarsTableBody td.status-no,
+#railcarsTableBody td.status-good, #railcarsTableBody td.status-caution,
+#railcarsTableBody td.status-bad {
+   /* Colors applied by general .status-* rules later */
+   /* Alignment handled by nth-child rules above */
+}
+
+
+/* --- Summary Boxes (Keep for Railcars if still used there) --- */
+/* Remove .cogi-summary rule as it's moved to header */
+.rail-summary /*, .cogi-summary */ {
+    display: flex;
+    gap: 1rem; /* Reduced gap */
+    margin-bottom: 1rem; /* Reduced margin */
+    flex-wrap: wrap;
+}
+
+.summary-box {
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 0.8rem 1.2rem; /* Reduced padding */
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem; /* Adjusted size */
+    flex-grow: 1;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+.summary-box:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.summary-box span {
+    font-weight: 700;
+    color: var(--accent-color-alt);
+    font-size: 1.3rem; /* Adjusted size */
+    display: block;
+    margin-top: 0.2rem;
+}
+
+
+/* --- Inventory Counts Section --- */
+.count-container {
+    display: flex;
+    gap: 1rem; /* Reduced gap */
+    flex-direction: column;
+    flex-grow: 1; /* Allow count-container to grow */
+}
+
+.count-box {
+    border: 1px solid var(--border-color);
+    padding: 1rem; /* Reduced padding */
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.08);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.count-box h3 {
+    border-bottom: none;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+.count-box h3 span { /* For the PTD value like #cycleCountTotal, #scrapTotal */
+    color: var(--accent-color-alt); /* Default color */
+    font-weight: bold;
+    margin-left: 0.5rem;
+    /* Color updated by .positive / .negative classes below */
+}
+.count-box .table-container {
+    /* Override general table container margin for nested tables */
+    margin-top: 0.25rem;
+}
+.count-box table {
+    /* No margin needed if container handles it */
+    flex-grow: 1;
+}
+/* === Center ALL text within Cycle Counts & Scrap Tables === */
+/* This rule applies to tables inside .count-box, which typically holds Cycle Counts/Scrap */
+.count-box table td,
+.count-box table th {
+    text-align: center !important; /* Use !important to override other alignment rules if needed */
+    padding: 0.6rem 0.8rem;
+    font-weight: bold; /* Ensure inner tables are also bold */
+}
+.count-box table th {
+    color: var(--text-color-muted);
+    background-color: transparent; /* No specific bg for inner table header */
+    position: static; /* Not sticky */
+    /* font-weight: 500; */ /* Overridden by bold */
+}
+
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    /* margin-top handled by body padding-bottom */
+    padding: 0.75rem 1rem; /* Adjusted padding */
+    font-size: 0.8rem; /* Smaller text */
+    color: var(--text-color-muted);
+    border-top: 1px solid var(--border-color);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-color);
+    z-index: 10;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    body { font-size: 15px; }
+    header {
+        flex-direction: column;
+        align-items: stretch; /* Stretch items like title/info container */
+        text-align: center;
+        padding: 1rem 1rem; /* Adjust padding */
+        margin-bottom: 1rem; /* Adjust margin */
+        gap: 0.75rem; /* Reduce gap in column layout */
+    }
+    header h1 {
+        font-size: 1.7rem; /* Adjust size */
+        text-align: center;
+    }
+    /* Adjust header info container for column layout */
+    .header-info-container {
+        justify-content: center; /* Center items horizontally */
+        gap: 0.75rem;
+    }
+    .ingredient-status,
+    .header-cogi-status { /* Apply to both status boxes */
+        width: auto; /* Let them size naturally or wrap */
+        justify-content: center; /* Center internal items */
+        padding: 0.5rem 0.5rem;
+        flex-grow: 0; /* Don't force growth */
+    }
+    .ingredient-status h2 { display: none; }
+    .status-box { font-size: 0.95rem; }
+    .header-cogi-status { font-size: 0.95rem; } /* Match size */
+
+    main {
+        padding: 0 0.5rem; /* Adjust padding */
+        gap: 1rem; /* Adjust gap */
+    }
+    section { padding: 1rem; } /* Adjust section padding */
+
+    th, td {
+        padding: 0.5rem 0.6rem; /* Adjust table padding */
+        font-size: 0.85rem; /* Adjust font size */
+        white-space: normal; /* Allow wrapping */
+    }
+
+    .rail-summary /* Removed .cogi-summary */ {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem; /* Adjust gap */
+    }
+    .summary-box { padding: 0.7rem 1rem; }
+    .summary-box span { font-size: 1.2rem; }
+
+    .count-container { gap: 0.75rem; }
+    .count-box { padding: 0.75rem; }
+    .count-box table td,
+    .count-box table th {
+        padding: 0.5rem 0.5rem; /* Adjust padding */
+    }
+}
+
+@media (max-width: 480px) {
+    body { font-size: 14px; }
+    header h1 { font-size: 1.5rem; }
+    .status-box { font-size: 0.9rem; }
+    .header-cogi-status { font-size: 0.9rem; } /* Match size */
+    .status-indicator { font-size: 0.8rem; min-width: 45px; padding: 0.2rem 0.4rem; }
+    main { padding: 0 0.25rem; }
+    section { padding: 0.75rem; }
+    th, td { padding: 0.4rem 0.4rem; font-size: 0.8rem;}
+    .count-box table td,
+    .count-box table th {
+        padding: 0.4rem 0.4rem; /* Adjust padding */
+    }
+    .header-info-container {
+        flex-direction: column; /* Stack status/cogi vertically */
+        align-items: center; /* Center stack */
+    }
+    .ingredient-status, .header-cogi-status {
+        width: 90%; /* Give them some width */
+        justify-content: space-around; /* Space out content */
+    }
+}
+
+/* --- Status Color Formatting (Applied via JS/Backend) --- */
+/* Style for 'Yes' or generally Good status / Positive numbers */
+.status-yes,
+.status-good,
+.positive {
+    color: var(--status-good) !important;
+    font-weight: 600; /* Semi-bold for status colors */
+}
+
+/* Style for 'No' or generally Bad/Attention status / Negative numbers */
+.status-no,
+.status-bad,
+.negative {
+    color: var(--status-bad) !important;
+    font-weight: 600; /* Semi-bold for status colors */
+}
+
+/* Style for Warning/Caution status */
+.status-caution {
+    color: var(--status-warning) !important;
+    font-weight: 600; /* Semi-bold for status colors */
+}
+
+/* Apply coloring to COGI count spans if they have the .negative class */
+/* Now applies to elements within .header-cogi-status */
+.header-cogi-status .negative {
+    /* .negative rule above handles the color */
+    /* font-weight is set by .negative rule */
+}
+.header-cogi-status .positive {
+     /* .positive rule above handles the color */
+    /* font-weight is set by .positive rule */
+}
+
+
+/* Apply coloring to Inventory Count Total spans (within h3) */
+#cycleCountTotal.positive, #scrapTotal.positive {
+    /* .positive rule above handles the color */
+}
+#cycleCountTotal.negative, #scrapTotal.negative {
+     /* .negative rule above handles the color */
+}
+
+/* Centering for cycle/scrap tables covered by .count-box table td rule */
