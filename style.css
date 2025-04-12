@@ -23,18 +23,10 @@
 
 /* --- Dark Theme Variables (Default) --- */
 :root {
+
     --font-size-xxs: 0.325rem; /* Used for: Smallest table cells, footer text on mobile (@media max-width: 480px) */
     --font-size-xs: 0.9rem;    /* Used for: Footer text (base), Table cells (tablet @media max-width: 768px), Status dropdown (mobile @media max-width: 480px), Financial item name/h4 (mobile @media max-width: 480px) */
-    --font-size-sm: 1.5rem;    /* Used for: Financial insight h4/item names (base), Table cells (base), Status dropdown (base), Header status boxes/labels (tablet/mobile @media max-width: 768px/480px) */
-    --font-size-base: 1.55rem; /* Used for: Header status info (base), COGI input (base), Railcar summary box text (base), Financial item cost/comments (mobile @media max-width: 480px) */
-    --font-size-md: 1.5rem;    /* Used for: Section subheadings (h3), Financial item cost (tablet @media max-width: 768px) */
-    --font-size-lg: 1.4rem;    /* Used for: Financial insight item cost (base), Railcar summary value (tablet @media max-width: 768px) */
-    --font-size-xl: 1.4rem;    /* Used for: Inventory count box titles (h3), Railcar summary value (base) */
-    --font-size-xxl: 0.8rem;   /* Used for: Main section headings (h2), Financial comments (base), Header title (mobile @media max-width: 480px) */
-    --font-size-comment: 1.5rem; /* Used for: Financial comments (base) */
-    --font-size-3xl: 1.05rem;  /* Used for: Financial insight cell titles (h3 - base), Header title (tablet @media max-width: 768px), Financial value (mobile @media max-width: 480px) */
-    --font-size-4xl: 0.9rem;   /* Used for: Header title (h1 - base), Financial insight value (tablet @media max-width: 768px) */
-    --font-size-5xl: 1.5rem;   /* Used for: Financial insight main value (base) */
+    --font-size-default: 1.5rem; /* Used for: Default font size (base) */
 
 
 
@@ -275,13 +267,13 @@ section h3 {
 section h2 {
     color: var(--accent-color-primary);
     border-bottom: 2px solid var(--accent-color-secondary);
-    font-size: var(--font-size-xxl); /* Use variable */
+    font-size: var(--font-size-xs); /* Use variable */
 }
 
 section h3 {
     color: var(--accent-color-secondary);
     border-bottom: 1px solid var(--border-color); /* Subtler border for H3 */
-    font-size: var(--font-size-md); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
     margin-top: 0.75rem;
 }
 
@@ -340,7 +332,7 @@ header {
 
 header h1 {
     font-weight: 600;
-    font-size: var(--font-size-4xl); /* Use variable */
+    font-size: var(--font-size-xs); /* Use variable */
     text-shadow: none;
     flex-grow: 1;
     text-align: left;
@@ -356,7 +348,7 @@ header h1 {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     border: 1px solid var(--form-element-border);
-    font-size: var(--font-size-base); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
     font-weight: 500;
     color: var(--text-color-muted); /* Default to muted in dark mode */
     transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -393,7 +385,7 @@ header h1 {
 
 /* Container for label + dropdown in header */
 .status-box {
-    font-size: var(--font-size-base); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
     font-weight: 500;
     display: inline-flex;
     align-items: center;
@@ -415,7 +407,7 @@ header h1 {
     background-color: var(--form-element-bg);
     color: var(--text-color); /* Default text color */
     text-align: center;
-    font-size: var(--font-size-base); /* Match surrounding text */
+    font-size: var( --font-size-default); /* Match surrounding text */
     margin-left: 0.25rem;
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
     /* Remove default number input arrows if desired */
@@ -469,7 +461,7 @@ header .status-box {
     border-bottom: none;
     margin-bottom: 0.75rem;
     color: var(--text-color);
-    font-size: var(--font-size-xl); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
     font-weight: bold;
 }
 #inventory-counts .count-box h3 span { /* The PTD value span */
@@ -527,27 +519,27 @@ header .status-box {
     font-weight: 900;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.4rem;
-    font-size: var(--font-size-3xl); /* Use variable for H3 */
+    font-size: var( --font-size-default); /* Use variable for H3 */
 }
 #financial-insights .insight-cell h4 {
-    font-size: var(--font-size-sm); /* Use variable for H4 */
+    font-size: var( --font-size-default); /* Use variable for H4 */
     color: var(--text-color-muted);
 }
 
 #financial-insights .insight-cell .insight-value,
 #financial-insights .insight-cell .item-cost {
-    font-size: var(--font-size-5xl); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
     font-weight: bold;
     margin-top: auto;
     text-align: right;
     /* Color applied by .positive / .negative via JS */
 }
 #financial-insights .insight-cell .item-cost {
-    font-size: var(--font-size-lg); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
 }
 
 #financial-insights .insight-cell .item-name {
-    font-size: var(--font-size-sm); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
     color: var(--text-color);
     text-align: right;
     margin-top: auto;
@@ -583,7 +575,7 @@ header .status-box {
 
 #financial-insights .comments-content {
     margin-top: 0.5rem;
-    font-size: var(--font-size-comment); /* Use variable */
+    font-size: var(--font-size-default); /* Use variable */
     color: var(--text-color-white);
     line-height: 1.2;
     overflow-y: auto; /* Enable scrolling for comments */
@@ -631,7 +623,7 @@ th, td {
     white-space: nowrap;
     font-weight: bold;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    font-size: var(--font-size-sm); /* Base table font size */
+    font-size: var( --font-size-default); /* Base table font size */
 }
 
 th {
@@ -701,7 +693,7 @@ tbody tr:hover {
     padding: 0.8rem 1.2rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    font-size: var(--font-size-base); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
     flex-grow: 1;
     text-align: center;
     transition: background-color 0.2s ease, border-color 0.3s ease;
@@ -719,7 +711,7 @@ tbody tr:hover {
 .summary-box .summary-value { /* The count value */
     font-weight: 700;
     color: var(--accent-color-secondary);
-    font-size: var(--font-size-xl); /* Use variable */
+    font-size: var( --font-size-default); /* Use variable */
     display: block;
 }
 
@@ -738,7 +730,7 @@ tbody tr:hover {
     vertical-align: middle;
     margin-left: 0.5rem;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-    font-size: var(--font-size-sm); /* Adjust size if needed */
+    font-size: var( --font-size-default); /* Adjust size if needed */
 
     background-color: var(--form-element-bg);
     color: var(--form-element-text);
@@ -957,7 +949,7 @@ footer p {
     }
 
     header h1 {
-        font-size: var(--font-size-3xl); /* Adjust responsive size */
+        font-size: var( --font-size-default); /* Adjust responsive size */
         text-align: center;
     }
 
@@ -967,10 +959,10 @@ footer p {
         justify-content: center;
         padding: 0.5rem 0.75rem;
         flex-grow: 0;
-        font-size: var(--font-size-sm); /* Adjust responsive size */
+        font-size: var( --font-size-default); /* Adjust responsive size */
     }
 
-    .status-box { font-size: var(--font-size-sm); }
+    .status-box { font-size: var( --font-size-default); }
 
     main {
         padding: 0 0.5rem;
@@ -993,7 +985,7 @@ footer p {
         width: 100%;
     }
     .summary-box { padding: 0.7rem 1rem; }
-    .summary-box .summary-value { font-size: var(--font-size-lg); } /* Adjust responsive size */
+    .summary-box .summary-value { font-size: var( --font-size-default); } /* Adjust responsive size */
 
     #inventory-counts .count-container { gap: 0.75rem; }
     #inventory-counts .count-box { padding: 0.75rem; }
@@ -1014,18 +1006,18 @@ footer p {
     }
 
      /* Adjust financial value size for tablet */
-    #financial-insights .insight-cell .insight-value { font-size: var(--font-size-4xl); }
-    #financial-insights .insight-cell .item-cost { font-size: var(--font-size-md); }
+    #financial-insights .insight-cell .insight-value { font-size: var(--font-size-xs); }
+    #financial-insights .insight-cell .item-cost { font-size: var( --font-size-default); }
 }
 
 @media (max-width: 480px) {
     body { font-size: var(--base-font-size-mobile); } /* Use variable */
-    header h1 { font-size: var(--font-size-xxl); } /* Adjust responsive size */
+    header h1 { font-size: var(--font-size-xs); } /* Adjust responsive size */
 
-    .status-box { font-size: var(--font-size-sm); }
+    .status-box { font-size: var( --font-size-default); }
     .header-cogi-status,
     .ingredient-status {
-        font-size: var(--font-size-sm);
+        font-size: var( --font-size-default);
         width: 90%;
         margin-left: auto;
         margin-right: auto;
@@ -1060,9 +1052,9 @@ footer p {
     }
 
      /* Adjust financial value size for mobile */
-    #financial-insights .insight-cell .insight-value { font-size: var(--font-size-3xl); }
-    #financial-insights .insight-cell .item-cost { font-size: var(--font-size-base); }
+    #financial-insights .insight-cell .insight-value { font-size: var( --font-size-default); }
+    #financial-insights .insight-cell .item-cost { font-size: var( --font-size-default); }
     #financial-insights .insight-cell .item-name { font-size: var(--font-size-xs); }
     #financial-insights .insight-cell h4 { font-size: var(--font-size-xs); }
-    #financial-insights .comments-content { font-size: var(--font-size-base); }
+    #financial-insights .comments-content { font-size: var( --font-size-default); }
 }

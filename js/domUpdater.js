@@ -187,7 +187,7 @@ export async function loadRailcars() {
         const locationText = row[2] || 'N/A';
         const locationLower = locationText.toLowerCase();
         tdLocation.textContent = locationText;
-        if (locationLower.includes('on site') || locationLower.includes('onsite')) { 
+        if (locationLower.includes('site') || locationLower.includes('onsite')) { 
             tdLocation.classList.add('status-good');
              onSiteCount++;
         } else if (locationLower.includes('in yard') || locationLower.includes('inyard') || locationLower.includes('yard')) {
