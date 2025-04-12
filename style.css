@@ -1,40 +1,161 @@
-/* ======================================== */
-/* == Professional Dark Theme - Revision == */
-/* ======================================== */
-/* New Feel: Refined blue-grey dark theme with teal/green accents. */
-/* Focus: Cleanliness, readability, modern professional aesthetic, expanded tables. */
+/* ========================================================================== */
+/* ==                        Refactored Stylesheet                         == */
+/* ========================================================================== */
+/* Description: Professional theme with dark (default) and light modes.     */
+/* Structure:                                                               */
+/* 1. Theme Variables (Colors, Fonts, Borders, etc.)                      */
+/* 2. Global Resets & Base Styles                                         */
+/* 3. Layout (Main, Sections, Grid)                                       */
+/* 4. Header                                                              */
+/* 5. Main Content Sections (Specific Sections, Cards)                    */
+/* 6. Tables (General, Containers, Specific Tables)                       */
+/* 7. Components (Summary Boxes, Count Boxes, Financial Insights, Forms)  */
+/* 8. Footer                                                              */
+/* 9. Utility Classes (Status Colors)                                     */
+/* 10. Animations (Shine Effect)                                           */
+/* 11. Light Theme Overrides                                               */
+/* 12. Responsive Design                                                   */
+/* ========================================================================== */
 
-/* --- Global Styles & Color Palette --- */
+/* ========================================================================== */
+/* == 1. Theme Variables                                                   == */
+/* ========================================================================== */
+
+/* --- Dark Theme Variables (Default) --- */
 :root {
-    /* Core Palette */
-    --bg-color: #1f2937; /* Dark blue-grey */
-    --card-bg-color: #37474f; /* Medium blue-grey for cards/sections */
-    --text-color: #e5e7eb; /* Off-white / Light grey text */
-    --text-color-muted: #9ca3af; /* Muted grey for less important text (like footer) */
+    /* -- Font Sizes -- */
+    --font-size-xxs: 0.75rem;  /* ~12px */
+    --font-size-xs: 1.2rem;   /* ~12.8px (used in footer/responsive) */
+    --font-size-sm: 1.7rem;   /* ~14.4px (used in small elements/responsive) */
+    --font-size-base: 1.7rem;   /* ~16px (base size for body/components) */
+    --font-size-md: 1.15rem;  /* ~18.4px (H3) */
+    --font-size-lg: 2.2rem;   /* ~19.2px (used for specific costs/values) */
+    --font-size-xl: 1.6rem;   /* ~20.8px (summary values, count box titles) */
+    --font-size-xxl: 1.9rem;  /* ~22.4px (section H2, comments) */
+    --font-size-3xl: 1.4rem;  /* ~24px (financial titles) */
+    --font-size-4xl: 2rem;    /* ~32px (main header H1) */
+    --font-size-5xl: 2.4rem;  /* ~38.4px (large financial values) */
 
-    /* Accents */
-    --header-color: #4db6ac; /* Teal - Primary Accent */
-    --accent-color-alt: #81c784; /* Soft Green - Secondary Accent */
+    /* -- Responsive Base Font Size -- */
+    /* Note: Base 'px' size set on body, rem units scale from this */
+    --base-font-size-desktop: 16px; /* Default base */
+    --base-font-size-tablet: 15px;
+    --base-font-size-mobile: 14px;
 
-    /* Borders & Shadows */
-    --border-color: #546e7a; /* Softer blue-grey border */
+    /* -- Core Palette -- */
+    --bg-color: #1f2937;             /* Dark blue-grey background */
+    --card-bg-color: #37474f;        /* Medium blue-grey for cards/sections */
+    --text-color: #e5e7eb;           /* Off-white / Light grey text */
+    --text-color-muted: #9ca3af;     /* Muted grey for less important text */
+    --text-color-white: #ffffff;      /* Pure white for high contrast text */
+
+    /* -- Accents -- */
+    --header-bg-color: #263238;      /* Darker background for header */
+    --header-text-color: #4db6ac;    /* Teal - Primary Accent (used for header text/borders) */
+    --accent-color-primary: #4db6ac; /* Teal - Primary Accent */
+    --accent-color-secondary: #81c784;/* Soft Green - Secondary Accent */
+
+    /* -- Borders & Shadows -- */
+    --border-color: #546e7a;         /* Softer blue-grey border */
     --shadow-color: rgba(0, 0, 0, 0.2); /* Softer shadow */
 
-    /* Table Specific */
-    --table-header-bg: #263238; /* Darker header background */
-    --table-row-odd-bg: #37474f; /* Matches card background */
-    --table-row-even-bg: #455a64; /* Slightly distinct grey */
-    --table-row-hover-bg: #546e7a; /* Hover color (matches border) */
+    /* -- Tables -- */
+    --table-header-bg: #263238;      /* Darker header background */
+    --table-header-text: var(--accent-color-primary); /* Teal header text */
+    --table-row-odd-bg: #37474f;     /* Matches card background */
+    --table-row-even-bg: #455a64;    /* Slightly distinct grey */
+    --table-row-hover-bg: #546e7a;   /* Hover color (matches border) */
+    --table-border-color: var(--border-color);
+
+    /* -- Status Indicators -- */
+    --status-good: #66bb6a;          /* Green */
+    --status-warning: #ffa726;       /* Orange/Yellow */
+    --status-bad: #ef5350;           /* Red */
+    --status-text-on-good: #ffffff;
+    --status-text-on-warning: #212121; /* Dark text on yellow/orange */
+    --status-text-on-bad: #ffffff;
+
+    /* -- Forms (Dropdown) -- */
+    --form-element-bg: rgba(255, 255, 255, 0.04); /* Base background for form elements */
+    --form-element-border: var(--border-color);
+    --form-element-text: var(--text-color);
+    --dropdown-arrow-color: var(--text-color); /* Color of the SVG arrow */
+
+    /* -- Effects -- */
+    --shine-color: rgba(156, 39, 176, 0.06); /* Subtle Purple for shine */
+
+    /* -- Footer -- */
+    --footer-bg: var(--bg-color);
+    --footer-text: var(--text-color-muted);
+    --footer-border: var(--border-color);
+    --footer-icon-color: var(--text-color-muted);
+    --footer-icon-hover-bg: rgba(255, 255, 255, 0.1);
+    --footer-icon-hover-color: var(--text-color);
+
+    /* -- Icon Theme Toggle (Dark Mode State) -- */
+    --theme-icon-fill: none;
+    --theme-icon-stroke: currentColor; /* Inherits from button color */
+    --theme-icon-filter: none;
+}
+
+/* --- Light Theme Variable Overrides --- */
+body.light-theme {
+    /* Core Palette */
+    --bg-color: #ffffff;             /* White background */
+    --card-bg-color: #f0f4ff;        /* Very light blue */
+    --text-color: #1a1a1a;           /* Dark text for readability */
+    --text-color-muted: #555555;     /* Medium grey for muted text */
+
+    /* Accents */
+    --header-bg-color: #0000a0;      /* Primary Blue */
+    --header-text-color: #ffffff;    /* White text on blue */
+    --accent-color-primary: #0000a0; /* Primary Blue */
+    --accent-color-secondary: #00d7b9;/* Primary Highlight Teal */
+
+    /* Borders & Shadows */
+    --border-color: #cccccc;         /* Light grey border */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* Lighter shadow */
+
+    /* Tables */
+    --table-header-bg: #e1e8ff;      /* Lighter blue header */
+    --table-header-text: var(--accent-color-primary); /* Dark blue text */
+    --table-row-odd-bg: #ffffff;     /* White */
+    --table-row-even-bg: #f0f4ff;    /* Very light blue (matches card) */
+    --table-row-hover-bg: #dbe4ff;   /* Slightly darker blue hover */
+    --table-border-color: var(--border-color);
 
     /* Status Indicators */
-    --status-good: #66bb6a; /* Green */
-    --status-warning: #ffa726; /* Orange/Yellow */
-    --status-bad: #ef5350; /* Red */
+    --status-text-on-warning: #ffffff; /* White text might be better on orange */
 
-    /* Shine Effect (Variable currently commented out) */
-    /* --shine-color: rgba(156, 39, 176, 0.1); Subtle Purple for shine */
+    /* Forms (Dropdown) */
+    --form-element-bg: #eee;         /* Light grey background */
+    --form-element-border: var(--border-color);
+    --form-element-text: var(--text-color);
+    --dropdown-arrow-color: #333333; /* Darker arrow for light theme */
 
-* {
+    /* Effects */
+    --shine-color: rgba(0, 0, 160, 0.05); /* Subtle Blue shine */
+
+    /* Footer */
+    --footer-bg: #f8f8f8;            /* Slightly off-white footer */
+    --footer-text: var(--text-color-muted);
+    --footer-border: var(--border-color);
+    --footer-icon-color: #555555;     /* Darker icon */
+    --footer-icon-hover-bg: rgba(0, 0, 0, 0.08);
+    --footer-icon-hover-color: #000000;
+
+    /* Icon Theme Toggle (Light Mode State) */
+    --theme-icon-fill: #ffdc00;      /* Yellow fill */
+    --theme-icon-stroke: #a78700;    /* Darker outline */
+    --theme-icon-filter: drop-shadow(0 0 5px #ffdc00); /* Yellow glow */
+}
+
+/* ========================================================================== */
+/* == 2. Global Resets & Base Styles                                       == */
+/* ========================================================================== */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -46,86 +167,13 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     padding-bottom: 60px; /* Ensure space for fixed footer */
-    font-size: 16px;
+    font-size: var(--base-font-size-desktop); /* Use CSS variable for base font size */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
 }
 
-/* --- Header --- */
-header {
-    background-color: var(--table-header-bg);
-    color: var(--header-color);
-    padding: 1rem 1.5rem;
-    border-bottom: 2px solid var(--header-color);
-    margin-bottom: 1.5rem;
-    box-shadow: 0 3px 8px var(--shadow-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem; /* Gap between elements */
-}
-
-/* Optional: Style for H1 if you uncomment it in HTML */
-header h1 {
-    font-weight: 600;
-    font-size: 2rem;
-    text-shadow: none;
-    flex-grow: 1;
-    text-align: left;
-}
-
-/* Container for COGI & Ingredient Status boxes in header */
-/* Note: .header-info-container class was not in provided HTML, styles adapted */
-.header-cogi-status,
-.ingredient-status {
-    display: flex;
-    gap: 1rem; /* Space between internal items */
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.04);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-/* Specific spacing for ingredient status if needed */
-.ingredient-status {
-    gap: 1.5rem;
-}
-
-
-/* COGI Specific labels/values */
-.header-cogi-status .cogi-label {
-    color: var(--text-color-muted);
-    font-weight: 400;
-    margin-right: 0.5rem;
-}
-
-.header-cogi-status .cogi-value {
-    font-weight: 600; /* Color via .positive/.negative */
-}
-
-/* Hidden H2 in ingredient status */
-.ingredient-status h2 {
-    display: none; /* Hidden */
-}
-
-/* Container for label + dropdown */
-.status-box {
-    font-size: 1rem;
-    font-weight: 500;
-    display: inline-flex; /* Align label and dropdown */
-    align-items: center; /* Vertically center */
-}
-
-/* Label ("24hr:", "48hr:") */
-.status-box span:first-child {
-    color: var(--text-color-muted);
-    font-weight: 400;
-    margin-right: 0; /* Space handled by dropdown margin */
-}
-
-/* --- Main Content & Sections --- */
+/* ========================================================================== */
+/* == 3. Layout (Main, Sections, Grid)                                     == */
+/* ========================================================================== */
 main {
     max-width: 98%;
     margin: 0 auto;
@@ -141,68 +189,46 @@ section {
     border-radius: 8px;
     box-shadow: 0 4px 12px var(--shadow-color);
     border: 1px solid var(--border-color);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s ease, border-color 0.3s ease;
     display: flex;
     flex-direction: column;
-    position: relative;
-    overflow: hidden;
+    position: relative; /* For shine effect */
+    overflow: hidden;   /* For shine effect */
 }
 
-/* Subtle Shine Effect (Requires --shine-color variable to be defined) */
-@keyframes shine {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
+section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); /* Slightly stronger shadow on hover */
 }
 
-section::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent 20%,
-        var(--shine-color, transparent) 50%, /* Use fallback */
-        transparent 80%
-    );
-    background-size: 200% 100%;
-    animation: shine 15s linear infinite;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
-}
-
-/* Ensure section content is above the shine */
+/* Ensure section content is above the shine pseudo-element */
 section > * {
     position: relative;
     z-index: 1;
 }
 
-section:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-}
-
-section h2, section h3 {
+/* --- Section Headings --- */
+section h2,
+section h3 {
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     font-weight: 500;
 }
 
 section h2 {
-    color: var(--header-color);
-    border-bottom: 2px solid var(--accent-color-alt);
-    font-size: 1.4rem;
+    color: var(--accent-color-primary);
+    border-bottom: 2px solid var(--accent-color-secondary);
+    font-size: var(--font-size-xxl); /* Use variable */
 }
 
 section h3 {
-    color: var(--accent-color-alt);
-    border-bottom: 2px solid var(--header-color);
-    font-size: 1.15rem;
+    color: var(--accent-color-secondary);
+    border-bottom: 1px solid var(--border-color); /* Subtler border for H3 */
+    font-size: var(--font-size-md); /* Use variable */
     margin-top: 0.75rem;
 }
 
-/* --- Specific Section Layouts (Responsive Grid) --- */
+/* --- Responsive Grid Layout --- */
 @media (min-width: 900px) {
     main {
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -210,41 +236,270 @@ section h3 {
     #material-shortages { grid-column: span 1; }
     #railcar-overview { grid-column: span 1; }
     #inventory-counts { grid-column: span 1; }
-    /* #cogi-overview removed */
+    #financial-insights { grid-column: span 1; }
 }
 
 @media (min-width: 1200px) {
-      main {
+    main {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto;
         gap: 1.5rem;
-      }
-      #material-shortages { grid-column: 1 / 2; grid-row: 1 / 2; }
-      #railcar-overview { grid-column: 1 / 2; grid-row: 2 / 3; }
-      #inventory-counts { grid-column: 2 / 3; grid-row: 1 / 2; }
-      #financial-insights { grid-column: 2 / 3; grid-row: 2 / 3; } /* Place it here */
-      /* #cogi-overview removed */
-      /* Remove #coming-soon rule */
     }
+    #material-shortages { grid-column: 1 / 2; grid-row: 1 / 2; }
+    #railcar-overview   { grid-column: 1 / 2; grid-row: 2 / 3; }
+    #inventory-counts   { grid-column: 2 / 3; grid-row: 1 / 2; }
+    #financial-insights { grid-column: 2 / 3; grid-row: 2 / 3; }
+}
 
-/* --- Tables --- */
+/* ========================================================================== */
+/* == 4. Header                                                            == */
+/* ========================================================================== */
+header {
+    background-color: var(--header-bg-color);
+    color: var(--header-text-color);
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid var(--header-text-color);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 3px 8px var(--shadow-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+header h1 {
+    font-weight: 600;
+    font-size: var(--font-size-4xl); /* Use variable */
+    text-shadow: none;
+    flex-grow: 1;
+    text-align: left;
+}
+
+/* --- Header Info Boxes (COGI & Ingredients) --- */
+.header-cogi-status,
+.ingredient-status {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background-color: var(--form-element-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--form-element-border);
+    font-size: var(--font-size-base); /* Use variable */
+    font-weight: 500;
+    color: var(--text-color-muted); /* Default to muted in dark mode */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.ingredient-status {
+    gap: 1.5rem;
+}
+
+/* COGI specific labels/values */
+.header-cogi-status .cogi-title {
+    margin-right: 0.5rem;
+    font-weight: bold;
+    color: var(--text-color-muted); /* Already muted */
+}
+
+.header-cogi-status .cogi-label {
+    color: var(--text-color-muted); /* Already muted */
+    font-weight: 400;
+    margin-right: 0.25rem;
+}
+
+.header-cogi-status .cogi-value {
+    font-weight: 600;
+    padding-left: 0.25em;
+    color: var(--text-color-muted); /* Default value color to muted */
+    /* Color overridden by .positive/.negative utility classes */
+}
+
+/* Hidden H2 in ingredient status */
+.ingredient-status h2 {
+    display: none;
+}
+
+/* Container for label + dropdown in header */
+.status-box {
+    font-size: var(--font-size-base); /* Use variable */
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Label ("24hr:", "48hr:") */
+.status-box span:first-child {
+    color: var(--text-color-muted); /* Already muted */
+    font-weight: 400;
+    margin-right: 0;
+}
+
+/* ========================================================================== */
+/* == 5. Main Content Sections (Specific Sections, Cards)                  == */
+/* ========================================================================== */
+
+/* --- Inventory Counts Section --- */
+#inventory-counts .count-container {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#inventory-counts .count-box {
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.08);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+#inventory-counts .count-box h3 { /* e.g., "Cycle Counts (PTD: ...)" */
+    border-bottom: none;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    font-size: var(--font-size-xl); /* Use variable */
+    font-weight: bold;
+}
+#inventory-counts .count-box h3 span { /* The PTD value span */
+    color: var(--accent-color-secondary);
+    font-weight: bold;
+    margin-left: 0.5rem;
+    /* Final color updated by .positive / .negative classes */
+}
+#inventory-counts .count-box .table-container {
+    margin-top: 0.25rem;
+}
+#inventory-counts .count-box table {
+    flex-grow: 1;
+}
+#inventory-counts .count-box table td,
+#inventory-counts .count-box table th {
+    text-align: center !important;
+    padding: 0.6rem 0.8rem;
+    font-weight: bold;
+}
+#inventory-counts .count-box table th {
+    color: var(--text-color-muted);
+    background-color: transparent;
+    position: static;
+}
+
+/* --- Financial Insights Section --- */
+#financial-insights .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#financial-insights .insight-cell {
+    background-color: rgba(0,0,0,0.15);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#financial-insights .insight-cell h3,
+#financial-insights .insight-cell h4 {
+    color: var(--header-text-color);
+    margin-bottom: 0.5rem;
+    font-weight: 900;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.4rem;
+    font-size: var(--font-size-3xl); /* Use variable for H3 */
+}
+#financial-insights .insight-cell h4 {
+    font-size: var(--font-size-sm); /* Use variable for H4 */
+    color: var(--text-color-muted);
+}
+
+#financial-insights .insight-cell .insight-value,
+#financial-insights .insight-cell .item-cost {
+    font-size: var(--font-size-5xl); /* Use variable */
+    font-weight: bold;
+    margin-top: auto;
+    text-align: right;
+    /* Color applied by .positive / .negative via JS */
+}
+#financial-insights .insight-cell .item-cost {
+    font-size: var(--font-size-lg); /* Use variable */
+}
+
+#financial-insights .insight-cell .item-name {
+    font-size: var(--font-size-sm); /* Use variable */
+    color: var(--text-color);
+    text-align: right;
+    margin-top: auto;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+}
+
+/* Financial Insights Spanning */
+#financial-insights .total-ptd {
+    grid-column: span 3;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+#financial-insights .total-ptd h3 {
+    border-bottom: none;
+    margin-bottom: 0;
+    color: var(--header-text-color); /* Keep teal in dark mode */
+}
+#financial-insights .total-ptd .insight-value {
+    margin-top: 0;
+}
+
+#financial-insights .comments-cell {
+    grid-column: span 3;
+    grid-row: span 2;
+    min-height: 150px;
+}
+
+#financial-insights .comments-content {
+    margin-top: 0.5rem;
+    font-size: var(--font-size-xxl); /* Use variable */
+    color: var(--text-color-muted);
+    line-height: 1.5;
+    overflow-y: auto;
+    max-height: 150px;
+    flex-grow: 1;
+    white-space: pre-wrap;
+}
+
+/* ========================================================================== */
+/* == 6. Tables                                                            == */
+/* ========================================================================== */
+
+/* --- Table Container --- */
 .table-container {
     overflow-x: auto;
-    max-height: 450px; /* Default scroll */
+    max-height: 450px;
     overflow-y: auto;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--table-border-color);
     border-radius: 6px;
     flex-grow: 1;
     margin-top: 0.5rem;
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    transition: border-color 0.3s ease;
 }
-.table-container.small-table { /* For inventory tables */
+.table-container.small-table {
     max-height: none;
+    overflow-y: visible;
     flex-grow: 0;
 }
 
+/* --- General Table Styles --- */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -253,14 +508,16 @@ table {
 th, td {
     padding: 0.7rem 0.9rem;
     text-align: left;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--table-border-color);
     white-space: nowrap;
-    font-weight: bold; /* Make all table text bold */
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    font-size: var(--font-size-sm); /* Base table font size */
 }
 
 th {
     background-color: var(--table-header-bg);
-    color: var(--header-color);
+    color: var(--table-header-text);
     position: sticky;
     top: 0;
     z-index: 2;
@@ -286,7 +543,7 @@ tbody tr:hover {
     transition: background-color 0.15s ease;
 }
 
-/* --- Specific Table Styling --- */
+/* --- Specific Table Column Styling --- */
 
 /* Material Shortages Table */
 #shortagesTableBody th,
@@ -306,8 +563,10 @@ tbody tr:hover {
 #railcarsTableBody th:nth-child(6) {
     text-align: center;
 }
-/* Status colors handled by general .status-yes / .status-no rules */
 
+/* ========================================================================== */
+/* == 7. Components                                                        == */
+/* ========================================================================== */
 
 /* --- Summary Boxes (Railcars) --- */
 .rail-summary {
@@ -318,387 +577,248 @@ tbody tr:hover {
 }
 
 .summary-box {
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: var(--form-element-bg);
     padding: 0.8rem 1.2rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    font-size: 1rem;
+    font-size: var(--font-size-base); /* Use variable */
     flex-grow: 1;
     text-align: center;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.3s ease;
 }
 .summary-box:hover {
     background-color: rgba(255, 255, 255, 0.08);
 }
 
-.summary-box span { /* The count value */
-    font-weight: 700;
-    color: var(--accent-color-alt);
-    font-size: 1.3rem;
+.summary-box .summary-label {
     display: block;
-    margin-top: 0.2rem;
-}
-
-
-/* --- Inventory Counts Section --- */
-.count-container {
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.count-box {
-    border: 1px solid var(--border-color);
-    padding: 1rem;
-    border-radius: 8px;
-    background-color: rgba(0,0,0,0.08);
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-.count-box h3 { /* e.g., "Cycle Counts (PTD: ...)" */
-    border-bottom: none;
-    margin-bottom: 0.75rem;
-    color: var(--text-color);
-    font-size: 1.1rem;
-}
-.count-box h3 span { /* The PTD value span */
-    color: var(--accent-color-alt); /* Default color */
-    font-weight: bold;
-    margin-left: 0.5rem;
-    /* Color updated by .positive / .negative classes */
-}
-.count-box .table-container {
-    margin-top: 0.25rem;
-}
-.count-box table {
-    flex-grow: 1;
-}
-/* Center text within Cycle Counts & Scrap Tables */
-.count-box table td,
-.count-box table th {
-    text-align: center !important;
-    padding: 0.6rem 0.8rem;
-    font-weight: bold;
-}
-.count-box table th {
+    margin-bottom: 0.3rem;
     color: var(--text-color-muted);
-    background-color: transparent;
-    position: static; /* Not sticky */
+}
+
+.summary-box .summary-value { /* The count value */
+    font-weight: 700;
+    color: var(--accent-color-secondary);
+    font-size: var(--font-size-xl); /* Use variable */
+    display: block;
 }
 
 /* --- Status Select Dropdown Styling --- */
 .status-dropdown {
-    color: var(--text-color); /* Overridden by status */
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--form-element-border);
     border-radius: 6px;
     padding: 0.35rem 0.8rem;
     font-weight: bold;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     cursor: pointer;
     text-align: center;
-    min-width: 90px; /* Adjust as needed */
-    vertical-align: middle; /* Align with label */
-    margin-left: 0.5rem; /* Space from label */
+    min-width: 90px;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    font-size: var(--font-size-sm); /* Adjust size if needed */
 
-    /* SVG Dropdown arrow indicator */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23e5e7eb'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+    background-color: var(--form-element-bg);
+    color: var(--form-element-text);
+
+    /* SVG Dropdown arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='${encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--dropdown-arrow-color').trim())}'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.5rem center;
     background-size: 1em 1em;
-    padding-right: 2rem; /* Space for the arrow */
+    padding-right: 2rem;
 }
 
-/* Dropdown Background Colors based on selected status */
+/* Dropdown Background/Text Colors based on selected status class */
 .status-dropdown.good {
     background-color: var(--status-good);
-    color: #ffffff;
+    color: var(--status-text-on-good);
     border-color: var(--status-good);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
 }
-
-.status-dropdown.caution { /* Matches 'warning' value */
+.status-dropdown.caution {
     background-color: var(--status-warning);
-    color: #212121;
+    color: var(--status-text-on-warning);
     border-color: var(--status-warning);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212121'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
 }
-
-.status-dropdown.bad { /* Matches 'crit' value */
+.status-dropdown.bad {
     background-color: var(--status-bad);
-    color: #ffffff;
+    color: var(--status-text-on-bad);
     border-color: var(--status-bad);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
 }
 
-/* Dropdown Option Text Colors */
+/* Dropdown Option Styling */
 .status-dropdown option {
     background-color: var(--card-bg-color);
     color: var(--text-color);
     padding: 5px 10px;
 }
-.status-dropdown option.good {
-    color: var(--status-good);
-    font-weight: bold;
-}
-.status-dropdown option.caution {
-    color: var(--status-warning);
-    font-weight: bold;
-}
-.status-dropdown option.bad {
-    color: var(--status-bad);
-    font-weight: bold;
-}
+.status-dropdown option.good { color: var(--status-good); font-weight: bold; }
+.status-dropdown option.caution { color: var(--status-warning); font-weight: bold; }
+.status-dropdown option.bad { color: var(--status-bad); font-weight: bold; }
 
-/* --- Footer --- */
+/* ========================================================================== */
+/* == 8. Footer                                                            == */
+/* ========================================================================== */
 footer {
     text-align: center;
     padding: 0.75rem 1rem;
-    font-size: 0.8rem;
-    color: var(--text-color-muted);
-    border-top: 1px solid var(--border-color);
+    font-size: var(--font-size-xs); /* Use variable */
+    color: var(--footer-text);
+    border-top: 1px solid var(--footer-border);
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--bg-color);
+    background-color: var(--footer-bg);
     z-index: 10;
-}
-
-/* Add these styles to your existing style.css */
-/* You can place them near the end or integrate them logically */
-
-/* --- Footer Button Styling --- */
-footer {
-    display: flex; /* Use flexbox for alignment */
-    justify-content: space-between; /* Pushes timestamp left, buttons right */
-    align-items: center; /* Vertically center items */
-    padding: 0.5rem 1rem; /* Adjust padding slightly */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 footer p {
-    margin: 0; /* Remove default margin */
+    margin: 0;
 }
 
+/* --- Theme Toggle Button --- */
 #theme-toggle-icon-button {
     background: none;
     border: none;
     padding: 5px;
     cursor: pointer;
-    color: var(--text-color-muted); /* Default color for icon stroke */
-    border-radius: 50%; /* Make it circular */
+    color: var(--footer-icon-color);
+    border-radius: 50%;
     transition: background-color 0.2s ease, color 0.2s ease;
-    display: flex; /* Center icon inside */
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px; /* Fixed size */
+    width: 36px;
     height: 36px;
 }
 
 #theme-toggle-icon-button:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover for dark mode */
-    color: var(--text-color); /* Brighten icon on hover */
+    background-color: var(--footer-icon-hover-bg);
+    color: var(--footer-icon-hover-color);
 }
 
 #theme-icon {
-    /* Size is set in HTML, but can be overridden */
-     transition: filter 0.3s ease; /* Transition for the glow */
+    transition: filter 0.3s ease;
+    filter: var(--theme-icon-filter);
 }
 
-/* Icon Stroke Color */
 #theme-icon .bulb-outline {
-    stroke: currentColor; /* Inherits color from button */
+    stroke: var(--theme-icon-stroke);
+    transition: stroke 0.3s ease;
 }
-/* Icon Fill Color (Initially off in dark mode) */
 #theme-icon .bulb-fill {
-    fill: none; /* No fill in dark mode */
-     transition: fill 0.3s ease;
-}
-/* --- Financial Insights Section --- */
-#financial-insights {
-    /* Adjust grid placement if needed, see Step 6 */
+    fill: var(--theme-icon-fill);
+    transition: fill 0.3s ease;
 }
 
-.insights-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-    gap: 1rem; /* Space between cells */
-    margin-top: 1rem;
+/* ========================================================================== */
+/* == 9. Utility Classes (Status Colors)                                   == */
+/* ========================================================================== */
+.status-yes,
+.status-good,
+.positive {
+    color: var(--status-good) !important;
+    font-weight: 600;
+}
+.status-no,
+.status-bad,
+.negative {
+    color: var(--status-bad) !important;
+    font-weight: 600;
+}
+.status-caution {
+    color: var(--status-warning) !important;
+    font-weight: 600;
 }
 
-.insight-cell {
-    background-color: rgba(0,0,0,0.15); /* Slightly darker background */
-    padding: 1rem;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    min-height: 100px; /* Ensure minimum height */
-}
+/* ========================================================================== */
+/* == 10. Animations (Shine Effect - Optional)                             == */
+/* ========================================================================== */
+/* @keyframes shine { ... } */
+/* section::after { ... } */
 
-.insight-cell h3, .insight-cell h4 {
-    color: var(--accent-color-alt); /* Teal heading */
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.4rem;
-    font-size: 1.05rem;
-}
-.insight-cell h4 {
-    font-size: 0.95rem; /* Smaller heading for top items */
-    color: var(--text-color-muted);
-}
-
-.insight-cell .insight-value,
-.insight-cell .item-cost {
-    font-size: 1.4rem;
-    font-weight: bold;
-    margin-top: auto; /* Push value to bottom */
-    text-align: right;
-    /* Color applied by .positive / .negative via JS */
-}
-.insight-cell .item-cost {
-    font-size: 1.2rem; /* Slightly smaller cost */
-}
-
-.insight-cell .item-name {
-    font-size: 0.9rem;
-    color: var(--text-color);
-    text-align: right;
-    margin-top: auto; /* Push name above cost */
-    margin-bottom: 0.25rem; /* Space between name and cost */
-    font-weight: bold;
-}
-
-/* Spanning */
-.total-ptd {
-    grid-column: span 3; /* Span all 3 columns */
-    flex-direction: row; /* Align heading and value horizontally */
-    justify-content: space-between;
-    align-items: center;
-}
-.total-ptd h3 {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-.total-ptd .insight-value {
-     margin-top: 0; /* Reset margin */
-}
-
-
-.comments-cell {
-    grid-column: span 3; /* Span all 3 columns */
-    grid-row: span 2; /* Span 2 rows */
-    min-height: 150px; /* Taller comments box */
-}
-
-.comments-content {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--text-color-muted);
-    line-height: 1.5;
-    overflow-y: auto; /* Add scroll if content exceeds height */
-    max-height: 150px; /* Limit height, adjust as needed */
-    flex-grow: 1; /* Allow content to fill space */
-    white-space: pre-wrap; /* Respect newlines in comments */
-}
-
-/* --- Light Theme Adjustments for Financial Insights --- */
-.light-theme .insight-cell {
-    background-color: rgba(0, 0, 0, 0.03); /* Very subtle dark */
+/* ========================================================================== */
+/* == 11. Light Theme Overrides                                            == */
+/* ========================================================================== */
+.light-theme header .header-cogi-status,
+.light-theme header .ingredient-status {
+    background-color: rgba(0, 0, 0, 0.05);
     border-color: var(--border-color);
+    color: var(--header-text-color); /* White text on blue header */
 }
 
-.light-theme .insight-cell h3, .light-theme .insight-cell h4 {
-    color: var(--header-color); /* Primary Blue */
-    border-color: var(--border-color);
+.light-theme header .header-cogi-status .cogi-label,
+.light-theme header .status-box span:first-child,
+.light-theme header .header-cogi-status .cogi-title,
+.light-theme header .header-cogi-status .cogi-value { /* Ensure default value text is white */
+    color: var(--header-text-color); /* White text on blue header */
 }
-.light-theme .insight-cell h4 {
-     color: var(--text-color-muted); /* Keep muted color */
+/* Keep positive/negative overrides */
+.light-theme header .header-cogi-status .cogi-value.positive {
+    color: var(--status-good) !important;
 }
-
-.light-theme .insight-cell .item-name {
-    color: var(--text-color);
-}
-
-.light-theme .comments-content {
-    color: var(--text-color-muted);
+.light-theme header .header-cogi-status .cogi-value.negative {
+    color: var(--status-bad) !important;
 }
 
-/* Apply positive/negative styles */
-.light-theme .insight-value.positive,
-.light-theme .item-cost.positive { color: var(--status-good) !important; }
-.light-theme .insight-value.negative,
-.light-theme .item-cost.negative { color: var(--status-bad) !important; }
-
-.insight-value.positive,
-.item-cost.positive { color: var(--status-good) !important; }
-.insight-value.negative,
-.item-cost.negative { color: var(--status-bad) !important; }
-/* --- Light Theme Definition --- */
-body.light-theme {
-    /* Core Palette */
-    --bg-color: #ffffff;                     /* White background */
-    --card-bg-color: #f0f4ff;             /* Very light blue */
-    --text-color: #1a1a1a;                 /* Dark text for readability */
-    --text-color-muted: #555555;             /* Medium grey for muted text */
-
-    /* Accents */
-    --header-color: #0000a0;                 /* Primary Blue */
-    --accent-color-alt: #00d7b9;             /* Primary Highlight Teal */
-
-    /* Borders & Shadows */
-    --border-color: #cccccc;                 /* Light grey border */
-    --shadow-color: rgba(0, 0, 0, 0.1);      /* Lighter shadow */
-
-    /* Table Specific */
-    --table-header-bg: #e1e8ff;             /* Lighter blue header */
-    --table-row-odd-bg: #ffffff;             /* White */
-    --table-row-even-bg: #f0f4ff;             /* Very light blue (matches card) */
-    --table-row-hover-bg: #dbe4ff;             /* Slightly darker blue hover */
-
-    /* Status Indicators (Keep originals or adjust contrast if needed) */
-    /* --status-good: #2e7d32; */
-    /* --status-warning: #ed6c02; */
-    /* --status-bad: #d32f2f; */
-
-    /* Shine Effect - Less pronounced on light */
-    --shine-color: rgba(0, 0, 160, 0.05);
+.light-theme #inventory-counts .count-box {
+    background-color: rgba(0,0,0,0.03);
+}
+.light-theme #inventory-counts .count-box h3 {
+    color: var(--text-color); /* Black text */
+}
+.light-theme #inventory-counts .count-box table th {
+   color: var(--text-color-muted); /* Grey text */
 }
 
-/* Adjustments for elements in Light Theme */
-.light-theme header {
-    background-color: var(--header-color); /* Blue background */
-    color: #ffffff; /* White text */
-    border-bottom-color: var(--accent-color-alt); /* Teal border */
+.light-theme .summary-box {
+    background-color: var(--table-header-bg);
 }
 
-.light-theme header h1 { /* If you add H1 back */
-     color: #ffffff;
+.light-theme #financial-insights .insight-cell {
+    background-color: rgba(0, 0, 0, 0.03);
 }
 
-.light-theme .header-cogi-status, .light-theme .ingredient-status {
-    background-color: rgba(0, 0, 0, 0.05); /* Subtle dark background */
-    border-color: var(--border-color);
-    color: #333; /* Darker text */
+/* FIX: Financial Title color in light mode */
+.light-theme #financial-insights .total-ptd h3 {
+    color: var(--accent-color-primary); /* Dark blue (#0000a0) */
 }
 
-.light-theme .header-cogi-status .cogi-label, .light-theme .status-box span:first-child {
-    color: #666; /* Slightly darker muted text */
+.light-theme #financial-insights .comments-content {
+    color: var(--text-color-muted); /* Use muted text for comments */
 }
 
-.light-theme .status-box span:first-child,
-.light-theme .header-cogi-status .cogi-label {
-    color: #ffffff;
+/* Dropdown arrow color for light theme */
+.light-theme .status-dropdown {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23333333'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+    color: var(--form-element-text); /* Ensure default text is dark */
+}
+.light-theme .status-dropdown.good {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+    color: var(--status-text-on-good);
+}
+.light-theme .status-dropdown.caution {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+    color: var(--status-text-on-warning); /* Now white text on orange */
+}
+.light-theme .status-dropdown.bad {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+    color: var(--status-text-on-bad);
 }
 
-/* --- Responsive Adjustments --- */
+/* ========================================================================== */
+/* == 12. Responsive Design                                                == */
+/* ========================================================================== */
 @media (max-width: 768px) {
-    body { font-size: 15px; }
+    body { font-size: var(--base-font-size-tablet); } /* Use variable */
+
     header {
         flex-direction: column;
         align-items: stretch;
@@ -708,19 +828,19 @@ body.light-theme {
         gap: 0.75rem;
     }
     header h1 {
-        font-size: 1.7rem;
+        font-size: var(--font-size-3xl); /* Adjust responsive size */
         text-align: center;
     }
-    /* Center header items when stacked */
+
     .header-cogi-status,
     .ingredient-status {
-        width: auto; /* Allow natural sizing */
+        width: auto;
         justify-content: center;
-        padding: 0.5rem 0.75rem; /* Adjust padding */
+        padding: 0.5rem 0.75rem;
         flex-grow: 0;
+        font-size: var(--font-size-sm); /* Adjust responsive size */
     }
-    .status-box { font-size: 0.95rem; }
-    .header-cogi-status { font-size: 0.95rem; }
+    .status-box { font-size: var(--font-size-sm); }
 
     main {
         padding: 0 0.5rem;
@@ -730,8 +850,8 @@ body.light-theme {
 
     th, td {
         padding: 0.5rem 0.6rem;
-        font-size: 0.85rem;
-        white-space: normal; /* Allow wrapping */
+        font-size: var(--font-size-xs); /* Adjust responsive size */
+        white-space: normal;
     }
 
     .rail-summary {
@@ -740,193 +860,69 @@ body.light-theme {
         gap: 0.75rem;
     }
     .summary-box { padding: 0.7rem 1rem; }
-    .summary-box span { font-size: 1.2rem; }
+    .summary-box .summary-value { font-size: var(--font-size-lg); } /* Adjust responsive size */
 
-    .count-container { gap: 0.75rem; }
-    .count-box { padding: 0.75rem; }
-    .count-box table td,
-    .count-box table th {
-        padding-top: 0.5rem;
-        padding-right: 0.5rem;
-        padding-bottom: 0.5rem;
-        padding-left: 0.5rem;
+    #inventory-counts .count-container { gap: 0.75rem; }
+    #inventory-counts .count-box { padding: 0.75rem; }
+    #inventory-counts .count-box table td,
+    #inventory-counts .count-box table th {
+        padding: 0.5rem;
     }
+    #financial-insights .insights-grid {
+        grid-template-columns: 1fr;
+    }
+    #financial-insights .total-ptd,
+    #financial-insights .comments-cell {
+        grid-column: span 1;
+    }
+    #financial-insights .comments-cell {
+        grid-row: auto;
+    }
+     /* Adjust financial value size for tablet */
+    #financial-insights .insight-cell .insight-value { font-size: var(--font-size-4xl); }
+    #financial-insights .insight-cell .item-cost { font-size: var(--font-size-md); }
 }
 
 @media (max-width: 480px) {
-    body { font-size: 14px; }
-    header h1 { font-size: 1.5rem; }
-    .status-box { font-size: 0.9rem; }
-    .header-cogi-status { font-size: 0.9rem; }
-
-    /* Stack header items vertically and center */
+    body { font-size: var(--base-font-size-mobile); } /* Use variable */
+    header h1 { font-size: var(--font-size-xxl); } /* Adjust responsive size */
+    .status-box { font-size: var(--font-size-sm); }
     .header-cogi-status,
     .ingredient-status {
-        width: 90%; /* Give some width */
-        margin-left: auto; /* Center block */
+        font-size: var(--font-size-sm);
+        width: 90%;
+        margin-left: auto;
         margin-right: auto;
         justify-content: space-around;
-        flex-direction: column; /* Stack internal items if needed */
-        gap: 0.5rem; /* Reduce internal gap */
-    }
-    /* Adjust dropdown size on smallest screens */
-     .status-dropdown {
-        min-width: 80px;
-        padding: 0.3rem 0.6rem;
-        padding-right: 1.8rem; /* Adjust for arrow */
-        font-size: 0.85rem;
     }
 
+    .status-dropdown {
+        min-width: 80px;
+        padding: 0.3rem 0.6rem;
+        padding-right: 1.8rem;
+        font-size: var(--font-size-xs); /* Adjust responsive size */
+    }
 
     main { padding: 0 0.25rem; }
     section { padding: 0.75rem; }
-    th, td { padding: 0.4rem 0.4rem; font-size: 0.8rem;}
-    .count-box table td,
-    .count-box table th {
-        padding: 0.4rem 0.4rem;
+    th, td { padding: 0.4rem 0.4rem; font-size: var(--font-size-xxs); } /* Adjust responsive size */
+    #inventory-counts .count-box table td,
+    #inventory-counts .count-box table th {
+        padding: 0.4rem;
     }
-}
 
-.light-theme section h2 {
-    color: var(--header-color); /* Blue */
-    border-bottom-color: var(--accent-color-alt); /* Teal */
-}
-
-.light-theme section h3 {
-    color: var(--header-color); /* Blue */
-     border-bottom: 1px solid var(--border-color); /* Softer border */
-}
-.light-theme .count-box h3 {
-     color: var(--header-color); /* Blue */
-}
-
-.light-theme .count-box h3 span {
-    /* Color determined by positive/negative classes */
-}
-
-.light-theme th {
-    background-color: var(--table-header-bg); /* Light blue header */
-    color: var(--header-color); /* Dark blue text */
-}
-
-.light-theme .summary-box {
-    background-color: var(--table-header-bg);
-    border-color: var(--border-color);
-}
-.light-theme .summary-box span { /* Count value */
-    color: var(--header-color); /* Blue */
-}
-
-.light-theme footer {
-    background-color: #f8f8f8; /* Slightly off-white footer */
-    border-top-color: var(--border-color);
-    color: var(--text-color-muted);
-}
-
-.light-theme #theme-toggle-icon-button {
-    color: #555555; /* Darker icon stroke */
-}
-.light-theme #theme-toggle-icon-button:hover {
-    background-color: rgba(0, 0, 0, 0.08); /* Subtle dark hover */
-    color: #000000; /* Black icon on hover */
-}
-
-/* --- Light Theme Icon State --- */
-.light-theme #theme-icon .bulb-fill {
-    fill: #ffdc00; /* Fill bulb with secondary highlight yellow */
-}
-
-.light-theme #theme-icon .bulb-outline {
-    stroke: #a78700; /* Darker stroke for outline when 'on' */
-}
-
-/* Glowing effect for light theme */
-.light-theme #theme-icon {
-     filter: drop-shadow(0 0 5px #ffdc00); /* Yellow glow */
-}
-
-/* --- Dropdown styling for light theme --- */
-.light-theme .status-dropdown {
-    border-color: var(--border-color);
-    /* Reset background/color, rely on specific state classes */
-    background-color: #eee;
-    color: (--text-color);
-    /* Update SVG arrow color for light theme */
-     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23333333'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-.light-theme .status-dropdown.good {
-    background-color: var(--status-good);
-    color: #ffffff;
-    border-color: var(--status-good);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-.light-theme .status-dropdown.caution {
-    background-color: var(--status-warning);
-    color: #ffffff; /* White text often better on orange */
-    border-color: var(--status-warning);
-     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-.light-theme .status-dropdown.bad {
-    background-color: var(--status-bad);
-    color: #ffffff;
-    border-color: var(--status-bad);
-     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
-}
-.light-theme .status-dropdown option {
-    background-color: var(--card-bg-color);
-    color: var(--text-color);
-}
-/* Style options specifically if needed */
-.light-theme .status-dropdown option.good { color: var(--status-good); }
-.light-theme .status-dropdown option.caution { color: var(--status-warning); }
-.light-theme .status-dropdown option.bad { color: var(--status-bad); }
-}
-
-/* --- Status Color Formatting --- */
-/* Applied via JS for specific elements/columns */
-
-/* Style for 'Yes' or generally Good status / Positive numbers */
-.status-yes,
-.status-good, /* Used by JS for railcar location */
-.positive {
-    color: var(--status-good) !important;
-    font-weight: 600; /* Maintain boldness */
-}
-
-/* Style for 'No' or generally Bad/Attention status / Negative numbers */
-.status-no,
-.status-bad,  /* Used by JS for railcar location */
-.negative {
-    color: var(--status-bad) !important;
-    font-weight: 600; /* Maintain boldness */
-}
-/* --- Light Theme Icon State --- */
-.light-theme #theme-icon .bulb-fill {
-    fill: #ffdc00; /* Fill bulb with secondary highlight yellow */
-}
-
-.light-theme #theme-icon .bulb-outline {
-    stroke: #a78700; /* Darker stroke for outline when 'on' */
-}
-/* Glowing effect for light theme */
-.light-theme #theme-icon {
-     filter: drop-shadow(0 0 5px #ffdc00); /* Yellow glow */
-}
-
-/* Style for Warning/Caution status */
-.status-caution { /* Used by JS for railcar location */
-    color: var(--status-warning) !important;
-    font-weight: 600; /* Maintain boldness */
-}
-
-/* Apply coloring to COGI count spans */
-.header-cogi-status .negative,
-.header-cogi-status .positive {
-    /* Colors/weight applied by .negative/.positive rules above */
-}
-
-/* Apply coloring to Inventory Count Total spans */
-#cycleCountTotal.positive, #scrapTotal.positive,
-#cycleCountTotal.negative, #scrapTotal.negative {
-     /* Colors/weight applied by .negative/.positive rules above */
+    footer {
+        font-size: var(--font-size-xxs); /* Adjust responsive size */
+        padding: 0.5rem 0.75rem;
+    }
+    #theme-toggle-icon-button {
+        width: 32px;
+        height: 32px;
+    }
+     /* Adjust financial value size for mobile */
+    #financial-insights .insight-cell .insight-value { font-size: var(--font-size-3xl); }
+    #financial-insights .insight-cell .item-cost { font-size: var(--font-size-base); }
+    #financial-insights .insight-cell .item-name { font-size: var(--font-size-xs); }
+    #financial-insights .insight-cell h4 { font-size: var(--font-size-xs); }
+    #financial-insights .comments-content { font-size: var(--font-size-base); }
 }

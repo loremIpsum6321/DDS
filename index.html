@@ -10,7 +10,7 @@
 <body>
     <header>
         <div class="header-cogi-status">
-            <div class="status-box"> <span class="cogi-label">Batching:</span> <span class="cogi-value" id="cogiBatchingCount">0</span> </div>
+            <span class="cogi-title">Cogies: </span> <div class="status-box"> <span class="cogi-label">Batching:</span> <span class="cogi-value" id="cogiBatchingCount">0</span> </div>
             <div class="status-box"> <span class="cogi-label">Packaging:</span> <span class="cogi-value" id="cogiPackagingCount">0</span> </div>
         </div>
         <div class="ingredient-status">
@@ -45,13 +45,16 @@
             <h2>Railcar Overview</h2>
             <div class="rail-summary">
                 <div class="summary-box">
-                    Total On Site: <span id="railOnSiteCount">0</span>
+                    <span class="summary-label">Total On Site:</span>
+                    <span id="railOnSiteCount" class="summary-value">0</span>
                 </div>
                 <div class="summary-box">
-                    Total In Yard: <span id="railInYardCount">0</span>
+                    <span class="summary-label">Total In Yard:</span>
+                    <span id="railInYardCount" class="summary-value">0</span>
                 </div>
                 <div class="summary-box">
-                    Grand Total: <span id="railTotalCount">0</span>
+                    <span class="summary-label">Grand Total:</span>
+                    <span id="railTotalCount" class="summary-value">0</span>
                 </div>
             </div>
             <div class="table-container">
@@ -72,6 +75,7 @@
                 </table>
             </div>
         </section>
+        
 
         <section id="inventory-counts">
             <h2>Inventory Accuracy</h2>
@@ -105,7 +109,7 @@
             </div>
         </section>
         <section id="financial-insights">
-            <h2>Financial Insights</h2>
+            <h2>Period Insights</h2>
             <div class="insights-grid">
                 <div class="insight-cell total-ptd">
                     <h3>Total Inventory Adj. (PTD)</h3>
