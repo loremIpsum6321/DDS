@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/markzpwz/public_html/dds/
+    - export DEPLOYPATH=public_html/dds/
     - /bin/rsync -av --delete --exclude '.git' --exclude '.cpanel.yml' ./ "${DEPLOYPATH}"
