@@ -144,6 +144,7 @@ export async function loadMaterialShortages() {
 } // <<< Function ends here
 /**
  * Loads and displays railcar overview data and summary counts.
+ * Adds click listeners for editing Location, BOL, Romer, and Released.
  */
 export async function loadRailcars() {
     const data = await fetchCSVData('data/railcars.csv');
@@ -152,7 +153,7 @@ export async function loadRailcars() {
     const inYardCountEl = document.getElementById('railInYardCount');
     const totalCountEl = document.getElementById('railTotalCount');
 
-    if (!tableBody || !onSiteCountEl || !inYardCountEl || !totalCountEl) { 
+    if (!tableBody || !onSiteCountEl || !inYardCountEl || !totalCountEl) {
         console.error("Railcar elements not found!");
         return;
     }
@@ -162,66 +163,145 @@ export async function loadRailcars() {
     let inYardCount = 0;
 
     if (data.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="6">No railcar data available.</td></tr>'; 
+        tableBody.innerHTML = '<tr><td colspan="6">No railcar data available.</td></tr>';
         onSiteCountEl.textContent = '0';
         inYardCountEl.textContent = '0';
         totalCountEl.textContent = '0';
         return;
     }
 
-    data.forEach(row => {
-        const tr = document.createElement('tr');
+    // Store the state in memory (optional, for persistence you'd need more)
+    // Initialize with data from CSV
+    let railcarStates = data.map(row => ({
+        railNum: row[0],
+        material: row[1],
+        location: row[2] || 'N/A',
+        bol: row[3]?.toLowerCase() === 'true',
+        romer: row[4]?.toLowerCase() === 'true',
+        released: row[5]?.toLowerCase() === 'true',
+        // Keep original row data if needed: originalRow: row
+    }));
 
-        // Rail # 
-        const tdRailNum = document.createElement('td');
-        tdRailNum.textContent = row[0] || 'N/A';
-        tr.appendChild(tdRailNum);
 
-        // Material
-        const tdMaterial = document.createElement('td');
-        tdMaterial.textContent = row[1] || 'N/A';
-        tr.appendChild(tdMaterial);
+    const updateCounts = () => {
+        onSiteCount = railcarStates.filter(state => state.location?.toLowerCase().includes('site')).length;
+        inYardCount = railcarStates.filter(state => state.location?.toLowerCase().includes('yard')).length;
+        onSiteCountEl.textContent = onSiteCount;
+        inYardCountEl.textContent = inYardCount;
+        totalCountEl.textContent = onSiteCount + inYardCount; // Assuming Transit isn't counted in totals
+    };
 
-        // Location (with formatting)
-        const tdLocation = document.createElement('td');
-        const locationText = row[2] || 'N/A';
-        const locationLower = locationText.toLowerCase();
-        tdLocation.textContent = locationText;
-        if (locationLower.includes('site') || locationLower.includes('onsite')) { 
-            tdLocation.classList.add('status-good');
-             onSiteCount++;
-        } else if (locationLower.includes('in yard') || locationLower.includes('inyard') || locationLower.includes('yard')) {
-            tdLocation.classList.add('status-caution');
-            inYardCount++;
-        } else { 
-             tdLocation.classList.add('status-bad'); // Default to bad if unknown
-        }
-        tr.appendChild(tdLocation);
+    // Initial rendering function
+    const renderTable = () => {
+        tableBody.innerHTML = ''; // Clear table before re-rendering
+        railcarStates.forEach((state, index) => {
+            const tr = document.createElement('tr');
+            tr.dataset.index = index; // Store index for easy lookup
 
-        // Helper function for Yes/No status cells
-        const createStatusCell = (value) => {
-            const td = document.createElement('td');
-            const isTrue = value?.toLowerCase() === 'true';
-            td.textContent = isTrue ? 'Yes' : 'No';
-            td.classList.add(isTrue ? 'status-yes' : 'status-no');
-            return td;
-        };
-        
-        // BOL
-        tr.appendChild(createStatusCell(row[3]));
-        // Romer
-        tr.appendChild(createStatusCell(row[4]));
-        // Released 
-        tr.appendChild(createStatusCell(row[5]));
+            // Rail #
+            const tdRailNum = document.createElement('td');
+            tdRailNum.textContent = state.railNum || 'N/A';
+            tr.appendChild(tdRailNum);
 
-        
-        tableBody.appendChild(tr);
-    });
+            // Material
+            const tdMaterial = document.createElement('td');
+            tdMaterial.textContent = state.material || 'N/A';
+            tr.appendChild(tdMaterial);
 
-    // Update counts
-    onSiteCountEl.textContent = onSiteCount;
-    inYardCountEl.textContent = inYardCount;
-    totalCountEl.textContent = onSiteCount + inYardCount;
+            // --- Location (Editable) ---
+            const tdLocation = document.createElement('td');
+            const locationText = state.location || 'N/A';
+            const locationLower = locationText.toLowerCase();
+            tdLocation.textContent = locationText;
+            tdLocation.style.cursor = 'pointer'; // Indicate clickable
+
+            // Set initial class based on state
+            tdLocation.classList.remove('status-good', 'status-caution', 'status-bad'); // Clear previous
+            if (locationLower.includes('site')) {
+                tdLocation.classList.add('status-good');
+            } else if (locationLower.includes('yard')) {
+                tdLocation.classList.add('status-caution');
+            } else { // Includes 'transit' or others
+                tdLocation.classList.add('status-bad');
+            }
+
+            // Location Click Listener
+            tdLocation.addEventListener('click', () => {
+                const currentStateIndex = parseInt(tr.dataset.index); // Get index from row
+                const currentLoc = railcarStates[currentStateIndex].location?.toLowerCase();
+                const cycle = ['Site', 'Yard', 'Transit'];
+                let nextLoc = 'Site'; // Default if current is unknown
+
+                if (currentLoc.includes('site')) {
+                    nextLoc = 'Yard';
+                } else if (currentLoc.includes('yard')) {
+                    nextLoc = 'Transit';
+                } else if (currentLoc.includes('transit')) {
+                    nextLoc = 'Site';
+                }
+
+                // Update state
+                railcarStates[currentStateIndex].location = nextLoc;
+
+                // Re-render the table and update counts
+                renderTable();
+                updateCounts();
+                console.log(`Railcar ${railcarStates[currentStateIndex].railNum} location changed to: ${nextLoc}`);
+                 // Add logic here to save changes if needed (e.g., API call)
+            });
+            tr.appendChild(tdLocation);
+
+
+            // --- Helper function for creating TOGGLEABLE Yes/No status cells ---
+            const createToggleStatusCell = (value, stateKey) => {
+                const td = document.createElement('td');
+                td.style.cursor = 'pointer'; // Indicate clickable
+                td.dataset.stateKey = stateKey; // Store which state this cell controls
+
+                const updateCellAppearance = (currentValue) => {
+                    td.textContent = currentValue ? 'Yes' : 'No';
+                    td.classList.remove('status-yes', 'status-no');
+                    td.classList.add(currentValue ? 'status-yes' : 'status-no');
+                };
+
+                // Set initial appearance
+                updateCellAppearance(value);
+
+                // Click Listener
+                td.addEventListener('click', () => {
+                    const currentStateIndex = parseInt(tr.dataset.index); // Get index from row
+                    const key = td.dataset.stateKey;
+                    const currentBoolValue = railcarStates[currentStateIndex][key];
+
+                    // Toggle the boolean state
+                    railcarStates[currentStateIndex][key] = !currentBoolValue;
+
+                    // Update cell appearance directly (no need to re-render whole table)
+                    updateCellAppearance(railcarStates[currentStateIndex][key]);
+
+                    console.log(`Railcar ${railcarStates[currentStateIndex].railNum} ${key} changed to: ${railcarStates[currentStateIndex][key]}`);
+                    // Add logic here to save changes if needed (e.g., API call)
+                });
+                return td;
+            };
+
+            // --- BOL (Editable) ---
+            tr.appendChild(createToggleStatusCell(state.bol, 'bol'));
+            // --- Romer (Editable) ---
+            tr.appendChild(createToggleStatusCell(state.romer, 'romer'));
+            // --- Released (Editable) ---
+            tr.appendChild(createToggleStatusCell(state.released, 'released'));
+
+
+            tableBody.appendChild(tr);
+        });
+         // Apply initial counts after rendering
+         updateCounts();
+    };
+
+    // Initial render
+    renderTable();
+
 }
     
 /**
@@ -374,15 +454,15 @@ export async function loadFinancialInsights() {
         const scrapData = await fetchCSVData('data/scrap_transactions.csv');
 
         let cycleTotalPTD = 0;
-        if (cycleData.length > 0 && cycleData[0].length > 4) {
-             // Assuming TotalPTD is the 5th column (index 4)
-             cycleTotalPTD = parseFloat(cycleData[0][4]) || 0;
+        if (cycleData.length > 0) {
+             // Assuming TotalPTD is the sum of the first 4 columns
+             cycleTotalPTD = (parseFloat(cycleData[0][0]) || 0) + (parseFloat(cycleData[0][1]) || 0) + (parseFloat(cycleData[0][2]) || 0) + (parseFloat(cycleData[0][3]) || 0);
         }
 
         let scrapTotalPTD = 0;
-        if (scrapData.length > 0 && scrapData[0].length > 4) {
-             // Assuming TotalPTD is the 5th column (index 4)
-             scrapTotalPTD = parseFloat(scrapData[0][4]) || 0;
+        if (scrapData.length > 0) {
+             // Assuming TotalPTD is the sum of the first 4 columns
+             scrapTotalPTD = (parseFloat(scrapData[0][0]) || 0) + (parseFloat(scrapData[0][1]) || 0) + (parseFloat(scrapData[0][2]) || 0) + (parseFloat(scrapData[0][3]) || 0);
         }
 
         const grandTotal = cycleTotalPTD + scrapTotalPTD;

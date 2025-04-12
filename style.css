@@ -4,17 +4,18 @@
 /* Description: Professional theme with dark (default) and light modes.     */
 /* Structure:                                                               */
 /* 1. Theme Variables (Colors, Fonts, Borders, etc.)                      */
-/* 2. Global Resets & Base Styles                                         */
-/* 3. Layout (Main, Sections, Grid)                                       */
-/* 4. Header                                                              */
-/* 5. Main Content Sections (Specific Sections, Cards)                    */
-/* 6. Tables (General, Containers, Specific Tables)                       */
-/* 7. Components (Summary Boxes, Count Boxes, Financial Insights, Forms)  */
-/* 8. Footer                                                              */
-/* 9. Utility Classes (Status Colors)                                     */
-/* 10. Animations (Shine Effect)                                           */
-/* 11. Light Theme Overrides                                               */
-/* 12. Responsive Design                                                   */
+/* 2. Font Size Variables                                                 */
+/* 3. Global Resets & Base Styles                                         */
+/* 4. Layout (Main, Sections, Grid)                                       */
+/* 5. Header                                                              */
+/* 6. Main Content Sections (Specific Sections, Cards)                    */
+/* 7. Tables (General, Containers, Specific Tables)                       */
+/* 8. Components (Summary Boxes, Count Boxes, Financial Insights, Forms)  */
+/* 9. Footer                                                              */
+/* 10. Utility Classes (Status Colors)                                     */
+/* 11. Animations (Shine Effect)                                           */
+/* 12. Light Theme Overrides                                               */
+/* 13. Responsive Design                                                   */
 /* ========================================================================== */
 
 /* ========================================================================== */
@@ -23,13 +24,6 @@
 
 /* --- Dark Theme Variables (Default) --- */
 :root {
-
-    --font-size-xxs: 0.325rem; /* Used for: Smallest table cells, footer text on mobile (@media max-width: 480px) */
-    --font-size-xs: 0.9rem;    /* Used for: Footer text (base), Table cells (tablet @media max-width: 768px), Status dropdown (mobile @media max-width: 480px), Financial item name/h4 (mobile @media max-width: 480px) */
-    --font-size-default: 1.5rem; /* Used for: Default font size (base) */
-
-
-
     /* -- Responsive Base Font Size -- */
     /* Note: Base 'px' size set on body, rem units scale from this */
     --base-font-size-desktop: 16px; /* Default base */
@@ -99,6 +93,48 @@
     --theme-icon-filter: none;
 }
 
+/* ========================================================================== */
+/* == 2. Font Size Variables                                               == */
+/* ========================================================================== */
+:root {
+    /* Base font size applied to body, other sizes relative to this */
+    --font-size-base: 1rem; /* Typically corresponds to --base-font-size-desktop (16px) */
+
+    /* General Elements */
+    --font-size-h2: 1rem; /* Section headings */
+    --font-size-h3: 1.3rem; /* Sub-section headings (e.g., Cycle Counts) */
+    --font-size-h4: 1rem; /* Smaller headings (e.g., Financial Insight titles) */
+    --font-size-paragraph: var(--font-size-base); /* Default text */
+    --font-size-label: 0.9rem; /* Labels in header/forms */
+    --font-size-input: var(--font-size-base); /* Form inputs */
+    --font-size-button: var(--font-size-base); /* Buttons */
+    --font-size-footer: 0.85rem; /* Footer text */
+    --font-size-comments: 1.5rem; /* Comments area text */
+
+    /* Header Specific */
+    --font-size-header-main-title: 1.5rem; /* If you add a main title h1 */
+    --font-size-header-info-box: 1.5rem; /* COGI / Ingredient status text */
+    --font-size-header-cogi-input: 1.5rem; /* COGI number inputs */
+    --font-size-header-status-dropdown: 1.5rem; /* 24hr/48hr status dropdown */
+
+    /* Table Specific */
+    --font-size-table-header: 1rem;
+    --font-size-table-body: 1.6rem;
+    --font-size-table-small-body: 1.5rem; /* For Cycle/Scrap tables */
+
+    /* Component Specific */
+    --font-size-summary-box-label: 1.2rem; /* e.g., "Total On Site:" */
+    --font-size-summary-box-value: 2rem; /* e.g., The railcar count */
+    --font-size-financial-insight-value: 2rem; /* e.g., Total PTD value */
+    --font-size-financial-insight-item-name: 1.5rem; /* Top item name */
+    --font-size-financial-insight-item-cost: 2rem; /* Top item cost */
+    --font-size-total-inventory-adj-title: 2.1rem; /* "Total Inventory Adj. (PTD)" */
+
+    /* Responsive Adjustments (applied in media queries) */
+    --font-size-xs: 0.9rem;   /* General smaller text */
+    --font-size-xxs: 0.75rem; /* Very small text */
+}
+
 /* --- Light Theme Variable Overrides --- */
 body.light-theme {
     /* Core Palette */
@@ -159,7 +195,7 @@ body.light-theme {
 }
 
 /* ========================================================================== */
-/* == 2. Global Resets & Base Styles                                       == */
+/* == 3. Global Resets & Base Styles                                       == */
 /* ========================================================================== */
 *,
 *::before,
@@ -184,7 +220,8 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    font-size: var(--base-font-size-desktop); /* Use CSS variable for base font size */
+    /* Use base px size for responsiveness, rem units scale from this */
+    font-size: var(--base-font-size-desktop);
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
     width: 100%;
 }
@@ -213,7 +250,7 @@ body {
 
 
 /* ========================================================================== */
-/* == 3. Layout (Main, Sections, Grid)                                     == */
+/* == 4. Layout (Main, Sections, Grid)                                     == */
 /* ========================================================================== */
 main {
     max-width: 98%;
@@ -222,13 +259,12 @@ main {
     display: grid;
     gap: 1.25rem;
     grid-template-columns: 1fr; /* Default single column */
-}
-main {
     flex-grow: 1; /* Make main fill vertical space */
     overflow: hidden; /* Prevent main from overflowing */
     width: 100%;
     min-height: 0; /* Help nested flex/grid heights */
 }
+
 
 section {
     background-color: var(--card-bg-color);
@@ -264,16 +300,16 @@ section h3 {
     font-weight: 500;
 }
 
-section h2 {
+section h2 { /* Not currently used in HTML, but styled for consistency */
     color: var(--accent-color-primary);
     border-bottom: 2px solid var(--accent-color-secondary);
-    font-size: var(--font-size-xs); /* Use variable */
+    font-size: var(--font-size-h2); /* Use variable */
 }
 
-section h3 {
+section h3 { /* Used in Inventory Counts, Financial Insights */
     color: var(--accent-color-secondary);
     border-bottom: 1px solid var(--border-color); /* Subtler border for H3 */
-    font-size: var( --font-size-default); /* Use variable */
+    font-size: var(--font-size-h3); /* Use variable */
     margin-top: 0.75rem;
 }
 
@@ -312,7 +348,7 @@ section h3 {
 }
 
 /* ========================================================================== */
-/* == 4. Header                                                            == */
+/* == 5. Header                                                            == */
 /* ========================================================================== */
 header {
     background-color: var(--header-bg-color);
@@ -330,9 +366,9 @@ header {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-header h1 {
+header h1 { /* No h1 in provided HTML, style added for completeness */
     font-weight: 600;
-    font-size: var(--font-size-xs); /* Use variable */
+    font-size: var(--font-size-header-main-title); /* Use variable */
     text-shadow: none;
     flex-grow: 1;
     text-align: left;
@@ -348,7 +384,7 @@ header h1 {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     border: 1px solid var(--form-element-border);
-    font-size: var( --font-size-default); /* Use variable */
+    font-size: var(--font-size-header-info-box); /* Use variable */
     font-weight: 500;
     color: var(--text-color-muted); /* Default to muted in dark mode */
     transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -357,6 +393,10 @@ header h1 {
 .ingredient-status {
     gap: 1.5rem;
 }
+.ingredient-status h2 { /* Hidden H2 in ingredient status */
+    display: none;
+}
+
 
 /* COGI specific labels/values */
 .header-cogi-status .cogi-title {
@@ -369,36 +409,26 @@ header h1 {
     color: var(--text-color-muted); /* Already muted */
     font-weight: 400;
     margin-right: 0.25rem;
+    /* Font size inherited from .header-cogi-status */
 }
 
-.header-cogi-status .cogi-value {
-    font-weight: 600;
-    padding-left: 0.25em;
-    color: var(--text-color-muted); /* Default value color to muted */
-    /* Color overridden by .positive/.negative utility classes */
-}
-
-/* Hidden H2 in ingredient status */
-.ingredient-status h2 {
-    display: none;
-}
-
-/* Container for label + dropdown in header */
+/* Container for label + dropdown/input in header */
 .status-box {
-    font-size: var( --font-size-default); /* Use variable */
+    font-size: inherit; /* Inherit from parent (.header-cogi-status or .ingredient-status) */
     font-weight: 500;
     display: inline-flex;
     align-items: center;
 }
 
-/* Label ("24hr:", "48hr:") */
-.status-box span:first-child {
-    color: var(--text-color-muted); /* Already muted */
+/* Label ("24hr:", "48hr:", "Batching:", "Packaging:") */
+.status-box span:first-child,
+.header-cogi-status .cogi-label {
+    color: var(--text-color-muted);
     font-weight: 400;
-    margin-right: 0;
+    margin-right: 0.25rem;
 }
 
-/* Style for the new Cogi input fields */
+/* Style for the Cogi input fields */
 .cogi-value-input {
     width: 50px; /* Adjust width as needed */
     padding: 0.2rem 0.4rem;
@@ -407,10 +437,9 @@ header h1 {
     background-color: var(--form-element-bg);
     color: var(--text-color); /* Default text color */
     text-align: center;
-    font-size: var( --font-size-default); /* Match surrounding text */
+    font-size: var(--font-size-header-cogi-input); /* Use variable */
     margin-left: 0.25rem;
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-    /* Remove default number input arrows if desired */
     appearance: textfield; /* Standard property for compatibility */
     -moz-appearance: textfield; /* Firefox */
 }
@@ -433,7 +462,7 @@ header .status-box {
 }
 
 /* ========================================================================== */
-/* == 5. Main Content Sections (Specific Sections, Cards)                  == */
+/* == 6. Main Content Sections (Specific Sections, Cards)                  == */
 /* ========================================================================== */
 
 /* --- Inventory Counts Section --- */
@@ -457,17 +486,18 @@ header .status-box {
     transition: background-color 0.3s ease, border-color 0.3s ease;
     min-height: 0; /* ADDED for flexbox height calculation */
 }
-#inventory-counts .count-box h3 { /* e.g., "Cycle Counts (PTD: ...)" */
+#inventory-counts .count-box h3 { /* e.g., "Cycle Counts PTD: [...]" */
     border-bottom: none;
     margin-bottom: 0.75rem;
     color: var(--text-color);
-    font-size: var( --font-size-default); /* Use variable */
+    font-size: var(--font-size-h3); /* Use variable */
     font-weight: bold;
 }
 #inventory-counts .count-box h3 span { /* The PTD value span */
     color: var(--accent-color-secondary);
     font-weight: bold;
     margin-left: 0.5rem;
+    font-size: inherit; /* Inherit size from h3 */
     /* Final color updated by .positive / .negative classes */
 }
 #inventory-counts .count-box .table-container {
@@ -475,19 +505,19 @@ header .status-box {
     flex-grow: 1; /* Allow table container to grow */
     min-height: 0; /* Help nested flex height */
 }
-#inventory-counts .count-box table {
-    /* Removed flex-grow: 1; as it's now on container */
-}
+
 #inventory-counts .count-box table td,
 #inventory-counts .count-box table th {
     text-align: center !important;
     padding: 0.6rem 0.8rem;
     font-weight: bold;
+    font-size: var(--font-size-table-small-body); /* Use specific variable */
 }
 #inventory-counts .count-box table th {
     color: var(--text-color-muted);
     background-color: transparent;
     position: static;
+    font-size: var(--font-size-table-header); /* Use standard table header size */
 }
 
 /* --- Financial Insights Section --- */
@@ -512,34 +542,40 @@ header .status-box {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-#financial-insights .insight-cell h3,
-#financial-insights .insight-cell h4 {
+#financial-insights .insight-cell h3 { /* Title for "Total Inventory Adj. (PTD)" */
     color: var(--header-text-color);
     margin-bottom: 0.5rem;
     font-weight: 900;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.4rem;
-    font-size: var( --font-size-default); /* Use variable for H3 */
-}
-#financial-insights .insight-cell h4 {
-    font-size: var( --font-size-default); /* Use variable for H4 */
-    color: var(--text-color-muted);
+    font-size: var(--font-size-total-inventory-adj-title); /* Use specific variable */
 }
 
-#financial-insights .insight-cell .insight-value,
-#financial-insights .insight-cell .item-cost {
-    font-size: var( --font-size-default); /* Use variable */
+#financial-insights .insight-cell h4 { /* Title for "Comments" */
+    font-size: var(--font-size-h4); /* Use variable */
+    color: var(--text-color-muted);
+    margin-bottom: 0.5rem;
+    font-weight: 900;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.4rem;
+}
+
+#financial-insights .insight-cell .insight-value { /* Total PTD value */
+    font-size: var(--font-size-financial-insight-value); /* Use variable */
     font-weight: bold;
     margin-top: auto;
     text-align: right;
     /* Color applied by .positive / .negative via JS */
 }
-#financial-insights .insight-cell .item-cost {
-    font-size: var( --font-size-default); /* Use variable */
+#financial-insights .insight-cell .item-cost { /* Cost in top items */
+    font-size: var(--font-size-financial-insight-item-cost); /* Use variable */
+    font-weight: bold;
+    margin-top: auto;
+    text-align: right;
 }
 
-#financial-insights .insight-cell .item-name {
-    font-size: var( --font-size-default); /* Use variable */
+#financial-insights .insight-cell .item-name { /* Name in top items */
+    font-size: var(--font-size-financial-insight-item-name); /* Use variable */
     color: var(--text-color);
     text-align: right;
     margin-top: auto;
@@ -556,7 +592,7 @@ header .status-box {
     padding-left: 5%;
     padding-right: 5%;
 }
-#financial-insights .total-ptd h3 {
+#financial-insights .total-ptd h3 { /* Style specific title */
     border-bottom: none;
     margin-bottom: 0;
     color: var(--header-text-color); /* Keep teal in dark mode */
@@ -575,9 +611,9 @@ header .status-box {
 
 #financial-insights .comments-content {
     margin-top: 0.5rem;
-    font-size: var(--font-size-default); /* Use variable */
+    font-size: var(--font-size-comments); /* Use variable */
     color: var(--text-color-white);
-    line-height: 1.2;
+    line-height: 1.4; /* Slightly increased line height for readability */
     overflow-y: auto; /* Enable scrolling for comments */
     flex-grow: 1; /* Allow comments to take space */
     white-space: pre-wrap;
@@ -585,7 +621,7 @@ header .status-box {
 }
 
 /* ========================================================================== */
-/* == 6. Tables                                                            == */
+/* == 7. Tables                                                            == */
 /* ========================================================================== */
 
 /* --- Table Container --- */
@@ -603,8 +639,6 @@ header .status-box {
 
 
 .table-container.small-table {
-    /* max-height: none; */ /* Removed to allow scrolling if needed */
-    /* overflow-y: visible; Changed back to auto for consistency */
     overflow-y: hidden;
     flex-grow: 0; /* Don't force small tables to grow */
     flex-shrink: 1; /* Allow shrinking */
@@ -623,7 +657,7 @@ th, td {
     white-space: nowrap;
     font-weight: bold;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    font-size: var( --font-size-default); /* Base table font size */
+    font-size: var(--font-size-table-body); /* Base table font size */
 }
 
 th {
@@ -634,6 +668,7 @@ th {
     z-index: 2;
     border-bottom-width: 2px;
     font-weight: bold;
+    font-size: var(--font-size-table-header); /* Table header font size */
 }
 
 tbody tr:last-child td {
@@ -676,7 +711,7 @@ tbody tr:hover {
 }
 
 /* ========================================================================== */
-/* == 7. Components                                                        == */
+/* == 8. Components                                                        == */
 /* ========================================================================== */
 
 /* --- Summary Boxes (Railcars) --- */
@@ -693,7 +728,7 @@ tbody tr:hover {
     padding: 0.8rem 1.2rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    font-size: var( --font-size-default); /* Use variable */
+    font-size: var(--font-size-base); /* Default base for container */
     flex-grow: 1;
     text-align: center;
     transition: background-color 0.2s ease, border-color 0.3s ease;
@@ -706,12 +741,13 @@ tbody tr:hover {
     display: block;
     margin-bottom: 0.3rem;
     color: var(--text-color-muted);
+    font-size: var(--font-size-summary-box-label); /* Use variable */
 }
 
 .summary-box .summary-value { /* The count value */
     font-weight: 700;
     color: var(--accent-color-secondary);
-    font-size: var( --font-size-default); /* Use variable */
+    font-size: var(--font-size-summary-box-value); /* Use variable */
     display: block;
 }
 
@@ -730,7 +766,7 @@ tbody tr:hover {
     vertical-align: middle;
     margin-left: 0.5rem;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-    font-size: var( --font-size-default); /* Adjust size if needed */
+    font-size: var(--font-size-header-status-dropdown); /* Use variable */
 
     background-color: var(--form-element-bg);
     color: var(--form-element-text);
@@ -771,12 +807,12 @@ tbody tr:hover {
 .status-dropdown option.bad { color: var(--status-bad); font-weight: bold; }
 
 /* ========================================================================== */
-/* == 8. Footer                                                            == */
+/* == 9. Footer                                                            == */
 /* ========================================================================== */
 footer {
     text-align: center;
     padding: 0.75rem 1rem;
-    font-size: var(--font-size-xs); /* Use variable */
+    font-size: var(--font-size-footer); /* Use variable */
     color: var(--footer-text);
     border-top: 1px solid var(--footer-border);
     background-color: var(--footer-bg);
@@ -828,7 +864,7 @@ footer p {
 }
 
 /* ========================================================================== */
-/* == 9. Utility Classes (Status Colors)                                   == */
+/* == 10. Utility Classes (Status Colors)                                   == */
 /* ========================================================================== */
 .status-yes,
 .status-good,
@@ -848,13 +884,13 @@ footer p {
 }
 
 /* ========================================================================== */
-/* == 10. Animations (Shine Effect - Optional)                             == */
+/* == 11. Animations (Shine Effect - Optional)                             == */
 /* ========================================================================== */
 /* @keyframes shine { ... } */
 /* section::after { ... } */
 
 /* ========================================================================== */
-/* == 11. Light Theme Overrides                                            == */
+/* == 12. Light Theme Overrides                                            == */
 /* ========================================================================== */
 .light-theme header .header-cogi-status,
 .light-theme header .ingredient-status {
@@ -865,17 +901,14 @@ footer p {
 
 .light-theme header .header-cogi-status .cogi-label,
 .light-theme header .status-box span:first-child,
-.light-theme header .header-cogi-status .cogi-title,
-.light-theme header .header-cogi-status .cogi-value { /* Ensure default value text is white */
+.light-theme header .header-cogi-status .cogi-title {
     color: var(--header-text-color); /* White text on blue header */
 }
-/* Keep positive/negative overrides */
-.light-theme header .header-cogi-status .cogi-value.positive {
-    color: var(--status-good) !important;
-}
-.light-theme header .header-cogi-status .cogi-value.negative {
+/* Keep positive/negative overrides for input value */
+.light-theme .cogi-value-input.negative {
     color: var(--status-bad) !important;
 }
+
 
 .light-theme #inventory-counts .count-box {
     background-color: rgba(0,0,0,0.03);
@@ -910,10 +943,6 @@ footer p {
    color: var(--text-color);
    border-color: var(--form-element-border);
 }
-.light-theme .cogi-value-input.negative {
-    color: var(--status-bad) !important; /* Red text */
-    border-color: var(--status-bad); /* Optional: Red border */
-}
 
 /* Dropdown arrow color for light theme */
 .light-theme .status-dropdown {
@@ -926,7 +955,7 @@ footer p {
 }
 .light-theme .status-dropdown.caution {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
-    color: var(--status-text-on-bad); /* Now white text on orange */
+    color: var(--status-text-on-warning); /* Now white text on orange */
 }
 .light-theme .status-dropdown.bad {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
@@ -934,7 +963,7 @@ footer p {
 }
 
 /* ========================================================================== */
-/* == 12. Responsive Design                                                == */
+/* == 13. Responsive Design                                                == */
 /* ========================================================================== */
 @media (max-width: 768px) {
     body { font-size: var(--base-font-size-tablet); } /* Use variable */
@@ -948,8 +977,8 @@ footer p {
         gap: 0.75rem;
     }
 
-    header h1 {
-        font-size: var( --font-size-default); /* Adjust responsive size */
+    header h1 { /* Adjust responsive size */
+        font-size: calc(var(--font-size-header-main-title) * 0.9);
         text-align: center;
     }
 
@@ -959,10 +988,10 @@ footer p {
         justify-content: center;
         padding: 0.5rem 0.75rem;
         flex-grow: 0;
-        font-size: var( --font-size-default); /* Adjust responsive size */
+        font-size: calc(var(--font-size-header-info-box) * 0.95); /* Adjust responsive size */
     }
 
-    .status-box { font-size: var( --font-size-default); }
+    .status-box { font-size: inherit; } /* Inherit from parent */
 
     main {
         padding: 0 0.5rem;
@@ -973,8 +1002,13 @@ footer p {
 
     th, td {
         padding: 0.5rem 0.6rem;
-        font-size: var(--font-size-xs); /* Adjust responsive size */
+        font-size: var(--font-size-xs); /* Use specific smaller size */
         white-space: normal;
+    }
+    th { font-size: calc(var(--font-size-table-header) * 0.95); } /* Adjust header size */
+    #inventory-counts .count-box table td,
+    #inventory-counts .count-box table th {
+         font-size: var(--font-size-xs); /* Make small table text smaller */
     }
 
 
@@ -985,15 +1019,19 @@ footer p {
         width: 100%;
     }
     .summary-box { padding: 0.7rem 1rem; }
-    .summary-box .summary-value { font-size: var( --font-size-default); } /* Adjust responsive size */
+    .summary-box .summary-value { font-size: calc(var(--font-size-summary-box-value) * 0.9); } /* Adjust responsive size */
+    .summary-box .summary-label { font-size: calc(var(--font-size-summary-box-label) * 0.95); }
+
 
     #inventory-counts .count-container { gap: 0.75rem; }
     #inventory-counts .count-box { padding: 0.75rem; }
+    #inventory-counts .count-box h3 { font-size: calc(var(--font-size-h3) * 0.95); }
     #inventory-counts .count-box table td,
     #inventory-counts .count-box table th {
         padding: 0.5rem;
-        width: 100%;
+        width: auto; /* Let table manage width */
     }
+
     #financial-insights .insights-grid {
         grid-template-columns: 1fr;
     }
@@ -1006,40 +1044,51 @@ footer p {
     }
 
      /* Adjust financial value size for tablet */
-    #financial-insights .insight-cell .insight-value { font-size: var(--font-size-xs); }
-    #financial-insights .insight-cell .item-cost { font-size: var( --font-size-default); }
+    #financial-insights .insight-cell .insight-value { font-size: calc(var(--font-size-financial-insight-value) * 0.9); }
+    #financial-insights .insight-cell .item-cost { font-size: calc(var(--font-size-financial-insight-item-cost) * 0.95); }
+    #financial-insights .insight-cell .item-name { font-size: calc(var(--font-size-financial-insight-item-name) * 0.95); }
+    #financial-insights .insight-cell h3 { font-size: calc(var(--font-size-total-inventory-adj-title) * 0.95); }
+    #financial-insights .insight-cell h4 { font-size: calc(var(--font-size-h4) * 0.95); }
+    #financial-insights .comments-content { font-size: calc(var(--font-size-comments) * 0.95); }
 }
 
 @media (max-width: 480px) {
     body { font-size: var(--base-font-size-mobile); } /* Use variable */
-    header h1 { font-size: var(--font-size-xs); } /* Adjust responsive size */
+    header h1 { font-size: calc(var(--font-size-header-main-title) * 0.8); } /* Adjust responsive size */
 
-    .status-box { font-size: var( --font-size-default); }
     .header-cogi-status,
     .ingredient-status {
-        font-size: var( --font-size-default);
-        width: 90%;
+        font-size: calc(var(--font-size-header-info-box) * 0.9);
+        width: 95%; /* Adjust width */
         margin-left: auto;
         margin-right: auto;
         justify-content: space-around;
+        padding: 0.4rem 0.6rem;
     }
-
+    .status-box { font-size: inherit; }
 
     .status-dropdown {
-        min-width: 80px;
+        min-width: 75px;
         padding: 0.3rem 0.6rem;
         padding-right: 1.8rem;
-        font-size: var(--font-size-xs); /* Adjust responsive size */
+        font-size: calc(var(--font-size-header-status-dropdown) * 0.9); /* Adjust responsive size */
     }
-
+    .cogi-value-input {
+        font-size: calc(var(--font-size-header-cogi-input) * 0.9); /* Adjust responsive size */
+        width: 45px;
+    }
 
     main { padding: 0 0.25rem; }
     section { padding: 0.75rem; }
-    th, td { padding: 0.4rem 0.4rem; font-size: var(--font-size-xxs); } /* Adjust responsive size */
+    th, td {
+        padding: 0.4rem 0.4rem;
+        font-size: var(--font-size-xxs); /* Use smallest size */
+    }
+    th { font-size: calc(var(--font-size-table-header) * 0.9); } /* Adjust header size */
     #inventory-counts .count-box table td,
-
     #inventory-counts .count-box table th {
         padding: 0.4rem;
+        font-size: var(--font-size-xxs); /* Use smallest size */
     }
 
     footer {
@@ -1052,9 +1101,10 @@ footer p {
     }
 
      /* Adjust financial value size for mobile */
-    #financial-insights .insight-cell .insight-value { font-size: var( --font-size-default); }
-    #financial-insights .insight-cell .item-cost { font-size: var( --font-size-default); }
-    #financial-insights .insight-cell .item-name { font-size: var(--font-size-xs); }
-    #financial-insights .insight-cell h4 { font-size: var(--font-size-xs); }
-    #financial-insights .comments-content { font-size: var( --font-size-default); }
+    #financial-insights .insight-cell .insight-value { font-size: calc(var(--font-size-financial-insight-value) * 0.85); }
+    #financial-insights .insight-cell .item-cost { font-size: calc(var(--font-size-financial-insight-item-cost) * 0.9); }
+    #financial-insights .insight-cell .item-name { font-size: calc(var(--font-size-financial-insight-item-name) * 0.9); }
+    #financial-insights .insight-cell h3 { font-size: calc(var(--font-size-total-inventory-adj-title) * 0.9); }
+    #financial-insights .insight-cell h4 { font-size: calc(var(--font-size-h4) * 0.9); }
+    #financial-insights .comments-content { font-size: calc(var(--font-size-comments) * 0.9); }
 }
