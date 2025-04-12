@@ -10,7 +10,7 @@ import {
     loadTopScrap,
     loadComments
 } from './domUpdater.js';
-import { updateTimestamp, applyNumberFormatting } from './utils.js';
+import { updateTimestamp, applyNumberFormatting, setupEditModal } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Dashboard Initializing...");
@@ -59,10 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
             loadTopCycleCounts(),
             loadTopScrap(),
             loadComments()
-        ]).then(() => {
+        ]).then(() => {            
             // Setup listeners AFTER data is loaded and inputs are populated
             setupCogiInputListeners();
-            console.log("Dashboard data loaded successfully.");
+            setupEditModal(); // <--- ADD THIS LINE HERE
+            console.log("Dashboard data loaded successfully and modal setup.");
         }).catch(error => {
             console.error("Error loading one or more dashboard sections:", error);
             // Optionally display a general error message to the user on the page

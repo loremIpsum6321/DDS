@@ -113,18 +113,25 @@ export async function loadMaterialShortages() {
         const tr = document.createElement('tr');
 
         // Material
-        const tdMaterial = document.createElement('td');
-        tdMaterial.textContent = row[0] || 'N/A';
-        tr.appendChild(tdMaterial);
+         const tdMaterial = document.createElement('td');
+         tdMaterial.textContent = row[0] || 'N/A';
+         tdMaterial.classList.add('editable-text'); // <-- Add this class
+         tdMaterial.onclick = () => showEditModal(tdMaterial); // <-- Add this click listener
+         tr.appendChild(tdMaterial);
 
         // Short Qty
-        const tdQty = document.createElement('td');
-        tdQty.textContent = row[1] || 'N/A';
-        tr.appendChild(tdQty);
+         const tdQty = document.createElement('td');
+         tdQty.textContent = row[1] || 'N/A';
+         tdQty.classList.add('editable-text'); // <-- Add class
+         tdQty.onclick = () => showEditModal(tdQty); // <-- Add listener
+         tr.appendChild(tdQty);
 
         // ETA
         const tdETA = document.createElement('td');
         tdETA.textContent = formatDateWithSpaces(row[2]);
+        tdETA.classList.add('editable-text'); // Make it editable
+        tdETA.onclick = () => showEditModal(tdETA); // Add click listener
+
         tr.appendChild(tdETA);
 
         tableBody.appendChild(tr);
@@ -200,13 +207,17 @@ export async function loadRailcars() {
             tr.dataset.index = index; // Store index for easy lookup
 
             // Rail #
-            const tdRailNum = document.createElement('td');
-            tdRailNum.textContent = state.railNum || 'N/A';
-            tr.appendChild(tdRailNum);
+             const tdRailNum = document.createElement('td');
+             tdRailNum.textContent = state.railNum || 'N/A';
+             tdRailNum.classList.add('editable-text'); // <-- Add class
+             tdRailNum.onclick = () => showEditModal(tdRailNum); // <-- Add listener
+             tr.appendChild(tdRailNum);
 
             // Material
             const tdMaterial = document.createElement('td');
             tdMaterial.textContent = state.material || 'N/A';
+            tdMaterial.classList.add('editable-text'); // Make it editable
+            tdMaterial.onclick = () => showEditModal(tdMaterial); // Add click listener
             tr.appendChild(tdMaterial);
 
             // --- Location (Editable) ---
@@ -368,6 +379,8 @@ export async function loadInventoryCounts() {
                 const value = parseFloat(row[i]) || 0; // Default to 0 if empty
                 td.textContent = formatCurrency(value);
                 applyNumberFormatting(td, value);
+                td.classList.add('editable-text'); // <-- Add class
+                td.onclick = () => showEditModal(td); // <-- Add listener
                 tr.appendChild(td);
             }
             cycleTableBody.appendChild(tr);
@@ -376,10 +389,10 @@ export async function loadInventoryCounts() {
             // Calculate the total from the values in the row, ensuring they are numbers
              for (let i = 0; i < 4; i++) {
                 cycleTotal += parseFloat(row[i]) || 0;
-             }
+            }
             const totalValue = cycleTotal.toString();
             cycleTotalEl.textContent = formatCurrency(totalValue);
-            applyNumberFormatting(cycleTotalEl, totalValue); // Apply to the span
+            applyNumberFormatting(cycleTotalEl, cycleTotal); // Apply to the span
 
         } else {
             cycleTableBody.innerHTML = '<tr><td colspan="4">No data</td></tr>';
@@ -410,6 +423,8 @@ export async function loadInventoryCounts() {
                 // Scrap values are often negative, apply standard +/- coloring
                 applyNumberFormatting(td, value);
                  // If you ALWAYS want non-zero scrap RED, uncomment below:
+                 td.classList.add('editable-text'); // Make it editable
+                 td.onclick = () => showEditModal(td); // Add click listener
                  // const number = parseFloat(value);
                  // if (!isNaN(number) && number !== 0) {
                  //    td.classList.remove('positive'); // Remove potential positive class
@@ -422,7 +437,7 @@ export async function loadInventoryCounts() {
             // Total PTD
             const totalValue = scrapTotal.toString();
             scrapTotalEl.textContent = formatCurrency(totalValue);
-             applyNumberFormatting(scrapTotalEl, totalValue);
+             applyNumberFormatting(scrapTotalEl, scrapTotal);
              // If you ALWAYS want non-zero total scrap RED, uncomment below:
              // const totalNumber = parseFloat(totalValue);
              // if (!isNaN(totalNumber) && totalNumber !== 0) {
@@ -510,13 +525,13 @@ export async function loadFinancialInsights() {
         const grandTotal = cycleTotalPTD + scrapTotalPTD;
 
         totalElement.textContent = formatCurrency(grandTotal);
-        applyNumberFormatting(totalElement, grandTotal); // Apply +/- coloring
+        applyNumberFormatting(totalElement, grandTotal);
 
     } catch (error) {
         console.error("Error loading data for Financial Insights Total:", error);
         totalElement.textContent = 'Error';
         totalElement.classList.add('negative'); // Show error in red
-    }
+    } 
 }
 
 
@@ -539,6 +554,10 @@ export async function loadTopCycleCounts() {
                 nameElement.textContent = itemName;
                 costElement.textContent = formatCurrency(costValue);
                 applyNumberFormatting(costElement, costValue);
+                nameElement.classList.add('editable-text'); // <-- Add class
+                nameElement.onclick = () => showEditModal(nameElement); // <-- Add listener
+                costElement.classList.add('editable-text'); // <-- Add class
+                costElement.onclick = () => showEditModal(costElement); // <-- Add listener
             } else {
                 // Clear fields if less than 3 items in CSV
                 nameElement.textContent = '-';
@@ -570,6 +589,10 @@ export async function loadTopScrap() {
                 nameElement.textContent = itemName;
                 costElement.textContent = formatCurrency(costValue);
                 applyNumberFormatting(costElement, costValue);
+                nameElement.classList.add('editable-text'); // <-- Add class
+                nameElement.onclick = () => showEditModal(nameElement); // <-- Add listener
+                costElement.classList.add('editable-text'); // <-- Add class
+                costElement.onclick = () => showEditModal(costElement); // <-- Add listener
             } else {
                  // Clear fields if less than 3 items in CSV
                 nameElement.textContent = '-';
@@ -598,14 +621,21 @@ export async function loadComments() {
         const data = await fetchCSVData('data/dashboard_comments.csv');
 
         if (data.length > 0) {
-            // Join all rows/comments with a newline
-            const commentsText = data.map(row => row[0] || '').join('\n');
-            commentsElement.textContent = commentsText.trim();
+             // Join all rows/comments with a newline
+             const commentsText = data.map(row => row[0] || '').join('\n');
+             commentsElement.textContent = commentsText.trim();
+             // Add classes/listeners (the initial check ensures commentsElement exists)
+             commentsElement.classList.add('editable-text');
+             commentsElement.dataset.multiline = 'true';
+             commentsElement.onclick = () => showEditModal(commentsElement);
         } else {
-            commentsElement.textContent = 'No comments available.';
+             // Handle case where CSV has no data rows (but element exists)
+             commentsElement.textContent = 'No comments available.';
         }
     } catch (error) {
+         // Handle errors during fetch or processing
          console.error("Error loading dashboard comments:", error);
          commentsElement.textContent = 'Error loading comments.';
     }
-}
+    // --- REMOVED the misplaced else, catch, and extra brace from here ---
+} // End of loadComments function

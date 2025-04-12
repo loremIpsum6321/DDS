@@ -175,3 +175,190 @@ export function exportRailcarsToCSV(railcarData, filename = 'railcars.csv') {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 }
+
+/**
+ * Sets up the editing modal functionality.
+ * Should be called once after the DOM is loaded.
+ */
+export function setupEditModal() {
+    const modal = document.getElementById('editModal');
+    const modalContent = modal.querySelector('.modal-content'); // Get the content area for dragging
+    if (!modal || !modalContent) {
+        console.error("Edit modal or modal content not found. Cannot set up modal or make it draggable.");
+        return;
+    }
+    
+    const modalInput = document.getElementById('modalInput');
+    const modalInputSingle = document.getElementById('modalInputSingle');
+    const saveButton = document.getElementById('modalSaveButton');
+    const cancelButton = document.getElementById('modalCancelButton');
+    const closeButton = modal.querySelector('.modal-close-button');
+    let targetElement = null; // To store the element being edited
+    // --- Make the modal draggable ---
+    makeModalDraggable(modal, modalContent); // Pass both the main modal and the handle
+
+    // Function to show the modal
+    window.showEditModal = (elementToEdit) => { // Use window.showEditModal to make it globally accessible
+        targetElement = elementToEdit;
+        const isTextArea = targetElement.tagName.toLowerCase() === 'div' || targetElement.dataset.multiline === 'true'; // Example condition
+
+        if (isTextArea) {
+            modalInput.value = targetElement.textContent;
+            modalInput.style.display = 'block';
+            modalInputSingle.style.display = 'none';
+        } else {
+            modalInputSingle.value = targetElement.textContent;
+            modalInputSingle.style.display = 'block';
+            modalInput.style.display = 'none';
+        }
+
+        modal.classList.remove('modal-hidden');
+        modal.classList.add('modal-visible');
+        (isTextArea ? modalInput : modalInputSingle).focus(); // Focus the correct input
+    };
+
+    // Function to hide the modal
+    const hideModal = () => {
+        modal.classList.add('modal-hidden');
+        modal.classList.remove('modal-visible');
+        modalInput.value = ''; // Clear input
+        modalInputSingle.value = '';
+        targetElement = null;
+    };
+
+    // Save action
+    saveButton.addEventListener('click', () => {
+        if (targetElement) {
+            const isTextArea = modalInput.style.display === 'block';
+            const newValue = isTextArea ? modalInput.value : modalInputSingle.value;
+            targetElement.textContent = newValue;
+            applyNumberFormatting(targetElement, newValue);
+            console.log(`Updated element (${targetElement.id || 'N/A'}) to: ${newValue}`);
+
+            // --- IMPORTANT ---
+            // Add logic here if you need to update the underlying data source
+            // For example, if editing a railcar material, update the `railcarStates` array
+            // You might need to pass more info (like data index) to the modal setup
+            // For simplicity, this example only updates the display text.
+            // Example: If editing comments: update dashboard_comments.csv (complex)
+            // Example: If editing cycle count: update the cell and maybe recalculate total (needs more logic)
+            // ----------------
+        }
+        hideModal();
+    });
+
+    // Cancel action
+    cancelButton.addEventListener('click', hideModal);
+    closeButton.addEventListener('click', hideModal);
+
+    // Close modal if clicking outside the content area
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) { // Check if the click was directly on the modal backdrop
+            hideModal();
+        }
+    });
+
+    // Close modal on Escape key press
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('modal-visible')) {
+            hideModal();
+        }
+    });
+}
+
+/**
+ * Makes a modal element draggable by its content area.
+ * @param {HTMLElement} modalElement - The main modal container (e.g., #editModal).
+ * @param {HTMLElement} dragHandle - The element to click and drag (e.g., .modal-content).
+ */
+function makeModalDraggable(modalElement, dragHandle) {
+    // --- Add CSS to prevent text selection during drag ---
+    // (You might want to put this CSS in your main CSS file instead of adding it dynamically)
+    const styleId = 'drag-no-select-style';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+          .no-select-during-drag {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+          }
+          /* Optional: Add move cursor to the handle */
+          .modal-content { /* Or your specific drag handle selector */
+            cursor: move;
+          }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // --- Draggable Logic (Copied from previous answer) ---
+
+    let isDragging = false;
+
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+    // Get initial position from style (if any) - assumes translate3d
+    const computedStyle = window.getComputedStyle(modalElement);
+    const transform = computedStyle.transform;
+    let xOffset = 0;
+    let yOffset = 0;
+
+    if (transform && transform !== 'none') {
+        const matrix = transform.match(/matrix.*\((.+)\)/);
+        if (matrix && matrix[1]) {
+            const values = matrix[1].split(', ');
+            // For translate3d(x, y, z), x is index 12, y is index 13 (older matrix might use 4, 5)
+            // For matrix(a, b, c, d, tx, ty), tx is index 4, ty is index 5
+            if (values.length === 16) { // matrix3d
+                xOffset = parseFloat(values[12]) || 0;
+                yOffset = parseFloat(values[13]) || 0;
+            } else if (values.length === 6) { // matrix
+                xOffset = parseFloat(values[4]) || 0;
+                yOffset = parseFloat(values[5]) || 0;
+            }
+        }
+    }
+
+    // --- Mouse Down: Start dragging ---
+    dragHandle.addEventListener("mousedown", (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION' || e.target.closest('.modal-close-button')) {
+            return; // Don't drag if clicking interactive elements or close button
+        }
+
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+        isDragging = true;
+        document.body.classList.add('no-select-during-drag');
+    });
+
+    // --- Mouse Move: Handle the drag ---
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        currentX = e.clientX - initialX;
+        currentY = e.clientY - initialY;
+        xOffset = currentX;
+        yOffset = currentY;
+
+        setTranslate(currentX, currentY, modalElement);
+    });
+
+    // --- Mouse Up: Stop dragging ---
+    document.addEventListener("mouseup", () => {
+        if (!isDragging) return;
+        initialX = currentX; // Store last position offset
+        initialY = currentY;
+        isDragging = false;
+        document.body.classList.remove('no-select-during-drag');
+    });
+
+    // Helper function to set the transform style
+    function setTranslate(xPos, yPos, el) {
+        el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+    }
+}
