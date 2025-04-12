@@ -666,9 +666,24 @@ th {
     position: sticky;
     top: 0;
     z-index: 2;
-    border-bottom-width: 2px;
     font-weight: bold;
     font-size: var(--font-size-table-header); /* Table header font size */
+}
+
+/* --- Export Button --- */
+.export-railcars-btn {
+    background-color: var(--accent-color-primary);
+    color: var(--status-text-on-bad);
+    font-weight: bold;
+    font-size: var(--font-size-button); /* Use variable */
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.export-railcars-btn:hover {
+    background-color: var(--accent-color-secondary);
 }
 
 tbody tr:last-child td {
@@ -814,13 +829,14 @@ footer {
     padding: 0.75rem 1rem;
     font-size: var(--font-size-footer); /* Use variable */
     color: var(--footer-text);
-    border-top: 1px solid var(--footer-border);
+    border-top: 10px solid var(--footer-bg);
     background-color: var(--footer-bg);
     z-index: 10;
     display: flex;
     flex-shrink: 0; /* ADD: Prevent footer from shrinking */
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 1rem;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 

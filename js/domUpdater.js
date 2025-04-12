@@ -1,5 +1,6 @@
 // DDS/js/domUpdater.js
 import { fetchCSVData } from './dataloader.js'; // Make sure this line exists
+import { exportRailcarsToCSV } from './utils.js';
 import {
     createStatusDropdown,
     formatCurrency,
@@ -301,7 +302,48 @@ export async function loadRailcars() {
 
     // Initial render
     renderTable();
+    // ... (keep all the existing code at the beginning of the function) ...
+    // fetchCSVData, checks, railcarStates = data.map(...), updateCounts, renderTable definition ...
 
+    // Initial render
+    renderTable(); // Keep this call
+
+    // ---> PASTE THE BUTTON CODE HERE <---
+    const sectionElement = document.getElementById('railcar-overview'); // Get the parent section
+    if (sectionElement) {
+        let exportButton = sectionElement.querySelector('.export-railcars-btn');
+        if (!exportButton) { // Only add the button if it doesn't exist
+            exportButton = document.createElement('button');
+            exportButton.textContent = 'Export Railcars';
+            exportButton.classList.add('export-railcars-btn'); // Add a class for styling if needed
+            exportButton.style.marginTop = '1rem'; // Add some spacing
+
+            // Append the button (e.g., after the table container)
+            const tableContainer = sectionElement.querySelector('.table-container');
+            if (tableContainer) {
+                tableContainer.insertAdjacentElement('afterend', exportButton);
+            } else {
+                sectionElement.appendChild(exportButton); // Fallback append
+            }
+        }
+
+        // Remove any old listener before adding a new one to prevent duplicates on refresh
+        // This cloning technique helps ensure the listener is fresh each time loadRailcars runs
+        exportButton.replaceWith(exportButton.cloneNode(true));
+        exportButton = sectionElement.querySelector('.export-railcars-btn'); // Re-select the cloned button
+
+        // Add click listener to the button
+        exportButton.addEventListener('click', () => {
+            // Now, this listener has access to the 'railcarStates' variable from the outer function scope
+            console.log("Exporting railcar data:", railcarStates); // Check the console - this should show the array now
+            if (typeof exportRailcarsToCSV === 'function') { // Check if the function exists
+                 exportRailcarsToCSV(railcarStates); // Call the export function
+            } else {
+                 console.error("exportRailcarsToCSV function is not defined or not imported.");
+                 alert("Error: Export function not available.");
+            }
+        });
+    }
 }
     
 /**

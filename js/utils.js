@@ -112,3 +112,66 @@ export function formatDateWithSpaces(dateString) {
     if (parts.length !== 3) return dateString; // Return original if not in expected format
     return `${parts[0]} - ${parts[1]} - ${parts[2]}`;
 }
+
+/**
+ * Exports the current railcar data to a CSV file for download.
+ * @param {Array<Object>} railcarData - The array containing the current railcar state objects.
+ * Each object should have keys like railNum, material, location, bol, romer, released.
+ * @param {string} [filename='updated_railcars.csv'] - The desired name for the downloaded file.
+ */
+export function exportRailcarsToCSV(railcarData, filename = 'railcars.csv') {
+    if (!railcarData || railcarData.length === 0) {
+        console.warn("No railcar data available to export.");
+        alert("No railcar data to export.");
+        return;
+    }
+
+    // Define CSV Headers matching your railcars.csv structure
+    const headers = ['RailNumber', 'Material', 'Location', 'BOL', 'Romer', 'Released'];
+
+    // Helper to format values for CSV (handles commas, quotes, booleans)
+    const formatCSVValue = (value) => {
+        if (value === null || typeof value === 'undefined') {
+            return '';
+        }
+        // Convert booleans to uppercase TRUE/FALSE strings
+        if (typeof value === 'boolean') {
+            return value ? 'TRUE' : 'FALSE';
+        }
+        let stringValue = String(value);
+        if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+            stringValue = stringValue.replace(/"/g, '""'); // Escape double quotes
+            return `"${stringValue}"`;
+        }
+        return stringValue;
+    };
+
+    // Combine headers and rows
+    const headerRow = headers.map(formatCSVValue).join(',');
+    const dataRows = railcarData.map(car => {
+        const row = [
+            car.railNum,
+            car.material,
+            car.location,
+            car.bol,
+            car.romer,
+            car.released
+        ];
+        return row.map(formatCSVValue).join(',');
+    });
+
+    const csvContent = headerRow + '\r\n' + dataRows.join('\r\n');
+
+    // Create Blob and trigger download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
