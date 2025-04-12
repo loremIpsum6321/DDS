@@ -36,6 +36,7 @@
     --font-size-4xl: 2rem;    /* ~32px (main header H1) */
     --font-size-5xl: 2.4rem;  /* ~38.4px (large financial values) */
 
+
     /* -- Responsive Base Font Size -- */
     /* Note: Base 'px' size set on body, rem units scale from this */
     --base-font-size-desktop: 16px; /* Default base */
@@ -335,6 +336,39 @@ header h1 {
     color: var(--text-color-muted); /* Already muted */
     font-weight: 400;
     margin-right: 0;
+}
+
+/* Style for the new Cogi input fields */
+.cogi-value-input {
+    width: 50px; /* Adjust width as needed */
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--form-element-border);
+    border-radius: 4px;
+    background-color: var(--form-element-bg);
+    color: var(--text-color); /* Default text color */
+    text-align: center;
+    font-size: var(--font-size-base); /* Match surrounding text */
+    margin-left: 0.25rem;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    /* Remove default number input arrows if desired */
+    -moz-appearance: textfield; /* Firefox */
+}
+.cogi-value-input::-webkit-outer-spin-button,
+.cogi-value-input::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Safari and Chrome */
+    margin: 0;
+}
+
+/* Style for Cogi input when value is > 0 (negative class is applied) */
+.cogi-value-input.negative {
+    color: var(--status-bad) !important; /* Make text red */
+    font-weight: bold;
+    border-color: var(--status-bad); /* Optional: make border red */
+}
+
+/* Adjustments for header status box alignment with inputs */
+header .status-box {
+    gap: 0.25rem; /* Add small gap */
 }
 
 /* ========================================================================== */
@@ -799,6 +833,17 @@ footer p {
 
 .light-theme #financial-insights .comments-content {
     color: var(--text-color-muted); /* Use muted text for comments */
+}
+
+/* Ensure inputs adapt in light theme */
+.light-theme .cogi-value-input {
+   background-color: var(--form-element-bg);
+   color: var(--text-color);
+   border-color: var(--form-element-border);
+}
+.light-theme .cogi-value-input.negative {
+    color: var(--status-bad) !important; /* Red text */
+    border-color: var(--status-bad); /* Optional: Red border */
 }
 
 /* Dropdown arrow color for light theme */

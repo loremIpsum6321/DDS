@@ -10,8 +10,15 @@
 <body>
     <header>
         <div class="header-cogi-status">
-            <span class="cogi-title">Cogies: </span> <div class="status-box"> <span class="cogi-label">Batching:</span> <span class="cogi-value" id="cogiBatchingCount">0</span> </div>
-            <div class="status-box"> <span class="cogi-label">Packaging:</span> <span class="cogi-value" id="cogiPackagingCount">0</span> </div>
+            <span class="cogi-title">Cogies -> </span>
+            <div class="status-box">
+                <span class="cogi-label">Batching:</span>
+                <input type="number" class="cogi-value-input" id="cogiBatchingCount" value="0" min="0">
+            </div>
+            <div class="status-box">
+                <span class="cogi-label">Packaging:</span>
+                <input type="number" class="cogi-value-input" id="cogiPackagingCount" value="0" min="0">
+            </div>
         </div>
         <div class="ingredient-status">
             <h2>Ingredient Status</h2>

@@ -5,67 +5,91 @@ import {
     loadRailcars,
     loadInventoryCounts,
     loadCogiErrors,
-    // --- Add these new imports ---
     loadFinancialInsights,
     loadTopCycleCounts,
     loadTopScrap,
     loadComments
-    // --- End of new imports ---
 } from './domUpdater.js';
-import { updateTimestamp } from './utils.js';
+import { updateTimestamp, applyNumberFormatting } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Dashboard Initializing...");
 
     /**
+     * Sets up event listeners for the Cogi input fields.
+     * Should be called after initialLoad completes.
+     */
+    function setupCogiInputListeners() {
+        const batchingInput = document.getElementById('cogiBatchingCount');
+        const packagingInput = document.getElementById('cogiPackagingCount');
+
+        if (batchingInput) {
+            batchingInput.addEventListener('change', () => {
+                const value = parseInt(batchingInput.value, 10) || 0;
+                applyNumberFormatting(batchingInput, value > 0 ? -1 : 0); // Re-apply formatting on change
+                console.log(`Batching Cogi count changed to: ${value}`);
+            });
+        } else {
+            console.warn("Batching Cogi input not found.");
+        }
+
+        if (packagingInput) {
+            packagingInput.addEventListener('change', () => {
+                const value = parseInt(packagingInput.value, 10) || 0;
+                applyNumberFormatting(packagingInput, value > 0 ? -1 : 0); // Re-apply formatting on change
+                console.log(`Packaging Cogi count changed to: ${value}`);
+            });
+        } else {
+            console.warn("Packaging Cogi input not found.");
+        }
+    }
+
+    /**
      * Loads all dashboard data sections concurrently.
      */
-// Inside the initialLoad function in app.js
-function initialLoad() {
-    updateTimestamp(); // Set initial timestamp
-    Promise.all([
-        loadIngredientStatus(),
-        loadMaterialShortages(),
-        loadRailcars(),
-        loadInventoryCounts(), // This needs to run ideally before financial insights if it exposes totals globally, but our refetch approach avoids this dependency.
-        loadCogiErrors(),
-        // --- Add these new function calls ---
-        loadFinancialInsights(),
-        loadTopCycleCounts(),
-        loadTopScrap(),
-        loadComments()
-        // --- End of new function calls ---
-    ]).then(() => {
-        console.log("Dashboard data loaded successfully.");
-    }).catch(error => {
-        console.error("Error loading one or more dashboard sections:", error);
-        // Optionally display a general error message to the user on the page
-    });
-}
+    function initialLoad() {
+        updateTimestamp(); // Set initial timestamp
+        Promise.all([
+            loadIngredientStatus(),
+            loadMaterialShortages(),
+            loadRailcars(),
+            loadInventoryCounts(),
+            loadCogiErrors(), // This populates the initial Cogi input values
+            loadFinancialInsights(),
+            loadTopCycleCounts(),
+            loadTopScrap(),
+            loadComments()
+        ]).then(() => {
+            // Setup listeners AFTER data is loaded and inputs are populated
+            setupCogiInputListeners();
+            console.log("Dashboard data loaded successfully.");
+        }).catch(error => {
+            console.error("Error loading one or more dashboard sections:", error);
+            // Optionally display a general error message to the user on the page
+        });
+    }
 
-    // --- Theme Toggle Button Listener ---
-    // 1. Make sure you have a button in index.html with id="theme-toggle-icon-button"
+    // --- Theme Toggle Setup ---
     const themeToggleButton = document.getElementById('theme-toggle-icon-button');
     if (themeToggleButton) {
+        // Apply saved theme preference on load
+        const savedTheme = localStorage.getItem('dashboardTheme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+        } // Removed unnecessary empty else block
+
+        // Add click listener for toggling theme
         themeToggleButton.addEventListener('click', () => {
             document.body.classList.toggle('light-theme');
             // Save preference in localStorage
             const isLight = document.body.classList.contains('light-theme');
             localStorage.setItem('dashboardTheme', isLight ? 'light' : 'dark');
         });
-
-        // Check localStorage on load to apply saved theme
-        const savedTheme = localStorage.getItem('dashboardTheme');
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-theme');
-        } else { 
-        }
-
     } else {
-        console.warn("Theme toggle button (#theme-toggle-button) not found.");
+        console.warn("Theme toggle button (#theme-toggle-icon-button) not found.");
     }
 
-    // Load initial data when the page is ready
+    // --- Load Initial Data ---
     initialLoad();
 
     // --- Optional: Auto-refresh logic ---

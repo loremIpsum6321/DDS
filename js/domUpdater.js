@@ -296,38 +296,39 @@ export async function loadInventoryCounts() {
 /**
  * Loads and displays COGI error counts in the header.
  */
+// /**
+//  * Loads and displays COGI error counts in the header.
+//  */
 export async function loadCogiErrors() {
     const data = await fetchCSVData('data/cogi_errors.csv');
-    const batchingEl = document.getElementById('cogiBatchingCount');
-    const packagingEl = document.getElementById('cogiPackagingCount');
-    
-    if (!batchingEl || !packagingEl) {
-        console.error("COGI count elements not found!");
+    const batchingInput = document.getElementById('cogiBatchingCount'); // Get input element
+    const packagingInput = document.getElementById('cogiPackagingCount'); // Get input element
+
+    if (!batchingInput || !packagingInput) {
+        console.error("COGI input elements not found!");
         return;
     }
 
     let batchingCount = 0;
     let packagingCount = 0;
-    
+
     data.forEach(row => {
         // Assumes CSV columns: Area, Count
         const area = row[0]?.toLowerCase().trim();
-        const count = parseFloat(row[1]) || 0;
+        const count = parseInt(row[1], 10) || 0; // Use parseInt for whole numbers
 
         if (area === 'batching') {
-            batchingCount += count; 
+            batchingCount += count;
         } else if (area === 'packaging') {
             packagingCount += count;
         }
     });
-    
-    batchingEl.textContent = batchingCount;
-    packagingEl.textContent = packagingCount;
-    
+    batchingInput.value = batchingCount;
+    packagingInput.value = packagingCount;
     // Apply formatting (treat any count > 0 as 'negative'/bad)
-    applyNumberFormatting(batchingEl, batchingCount > 0 ? -1 : 0); // Use -1 to trigger negative class
-    applyNumberFormatting(packagingEl, packagingCount > 0 ? -1 : 0); // Use -1 to trigger negative class
-} 
+    applyNumberFormatting(batchingInput, batchingCount > 0 ? -1 : 0); // Use -1 to trigger negative class
+    applyNumberFormatting(packagingInput, packagingCount > 0 ? -1 : 0); // Use -1 to trigger negative class
+}
 /**
  * Calculates and displays the total PTD from Cycle Counts and Scrap.
  * Relies on data already fetched by loadInventoryCounts or fetches it.
