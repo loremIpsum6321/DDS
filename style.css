@@ -23,18 +23,18 @@
 
 /* --- Dark Theme Variables (Default) --- */
 :root {
-    --font-size-xxs: 0.75rem; /* Used for: Smallest table cells, footer text on mobile (@media max-width: 480px) */
-    --font-size-xs: 1.2rem;   /* Used for: Footer text (base), Table cells (tablet @media max-width: 768px), Status dropdown (mobile @media max-width: 480px), Financial item name/h4 (mobile @media max-width: 480px) */
-    --font-size-sm: 3rem;   /* Used for: Financial insight h4/item names (base), Table cells (base), Status dropdown (base), Header status boxes/labels (tablet/mobile @media max-width: 768px/480px) */
-    --font-size-base: 2.3rem; /* Used for: Header status info (base), COGI input (base), Railcar summary box text (base), Financial item cost/comments (mobile @media max-width: 480px) */
-    --font-size-md: 1.15rem;  /* Used for: Section subheadings (h3), Financial item cost (tablet @media max-width: 768px) */
-    --font-size-lg: 3.2rem;   /* Used for: Financial insight item cost (base), Railcar summary value (tablet @media max-width: 768px) */
-    --font-size-xl: 2.2rem;   /* Used for: Inventory count box titles (h3), Railcar summary value (base) */
-    --font-size-xxl: 1.8rem;  /* Used for: Main section headings (h2), Financial comments (base), Header title (mobile @media max-width: 480px) */
-    --font-size-comment: 1.9rem; /* Used for: Financial comments (base) */
-    --font-size-3xl: 2.4rem;  /* Used for: Financial insight cell titles (h3 - base), Header title (tablet @media max-width: 768px), Financial value (mobile @media max-width: 480px) */
-    --font-size-4xl: 2rem;    /* Used for: Header title (h1 - base), Financial insight value (tablet @media max-width: 768px) */
-    --font-size-5xl: 3.4rem;  /* Used for: Financial insight main value (base) */
+    --font-size-xxs: 0.325rem; /* Used for: Smallest table cells, footer text on mobile (@media max-width: 480px) */
+    --font-size-xs: 0.9rem;    /* Used for: Footer text (base), Table cells (tablet @media max-width: 768px), Status dropdown (mobile @media max-width: 480px), Financial item name/h4 (mobile @media max-width: 480px) */
+    --font-size-sm: 1.5rem;    /* Used for: Financial insight h4/item names (base), Table cells (base), Status dropdown (base), Header status boxes/labels (tablet/mobile @media max-width: 768px/480px) */
+    --font-size-base: 1.55rem; /* Used for: Header status info (base), COGI input (base), Railcar summary box text (base), Financial item cost/comments (mobile @media max-width: 480px) */
+    --font-size-md: 1.5rem;    /* Used for: Section subheadings (h3), Financial item cost (tablet @media max-width: 768px) */
+    --font-size-lg: 1.4rem;    /* Used for: Financial insight item cost (base), Railcar summary value (tablet @media max-width: 768px) */
+    --font-size-xl: 1.4rem;    /* Used for: Inventory count box titles (h3), Railcar summary value (base) */
+    --font-size-xxl: 0.8rem;   /* Used for: Main section headings (h2), Financial comments (base), Header title (mobile @media max-width: 480px) */
+    --font-size-comment: 1.5rem; /* Used for: Financial comments (base) */
+    --font-size-3xl: 1.05rem;  /* Used for: Financial insight cell titles (h3 - base), Header title (tablet @media max-width: 768px), Financial value (mobile @media max-width: 480px) */
+    --font-size-4xl: 0.9rem;   /* Used for: Header title (h1 - base), Financial insight value (tablet @media max-width: 768px) */
+    --font-size-5xl: 1.5rem;   /* Used for: Financial insight main value (base) */
 
 
 
@@ -225,7 +225,7 @@ body {
 /* ========================================================================== */
 main {
     max-width: 98%;
-    margin: 0 auto;    
+    margin: 0 auto;
     padding: 0 0.75rem;
     display: grid;
     gap: 1.25rem;
@@ -290,7 +290,7 @@ section h3 {
     main {
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     }
-    
+
     #material-shortages { grid-column: span 1; }
     #railcar-overview { grid-column: span 1; }
     #inventory-counts { grid-column: span 1; }
@@ -300,15 +300,23 @@ section h3 {
 @media (min-width: 1200px) {
     main {
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
+        /* MODIFIED: Give row 2 (railcars) more initial height priority */
+        /* Use minmax for shortages (row 1) to allow shrinking/growing */
+        grid-template-rows: minmax(150px, 0.6fr) 1fr; /* Adjust fraction as needed (e.g., 0.5fr or auto) */
         gap: 1.5rem;
-        grid-template-rows: 1fr 1fr; /* Example: Adjust if rows need different proportions */
+        height: calc(100% - 2rem); /* Ensure main grid takes available height */
     }
-    
-    #material-shortages { grid-column: 1 / 2; grid-row: 1 / 2; }
-    #railcar-overview   { grid-column: 1 / 2; grid-row: 2 / 3; }
-    #inventory-counts   { grid-column: 2 / 3; grid-row: 1 / 2; }
-    #financial-insights { grid-column: 2 / 3; grid-row: 2 / 3; }
+
+    /* ADDED: Rule to force even rows when many shortages */
+    main.many-shortages {
+        /* Use !important cautiously, ensure selector specificity is enough if possible */
+        grid-template-rows: 1fr 1fr !important;
+    }
+
+    #material-shortages { grid-column: 1 / 2; grid-row: 1 / 2; min-height: 0; } /* Added min-height: 0 */
+    #railcar-overview   { grid-column: 1 / 2; grid-row: 2 / 3; min-height: 0; } /* Added min-height: 0 */
+    #inventory-counts   { grid-column: 2 / 3; grid-row: 1 / 2; min-height: 0; } /* Added min-height: 0 */
+    #financial-insights { grid-column: 2 / 3; grid-row: 2 / 3; min-height: 0; } /* Added min-height: 0 */
 }
 
 /* ========================================================================== */
@@ -411,6 +419,7 @@ header h1 {
     margin-left: 0.25rem;
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
     /* Remove default number input arrows if desired */
+    appearance: textfield; /* Standard property for compatibility */
     -moz-appearance: textfield; /* Firefox */
 }
 .cogi-value-input::-webkit-outer-spin-button,
@@ -441,6 +450,7 @@ header .status-box {
     gap: 1rem;
     flex-direction: column;
     flex-grow: 1;
+    min-height: 0; /* ADDED for flexbox height calculation */
 }
 
 
@@ -453,6 +463,7 @@ header .status-box {
     display: flex;
     flex-direction: column;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    min-height: 0; /* ADDED for flexbox height calculation */
 }
 #inventory-counts .count-box h3 { /* e.g., "Cycle Counts (PTD: ...)" */
     border-bottom: none;
@@ -469,9 +480,11 @@ header .status-box {
 }
 #inventory-counts .count-box .table-container {
     margin-top: 0.25rem;
+    flex-grow: 1; /* Allow table container to grow */
+    min-height: 0; /* Help nested flex height */
 }
 #inventory-counts .count-box table {
-    flex-grow: 1;
+    /* Removed flex-grow: 1; as it's now on container */
 }
 #inventory-counts .count-box table td,
 #inventory-counts .count-box table th {
@@ -491,6 +504,8 @@ header .status-box {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin-top: 1rem;
+    flex-grow: 1; /* Allow grid to fill space */
+    min-height: 0; /* Added for grid height */
 }
 
 #financial-insights .insight-cell {
@@ -560,8 +575,10 @@ header .status-box {
 
 #financial-insights .comments-cell {
     grid-column: span 3;
-    grid-row: span 2;
+    grid-row: span 2; /* Adjust as needed */
     min-height: 150px;
+    display: flex; /* Ensure flex for content */
+    flex-direction: column; /* Stack h4 and content */
 }
 
 #financial-insights .comments-content {
@@ -569,10 +586,10 @@ header .status-box {
     font-size: var(--font-size-comment); /* Use variable */
     color: var(--text-color-white);
     line-height: 1.2;
-    overflow-y: auto;
-    max-height: 150px;
-    flex-grow: 1;
+    overflow-y: auto; /* Enable scrolling for comments */
+    flex-grow: 1; /* Allow comments to take space */
     white-space: pre-wrap;
+    min-height: 50px; /* Ensure minimum height */
 }
 
 /* ========================================================================== */
@@ -580,24 +597,25 @@ header .status-box {
 /* ========================================================================== */
 
 /* --- Table Container --- */
-/* --- Table Container --- */
 .table-container {
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: auto; /* Ensure vertical scroll */
     border: 1px solid var(--table-border-color);
     border-radius: 6px;
     flex-grow: 1;
     margin-top: 0.5rem;
     width: 100%;
-    
+    min-height: 0; /* Added */
     transition: border-color 0.3s ease;
 }
 
 
 .table-container.small-table {
-    max-height: none;
-    overflow-y: visible;
-    flex-grow: 0;
+    /* max-height: none; */ /* Removed to allow scrolling if needed */
+    /* overflow-y: visible; Changed back to auto for consistency */
+    overflow-y: hidden;
+    flex-grow: 0; /* Don't force small tables to grow */
+    flex-shrink: 1; /* Allow shrinking */
 }
 
 /* --- General Table Styles --- */
@@ -937,7 +955,7 @@ footer p {
         margin-bottom: 1rem;
         gap: 0.75rem;
     }
-    
+
     header h1 {
         font-size: var(--font-size-3xl); /* Adjust responsive size */
         text-align: center;
@@ -951,7 +969,7 @@ footer p {
         flex-grow: 0;
         font-size: var(--font-size-sm); /* Adjust responsive size */
     }
-    
+
     .status-box { font-size: var(--font-size-sm); }
 
     main {
@@ -959,7 +977,7 @@ footer p {
         gap: 1rem;
     }
     section { padding: 1rem; }
-    
+
 
     th, td {
         padding: 0.5rem 0.6rem;
@@ -967,7 +985,7 @@ footer p {
         white-space: normal;
     }
 
-    
+
     .rail-summary {
         flex-direction: column;
         align-items: stretch;
@@ -994,7 +1012,7 @@ footer p {
     #financial-insights .comments-cell {
         grid-row: auto;
     }
-    
+
      /* Adjust financial value size for tablet */
     #financial-insights .insight-cell .insight-value { font-size: var(--font-size-4xl); }
     #financial-insights .insight-cell .item-cost { font-size: var(--font-size-md); }
@@ -1003,7 +1021,7 @@ footer p {
 @media (max-width: 480px) {
     body { font-size: var(--base-font-size-mobile); } /* Use variable */
     header h1 { font-size: var(--font-size-xxl); } /* Adjust responsive size */
-    
+
     .status-box { font-size: var(--font-size-sm); }
     .header-cogi-status,
     .ingredient-status {
@@ -1014,7 +1032,7 @@ footer p {
         justify-content: space-around;
     }
 
-    
+
     .status-dropdown {
         min-width: 80px;
         padding: 0.3rem 0.6rem;
@@ -1022,12 +1040,12 @@ footer p {
         font-size: var(--font-size-xs); /* Adjust responsive size */
     }
 
-    
+
     main { padding: 0 0.25rem; }
     section { padding: 0.75rem; }
     th, td { padding: 0.4rem 0.4rem; font-size: var(--font-size-xxs); } /* Adjust responsive size */
     #inventory-counts .count-box table td,
-    
+
     #inventory-counts .count-box table th {
         padding: 0.4rem;
     }
@@ -1040,7 +1058,7 @@ footer p {
         width: 32px;
         height: 32px;
     }
-    
+
      /* Adjust financial value size for mobile */
     #financial-insights .insight-cell .insight-value { font-size: var(--font-size-3xl); }
     #financial-insights .insight-cell .item-cost { font-size: var(--font-size-base); }

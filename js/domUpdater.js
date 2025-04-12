@@ -77,22 +77,37 @@ export async function loadIngredientStatus() {
     
 /**
  * Loads and displays material shortages data.
+ * MODIFIED: Adds/removes 'many-shortages' class to main based on count.
  */
 export async function loadMaterialShortages() {
     const data = await fetchCSVData('data/material_shortages.csv');
     const tableBody = document.getElementById('shortagesTableBody');
+    const mainElement = document.querySelector('main'); // Get the main element
+    const shortageThreshold = 5; // Define threshold for switching layout
+
+    // Check if critical elements exist
     if (!tableBody) {
-        console.error("Shortages table body not found!");
-        return;
+        console.error("Shortages table body (#shortagesTableBody) not found!");
+        return; // Exit if table body is missing
+    }
+    if (!mainElement) {
+        // Warn if main element is missing, but proceed with table population
+        console.warn("Main element (<main>) not found, cannot toggle 'many-shortages' class.");
     }
 
     tableBody.innerHTML = ''; // Clear loading/previous data
 
+    // Handle case with no shortages
     if (data.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="3">No shortages</td></tr>';
-        return;
+        // Ensure class is removed if there are no shortages and main element exists
+        if (mainElement) {
+            mainElement.classList.remove('many-shortages');
+        }
+        return; // Exit after handling no data
     }
 
+    // Populate the table with shortage data
     data.forEach(row => {
         const tr = document.createElement('tr');
 
@@ -101,11 +116,9 @@ export async function loadMaterialShortages() {
         tdMaterial.textContent = row[0] || 'N/A';
         tr.appendChild(tdMaterial);
 
-        // Short Qty (treated as text, but with 'bad' status color in CSS)
+        // Short Qty
         const tdQty = document.createElement('td');
         tdQty.textContent = row[1] || 'N/A';
-        // Note: CSS rule targets this column specifically for red color (in CSS)
-        // #shortagesTableBody td:nth-child(2) { color: var(--status-bad) !important; }
         tr.appendChild(tdQty);
 
         // ETA
@@ -115,8 +128,20 @@ export async function loadMaterialShortages() {
 
         tableBody.appendChild(tr);
     });
-}
-    
+
+    // *** CORRECTED LOGIC PLACEMENT ***
+    // Check if number of shortages exceeds threshold and toggle class
+    // Only run this if mainElement was found earlier
+    if (mainElement) {
+        if (data.length > shortageThreshold) {
+            mainElement.classList.add('many-shortages');
+        } else {
+            mainElement.classList.remove('many-shortages');
+        }
+    }
+    // *** END CORRECTED LOGIC PLACEMENT ***
+
+} // <<< Function ends here
 /**
  * Loads and displays railcar overview data and summary counts.
  */
