@@ -281,10 +281,12 @@ section {
     min-height: 0; /* ADD: Help nested flex heights */
 }
 
+/*
 section:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); /* Slightly stronger shadow on hover */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); 
 }
+*/
 
 /* Ensure section content is above the shine pseudo-element */
 section > * {
@@ -672,8 +674,8 @@ th {
 
 /* --- Export Button --- */
 .export-railcars-btn {
-    background-color: var(--accent-color-primary);
-    color: var(--status-text-on-bad);
+    background-color: var(--header-bg-color);
+    color: var(--text-color-muted);
     font-weight: bold;
     font-size: var(--font-size-button); /* Use variable */
     border: none;
@@ -683,7 +685,13 @@ th {
     transition: background-color 0.3s ease;
 }
 .export-railcars-btn:hover {
-    background-color: var(--accent-color-secondary);
+    background-color: var(--accent-color-primary);
+    color: var(--text-color-white);
+}
+
+.light-theme .export-railcars-btn {
+    background-color: var(--header-bg-color);
+    color: var(--text-color-white);
 }
 
 tbody tr:last-child td {
@@ -913,6 +921,12 @@ footer p {
     background-color: rgba(0, 0, 0, 0.05);
     border-color: var(--border-color);
     color: var(--header-text-color); /* White text on blue header */
+}
+
+/* Add this rule for distinct light theme hover */
+.light-theme .export-railcars-btn:hover {
+    background-color: var(--accent-color-secondary); /* Light theme's teal (#00d7b9) */
+    color: var(--text-color-white); /* Keep text white */
 }
 
 .light-theme header .header-cogi-status .cogi-label,
