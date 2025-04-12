@@ -23,14 +23,13 @@
 
 /* --- Dark Theme Variables (Default) --- */
 :root {
-    /* -- Font Sizes -- */
     --font-size-xxs: 0.75rem;  /* ~12px */
     --font-size-xs: 1.2rem;   /* ~12.8px (used in footer/responsive) */
     --font-size-sm: 1.7rem;   /* ~14.4px (used in small elements/responsive) */
     --font-size-base: 1.7rem;   /* ~16px (base size for body/components) */
     --font-size-md: 1.15rem;  /* ~18.4px (H3) */
     --font-size-lg: 2.2rem;   /* ~19.2px (used for specific costs/values) */
-    --font-size-xl: 1.6rem;   /* ~20.8px (summary values, count box titles) */
+    --font-size-xl: 2.1rem;   /* ~20.8px (summary values, count box titles) */
     --font-size-xxl: 1.9rem;  /* ~22.4px (section H2, comments) */
     --font-size-3xl: 1.4rem;  /* ~24px (financial titles) */
     --font-size-4xl: 2rem;    /* ~32px (main header H1) */
