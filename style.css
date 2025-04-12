@@ -23,17 +23,19 @@
 
 /* --- Dark Theme Variables (Default) --- */
 :root {
-    --font-size-xxs: 0.75rem;  /* ~12px */
-    --font-size-xs: 1.2rem;   /* ~12.8px (used in footer/responsive) */
-    --font-size-sm: 1.7rem;   /* ~14.4px (used in small elements/responsive) */
-    --font-size-base: 1.7rem;   /* ~16px (base size for body/components) */
-    --font-size-md: 1.15rem;  /* ~18.4px (H3) */
-    --font-size-lg: 2.2rem;   /* ~19.2px (used for specific costs/values) */
-    --font-size-xl: 2.1rem;   /* ~20.8px (summary values, count box titles) */
-    --font-size-xxl: 1.9rem;  /* ~22.4px (section H2, comments) */
-    --font-size-3xl: 1.4rem;  /* ~24px (financial titles) */
-    --font-size-4xl: 2rem;    /* ~32px (main header H1) */
-    --font-size-5xl: 2.4rem;  /* ~38.4px (large financial values) */
+    --font-size-xxs: 0.75rem; /* Used for: Smallest table cells, footer text on mobile (@media max-width: 480px) */
+    --font-size-xs: 1.2rem;   /* Used for: Footer text (base), Table cells (tablet @media max-width: 768px), Status dropdown (mobile @media max-width: 480px), Financial item name/h4 (mobile @media max-width: 480px) */
+    --font-size-sm: 3rem;   /* Used for: Financial insight h4/item names (base), Table cells (base), Status dropdown (base), Header status boxes/labels (tablet/mobile @media max-width: 768px/480px) */
+    --font-size-base: 2.3rem; /* Used for: Header status info (base), COGI input (base), Railcar summary box text (base), Financial item cost/comments (mobile @media max-width: 480px) */
+    --font-size-md: 1.15rem;  /* Used for: Section subheadings (h3), Financial item cost (tablet @media max-width: 768px) */
+    --font-size-lg: 3.2rem;   /* Used for: Financial insight item cost (base), Railcar summary value (tablet @media max-width: 768px) */
+    --font-size-xl: 2.2rem;   /* Used for: Inventory count box titles (h3), Railcar summary value (base) */
+    --font-size-xxl: 1.8rem;  /* Used for: Main section headings (h2), Financial comments (base), Header title (mobile @media max-width: 480px) */
+    --font-size-comment: 1.9rem; /* Used for: Financial comments (base) */
+    --font-size-3xl: 2.4rem;  /* Used for: Financial insight cell titles (h3 - base), Header title (tablet @media max-width: 768px), Financial value (mobile @media max-width: 480px) */
+    --font-size-4xl: 2rem;    /* Used for: Header title (h1 - base), Financial insight value (tablet @media max-width: 768px) */
+    --font-size-5xl: 3.4rem;  /* Used for: Financial insight main value (base) */
+
 
 
     /* -- Responsive Base Font Size -- */
@@ -75,12 +77,12 @@
     --table-border-color: var(--border-color);
 
     /* -- Status Indicators -- */
-    --status-good: #66bb6a;          /* Green */
+    --status-good: #31db31;          /* Green */
     --status-warning: #ffa726;       /* Orange/Yellow */
     --status-bad: #ef5350;           /* Red */
-    --status-text-on-good: #ffffff;
+    --status-text-on-good: #212121;
     --status-text-on-warning: #212121; /* Dark text on yellow/orange */
-    --status-text-on-bad: #ffffff;
+    --status-text-on-bad: #212121;
 
     /* -- Forms (Dropdown) -- */
     --form-element-bg: rgba(255, 255, 255, 0.04); /* Base background for form elements */
@@ -544,6 +546,8 @@ header .status-box {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 #financial-insights .total-ptd h3 {
     border-bottom: none;
@@ -562,9 +566,9 @@ header .status-box {
 
 #financial-insights .comments-content {
     margin-top: 0.5rem;
-    font-size: var(--font-size-xxl); /* Use variable */
-    color: var(--text-color-muted);
-    line-height: 1.5;
+    font-size: var(--font-size-comment); /* Use variable */
+    color: var(--text-color-white);
+    line-height: 1.2;
     overflow-y: auto;
     max-height: 150px;
     flex-grow: 1;
@@ -912,7 +916,7 @@ footer p {
 }
 .light-theme .status-dropdown.caution {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
-    color: var(--status-text-on-warning); /* Now white text on orange */
+    color: var(--status-text-on-bad); /* Now white text on orange */
 }
 .light-theme .status-dropdown.bad {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
