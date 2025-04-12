@@ -348,6 +348,12 @@ header h1 {
     flex-direction: column;
     flex-grow: 1;
 }
+#railcar-overview .table-container {
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+    flex-grow: 0;
+    height: 100%;
+}
 
 #inventory-counts .count-box {
     border: 1px solid var(--border-color);
