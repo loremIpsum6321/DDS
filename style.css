@@ -31,9 +31,8 @@
     --status-warning: #ffa726; /* Orange/Yellow */
     --status-bad: #ef5350; /* Red */
 
-    /* Shine Effect */
+    /* Shine Effect (Variable currently commented out) */
     /* --shine-color: rgba(156, 39, 176, 0.1); Subtle Purple for shine */
-}
 
 * {
     box-sizing: border-box;
@@ -54,136 +53,102 @@ body {
 header {
     background-color: var(--table-header-bg);
     color: var(--header-color);
-    padding: 1rem 1.5rem; /* Slightly reduced padding */
+    padding: 1rem 1.5rem;
     border-bottom: 2px solid var(--header-color);
-    margin-bottom: 1.5rem; /* Reduced spacing below header */
+    margin-bottom: 1.5rem;
     box-shadow: 0 3px 8px var(--shadow-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1rem; /* Gap between title, status, and COGI */
+    gap: 1rem; /* Gap between elements */
 }
 
+/* Optional: Style for H1 if you uncomment it in HTML */
 header h1 {
     font-weight: 600;
-    font-size: 2rem; /* Slightly smaller */
+    font-size: 2rem;
     text-shadow: none;
-    flex-grow: 1; /* Allow title to take available space */
-    text-align: left; /* Keep title left-aligned */
-    /* No margin needed here due to flex gap */
+    flex-grow: 1;
+    text-align: left;
 }
 
-/* Container for Status and COGI boxes */
-.header-info-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 1.5rem; /* Consistent gap */
-    align-items: center;
-}
-
-
-/* Original Ingredient Status Box */
+/* Container for COGI & Ingredient Status boxes in header */
+/* Note: .header-info-container class was not in provided HTML, styles adapted */
+.header-cogi-status,
 .ingredient-status {
     display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.04);
-    padding: 0.5rem 1rem; /* Reduced padding */
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    /* Removed width: 100% for flex behavior */
-    /* flex-grow: 1; */ /* Allow it to grow if needed, but not essential */
-}
-
-/* NEW: COGI Status Box Styling (Apply class="header-cogi-status" to the moved COGI container) */
-.header-cogi-status {
-    display: flex; /* Use flex for internal alignment */
-    gap: 1rem; /* Space between label and value(s) */
+    gap: 1rem; /* Space between internal items */
     align-items: center;
     background-color: rgba(255, 255, 255, 0.04);
     padding: 0.5rem 1rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    font-size: 1rem; /* Match status-box */
-    font-weight: 500; /* Match status-box */
-    /* flex-grow: 1; */ /* Allow it to grow if needed */
-}
-
-/* Style the label inside the new COGI header box */
-.header-cogi-status .cogi-label { /* Add this class to your COGI label span/div */
-    color: var(--text-color-muted);
-    font-weight: 400;
-    margin-right: 0.5rem;
-}
-
-/* Style the value(s) inside the new COGI header box */
-.header-cogi-status .cogi-value { /* Add this class to your COGI value span/div */
-    /* Color will be determined by .positive/.negative classes */
-    font-weight: 600; /* Make number stand out */
-}
-
-
-.ingredient-status h2 { /* Original hidden title for status */
-    font-size: 1.1rem;
-    color: var(--text-color-muted);
-    margin-right: 1rem;
-    font-weight: 400;
-    display: none; /* Hidden on small screens */
-}
-
-.status-box {
     font-size: 1rem;
     font-weight: 500;
 }
 
-.status-box span:first-child {
+/* Specific spacing for ingredient status if needed */
+.ingredient-status {
+    gap: 1.5rem;
+}
+
+
+/* COGI Specific labels/values */
+.header-cogi-status .cogi-label {
     color: var(--text-color-muted);
     font-weight: 400;
     margin-right: 0.5rem;
 }
 
-.status-indicator {
-    padding: 0.25rem 0.6rem;
-    border-radius: 4px;
-    color: #ffffff;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-align: center;
-    min-width: 60px;
+.header-cogi-status .cogi-value {
+    font-weight: 600; /* Color via .positive/.negative */
 }
 
-/* Status Indicator Colors */
-.status-indicator.loading { background-color: var(--border-color); }
-.status-indicator.good { background-color: var(--status-good); }
-.status-indicator.warning { background-color: var(--status-warning); color: #212121; }
-.status-indicator.bad { background-color: var(--status-bad); }
+/* Hidden H2 in ingredient status */
+.ingredient-status h2 {
+    display: none; /* Hidden */
+}
+
+/* Container for label + dropdown */
+.status-box {
+    font-size: 1rem;
+    font-weight: 500;
+    display: inline-flex; /* Align label and dropdown */
+    align-items: center; /* Vertically center */
+}
+
+/* Label ("24hr:", "48hr:") */
+.status-box span:first-child {
+    color: var(--text-color-muted);
+    font-weight: 400;
+    margin-right: 0; /* Space handled by dropdown margin */
+}
 
 /* --- Main Content & Sections --- */
 main {
-    max-width: 98%; /* Use almost full width */
+    max-width: 98%;
     margin: 0 auto;
-    padding: 0 0.75rem; /* Small side padding */
+    padding: 0 0.75rem;
     display: grid;
-    gap: 1.25rem; /* Tightened gap between sections */
-    grid-template-columns: 1fr; /* Default to single column */
+    gap: 1.25rem;
+    grid-template-columns: 1fr; /* Default single column */
 }
 
 section {
     background-color: var(--card-bg-color);
-    padding: 1.25rem; /* Reduced padding */
+    padding: 1.25rem;
     border-radius: 8px;
     box-shadow: 0 4px 12px var(--shadow-color);
     border: 1px solid var(--border-color);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     display: flex;
     flex-direction: column;
-    position: relative; /* Needed for shine pseudo-element */
-    overflow: hidden; /* Contain shine effect */
+    position: relative;
+    overflow: hidden;
 }
 
-/* Subtle Shine Effect */
+/* Subtle Shine Effect (Requires --shine-color variable to be defined) */
 @keyframes shine {
     0% { background-position: -200% center; }
     100% { background-position: 200% center; }
@@ -192,56 +157,52 @@ section {
 section::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: linear-gradient(
         90deg,
         transparent 20%,
-        var(--shine-color) 50%,
+        var(--shine-color, transparent) 50%, /* Use fallback */
         transparent 80%
     );
-    background-size: 200% 100%; /* Make gradient wider than element */
-    animation: shine 15s linear infinite; /* Slow, looping animation */
-    pointer-events: none; /* Ensure it doesn't interfere with content */
-    z-index: 0; /* Position behind content */
-    opacity: 0.5; /* Make it subtle */
+    background-size: 200% 100%;
+    animation: shine 15s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
 }
 
 /* Ensure section content is above the shine */
 section > * {
-  position: relative;
-  z-index: 1;
+    position: relative;
+    z-index: 1;
 }
 
-
 section:hover {
-    transform: translateY(-3px); /* Slightly less movement */
+    transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
 section h2, section h3 {
-    margin-bottom: 1rem; /* Reduced spacing */
-    padding-bottom: 0.5rem; /* Reduced padding */
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
     font-weight: 500;
 }
 
 section h2 {
     color: var(--header-color);
     border-bottom: 2px solid var(--accent-color-alt);
-    font-size: 1.4rem; /* Slightly smaller */
+    font-size: 1.4rem;
 }
 
 section h3 {
     color: var(--accent-color-alt);
     border-bottom: 2px solid var(--header-color);
-    font-size: 1.15rem; /* Adjusted size */
-    margin-top: 0.75rem; /* Reduced space above */
+    font-size: 1.15rem;
+    margin-top: 0.75rem;
 }
 
 /* --- Specific Section Layouts (Responsive Grid) --- */
-/* Remove #cogi-overview from grid layout as it's moved to header */
 @media (min-width: 900px) {
     main {
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -249,67 +210,64 @@ section h3 {
     #material-shortages { grid-column: span 1; }
     #railcar-overview { grid-column: span 1; }
     #inventory-counts { grid-column: span 1; }
-    /* #cogi-overview { grid-column: span 1; } */ /* Removed */
+    /* #cogi-overview removed */
 }
 
 @media (min-width: 1200px) {
       main {
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto; /* Adjust row definition if needed */
-        gap: 1.5rem; /* Slightly larger gap for wider screens */
+        grid-template-rows: auto auto;
+        gap: 1.5rem;
       }
       #material-shortages { grid-column: 1 / 2; grid-row: 1 / 2; }
       #railcar-overview { grid-column: 1 / 2; grid-row: 2 / 3; }
       #inventory-counts { grid-column: 2 / 3; grid-row: 1 / 2; }
-      /* #cogi-overview removed - its original space is now free */
-      /* You might need to adjust the grid row spans of other items if */
-      /* #cogi-overview took up significant height previously */
-}
+      #financial-insights { grid-column: 2 / 3; grid-row: 2 / 3; } /* Place it here */
+      /* #cogi-overview removed */
+      /* Remove #coming-soon rule */
+    }
 
 /* --- Tables --- */
 .table-container {
     overflow-x: auto;
-    max-height: 450px; /* Adjust as needed */
+    max-height: 450px; /* Default scroll */
     overflow-y: auto;
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    flex-grow: 1; /* Allow container to fill section space */
+    flex-grow: 1;
     margin-top: 0.5rem;
-    /* Ensure container takes full width */
     width: 100%;
     margin-left: auto;
     margin-right: auto;
 }
-.table-container.small-table {
+.table-container.small-table { /* For inventory tables */
     max-height: none;
     flex-grow: 0;
 }
 
 table {
-    width: 100%; /* Ensures table fills container */
+    width: 100%;
     border-collapse: collapse;
 }
 
 th, td {
-    padding: 0.7rem 0.9rem; /* Slightly adjusted padding */
+    padding: 0.7rem 0.9rem;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
     white-space: nowrap;
-    font-weight: bold; /* UPDATED: Make all table text bold */
+    font-weight: bold; /* Make all table text bold */
 }
 
 th {
     background-color: var(--table-header-bg);
     color: var(--header-color);
-    /* font-weight: 600; */ /* Overridden by bold below */
     position: sticky;
     top: 0;
-    z-index: 2; /* Ensure headers are above section shine */
+    z-index: 2;
     border-bottom-width: 2px;
-    font-weight: bold; /* Ensure header is also bold */
+    font-weight: bold;
 }
 
-/* Remove bottom border from last row */
 tbody tr:last-child td {
     border-bottom: none;
 }
@@ -330,53 +288,41 @@ tbody tr:hover {
 
 /* --- Specific Table Styling --- */
 
-/* UPDATED: Material Shortages Table - Center all content */
+/* Material Shortages Table */
 #shortagesTableBody th,
 #shortagesTableBody td {
-    text-align: center !important; /* Use !important to ensure override */
+    text-align: left !important;
+}
+#shortagesTableBody td:nth-child(2) { /* Short Qty column */
+    color: var(--status-bad) !important;
 }
 
-/* UPDATED: Material Shortages Table - Make 'Short Qty' column red */
-/* ASSUMPTION: Short Qty is the 2nd column. Change nth-child(2) if different */
-#shortagesTableBody td:nth-child(2) {
-    color: var(--status-bad) !important; /* Red color, !important if needed */
-    /* Boldness handled by general td rule */
+/* Railcar Table */
+#railcarsTableBody td:nth-child(4), /* BOL */
+#railcarsTableBody th:nth-child(4),
+#railcarsTableBody td:nth-child(5), /* Romer */
+#railcarsTableBody th:nth-child(5),
+#railcarsTableBody td:nth-child(6), /* Released */
+#railcarsTableBody th:nth-child(6) {
+    text-align: center;
 }
-
-/* Railcar Table Specific Alignments (Preserved & Adjusted) */
-#railcarsTableBody td:nth-child(4), #railcarsTableBody th:nth-child(4),
-#railcarsTableBody td:nth-child(5), #railcarsTableBody th:nth-child(5) {
-    text-align: center; /* Center status columns */
-}
-/* Explicitly right-align last column in railcar table if needed */
-#railcarsTableBody td:last-child, #railcarsTableBody th:last-child {
-    text-align: right;
-}
-
-/* Ensure status columns text is handled correctly (center alignment already done) */
-#railcarsTableBody td.status-yes, #railcarsTableBody td.status-no,
-#railcarsTableBody td.status-good, #railcarsTableBody td.status-caution,
-#railcarsTableBody td.status-bad {
-   /* Colors applied by general .status-* rules later */
-   /* Alignment handled by nth-child rules above */
-}
+/* Status colors handled by general .status-yes / .status-no rules */
 
 
-/* --- Summary Boxes (Keep for Railcars if still used there) --- */
-/* Remove .cogi-summary rule as it's moved to header */
-.rail-summary /*, .cogi-summary */ {
+/* --- Summary Boxes (Railcars) --- */
+.rail-summary {
     display: flex;
-    gap: 1rem; /* Reduced gap */
-    margin-bottom: 1rem; /* Reduced margin */
+    gap: 1rem;
+    margin-bottom: 1rem;
     flex-wrap: wrap;
 }
 
 .summary-box {
     background-color: rgba(255, 255, 255, 0.04);
-    padding: 0.8rem 1.2rem; /* Reduced padding */
+    padding: 0.8rem 1.2rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    font-size: 1rem; /* Adjusted size */
+    font-size: 1rem;
     flex-grow: 1;
     text-align: center;
     transition: background-color 0.2s ease;
@@ -385,10 +331,10 @@ tbody tr:hover {
     background-color: rgba(255, 255, 255, 0.08);
 }
 
-.summary-box span {
+.summary-box span { /* The count value */
     font-weight: 700;
     color: var(--accent-color-alt);
-    font-size: 1.3rem; /* Adjusted size */
+    font-size: 1.3rem;
     display: block;
     margin-top: 0.2rem;
 }
@@ -397,62 +343,122 @@ tbody tr:hover {
 /* --- Inventory Counts Section --- */
 .count-container {
     display: flex;
-    gap: 1rem; /* Reduced gap */
+    gap: 1rem;
     flex-direction: column;
-    flex-grow: 1; /* Allow count-container to grow */
+    flex-grow: 1;
 }
 
 .count-box {
     border: 1px solid var(--border-color);
-    padding: 1rem; /* Reduced padding */
+    padding: 1rem;
     border-radius: 8px;
     background-color: rgba(0,0,0,0.08);
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
-.count-box h3 {
+.count-box h3 { /* e.g., "Cycle Counts (PTD: ...)" */
     border-bottom: none;
     margin-bottom: 0.75rem;
     color: var(--text-color);
     font-size: 1.1rem;
 }
-.count-box h3 span { /* For the PTD value like #cycleCountTotal, #scrapTotal */
+.count-box h3 span { /* The PTD value span */
     color: var(--accent-color-alt); /* Default color */
     font-weight: bold;
     margin-left: 0.5rem;
-    /* Color updated by .positive / .negative classes below */
+    /* Color updated by .positive / .negative classes */
 }
 .count-box .table-container {
-    /* Override general table container margin for nested tables */
     margin-top: 0.25rem;
 }
 .count-box table {
-    /* No margin needed if container handles it */
     flex-grow: 1;
 }
-/* === Center ALL text within Cycle Counts & Scrap Tables === */
-/* This rule applies to tables inside .count-box, which typically holds Cycle Counts/Scrap */
+/* Center text within Cycle Counts & Scrap Tables */
 .count-box table td,
 .count-box table th {
-    text-align: center !important; /* Use !important to override other alignment rules if needed */
+    text-align: center !important;
     padding: 0.6rem 0.8rem;
-    font-weight: bold; /* Ensure inner tables are also bold */
+    font-weight: bold;
 }
 .count-box table th {
     color: var(--text-color-muted);
-    background-color: transparent; /* No specific bg for inner table header */
+    background-color: transparent;
     position: static; /* Not sticky */
-    /* font-weight: 500; */ /* Overridden by bold */
 }
 
+/* --- Status Select Dropdown Styling --- */
+.status-dropdown {
+    color: var(--text-color); /* Overridden by status */
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.35rem 0.8rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    text-align: center;
+    min-width: 90px; /* Adjust as needed */
+    vertical-align: middle; /* Align with label */
+    margin-left: 0.5rem; /* Space from label */
+
+    /* SVG Dropdown arrow indicator */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23e5e7eb'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1em 1em;
+    padding-right: 2rem; /* Space for the arrow */
+}
+
+/* Dropdown Background Colors based on selected status */
+.status-dropdown.good {
+    background-color: var(--status-good);
+    color: #ffffff;
+    border-color: var(--status-good);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+}
+
+.status-dropdown.caution { /* Matches 'warning' value */
+    background-color: var(--status-warning);
+    color: #212121;
+    border-color: var(--status-warning);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212121'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+}
+
+.status-dropdown.bad { /* Matches 'crit' value */
+    background-color: var(--status-bad);
+    color: #ffffff;
+    border-color: var(--status-bad);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+}
+
+/* Dropdown Option Text Colors */
+.status-dropdown option {
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    padding: 5px 10px;
+}
+.status-dropdown option.good {
+    color: var(--status-good);
+    font-weight: bold;
+}
+.status-dropdown option.caution {
+    color: var(--status-warning);
+    font-weight: bold;
+}
+.status-dropdown option.bad {
+    color: var(--status-bad);
+    font-weight: bold;
+}
 
 /* --- Footer --- */
 footer {
     text-align: center;
-    /* margin-top handled by body padding-bottom */
-    padding: 0.75rem 1rem; /* Adjusted padding */
-    font-size: 0.8rem; /* Smaller text */
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
     color: var(--text-color-muted);
     border-top: 1px solid var(--border-color);
     position: fixed;
@@ -463,53 +469,275 @@ footer {
     z-index: 10;
 }
 
+/* Add these styles to your existing style.css */
+/* You can place them near the end or integrate them logically */
+
+/* --- Footer Button Styling --- */
+footer {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Pushes timestamp left, buttons right */
+    align-items: center; /* Vertically center items */
+    padding: 0.5rem 1rem; /* Adjust padding slightly */
+}
+
+footer p {
+    margin: 0; /* Remove default margin */
+}
+
+#theme-toggle-icon-button {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: var(--text-color-muted); /* Default color for icon stroke */
+    border-radius: 50%; /* Make it circular */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: flex; /* Center icon inside */
+    align-items: center;
+    justify-content: center;
+    width: 36px; /* Fixed size */
+    height: 36px;
+}
+
+#theme-toggle-icon-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover for dark mode */
+    color: var(--text-color); /* Brighten icon on hover */
+}
+
+#theme-icon {
+    /* Size is set in HTML, but can be overridden */
+     transition: filter 0.3s ease; /* Transition for the glow */
+}
+
+/* Icon Stroke Color */
+#theme-icon .bulb-outline {
+    stroke: currentColor; /* Inherits color from button */
+}
+/* Icon Fill Color (Initially off in dark mode) */
+#theme-icon .bulb-fill {
+    fill: none; /* No fill in dark mode */
+     transition: fill 0.3s ease;
+}
+/* --- Financial Insights Section --- */
+#financial-insights {
+    /* Adjust grid placement if needed, see Step 6 */
+}
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 1rem; /* Space between cells */
+    margin-top: 1rem;
+}
+
+.insight-cell {
+    background-color: rgba(0,0,0,0.15); /* Slightly darker background */
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100px; /* Ensure minimum height */
+}
+
+.insight-cell h3, .insight-cell h4 {
+    color: var(--accent-color-alt); /* Teal heading */
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.4rem;
+    font-size: 1.05rem;
+}
+.insight-cell h4 {
+    font-size: 0.95rem; /* Smaller heading for top items */
+    color: var(--text-color-muted);
+}
+
+.insight-cell .insight-value,
+.insight-cell .item-cost {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: auto; /* Push value to bottom */
+    text-align: right;
+    /* Color applied by .positive / .negative via JS */
+}
+.insight-cell .item-cost {
+    font-size: 1.2rem; /* Slightly smaller cost */
+}
+
+.insight-cell .item-name {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    text-align: right;
+    margin-top: auto; /* Push name above cost */
+    margin-bottom: 0.25rem; /* Space between name and cost */
+    font-weight: bold;
+}
+
+/* Spanning */
+.total-ptd {
+    grid-column: span 3; /* Span all 3 columns */
+    flex-direction: row; /* Align heading and value horizontally */
+    justify-content: space-between;
+    align-items: center;
+}
+.total-ptd h3 {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.total-ptd .insight-value {
+     margin-top: 0; /* Reset margin */
+}
+
+
+.comments-cell {
+    grid-column: span 3; /* Span all 3 columns */
+    grid-row: span 2; /* Span 2 rows */
+    min-height: 150px; /* Taller comments box */
+}
+
+.comments-content {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-color-muted);
+    line-height: 1.5;
+    overflow-y: auto; /* Add scroll if content exceeds height */
+    max-height: 150px; /* Limit height, adjust as needed */
+    flex-grow: 1; /* Allow content to fill space */
+    white-space: pre-wrap; /* Respect newlines in comments */
+}
+
+/* --- Light Theme Adjustments for Financial Insights --- */
+.light-theme .insight-cell {
+    background-color: rgba(0, 0, 0, 0.03); /* Very subtle dark */
+    border-color: var(--border-color);
+}
+
+.light-theme .insight-cell h3, .light-theme .insight-cell h4 {
+    color: var(--header-color); /* Primary Blue */
+    border-color: var(--border-color);
+}
+.light-theme .insight-cell h4 {
+     color: var(--text-color-muted); /* Keep muted color */
+}
+
+.light-theme .insight-cell .item-name {
+    color: var(--text-color);
+}
+
+.light-theme .comments-content {
+    color: var(--text-color-muted);
+}
+
+/* Apply positive/negative styles */
+.light-theme .insight-value.positive,
+.light-theme .item-cost.positive { color: var(--status-good) !important; }
+.light-theme .insight-value.negative,
+.light-theme .item-cost.negative { color: var(--status-bad) !important; }
+
+.insight-value.positive,
+.item-cost.positive { color: var(--status-good) !important; }
+.insight-value.negative,
+.item-cost.negative { color: var(--status-bad) !important; }
+/* --- Light Theme Definition --- */
+body.light-theme {
+    /* Core Palette */
+    --bg-color: #ffffff;                     /* White background */
+    --card-bg-color: #f0f4ff;             /* Very light blue */
+    --text-color: #1a1a1a;                 /* Dark text for readability */
+    --text-color-muted: #555555;             /* Medium grey for muted text */
+
+    /* Accents */
+    --header-color: #0000a0;                 /* Primary Blue */
+    --accent-color-alt: #00d7b9;             /* Primary Highlight Teal */
+
+    /* Borders & Shadows */
+    --border-color: #cccccc;                 /* Light grey border */
+    --shadow-color: rgba(0, 0, 0, 0.1);      /* Lighter shadow */
+
+    /* Table Specific */
+    --table-header-bg: #e1e8ff;             /* Lighter blue header */
+    --table-row-odd-bg: #ffffff;             /* White */
+    --table-row-even-bg: #f0f4ff;             /* Very light blue (matches card) */
+    --table-row-hover-bg: #dbe4ff;             /* Slightly darker blue hover */
+
+    /* Status Indicators (Keep originals or adjust contrast if needed) */
+    /* --status-good: #2e7d32; */
+    /* --status-warning: #ed6c02; */
+    /* --status-bad: #d32f2f; */
+
+    /* Shine Effect - Less pronounced on light */
+    --shine-color: rgba(0, 0, 160, 0.05);
+}
+
+/* Adjustments for elements in Light Theme */
+.light-theme header {
+    background-color: var(--header-color); /* Blue background */
+    color: #ffffff; /* White text */
+    border-bottom-color: var(--accent-color-alt); /* Teal border */
+}
+
+.light-theme header h1 { /* If you add H1 back */
+     color: #ffffff;
+}
+
+.light-theme .header-cogi-status, .light-theme .ingredient-status {
+    background-color: rgba(0, 0, 0, 0.05); /* Subtle dark background */
+    border-color: var(--border-color);
+    color: #333; /* Darker text */
+}
+
+.light-theme .header-cogi-status .cogi-label, .light-theme .status-box span:first-child {
+    color: #666; /* Slightly darker muted text */
+}
+
+.light-theme .status-box span:first-child,
+.light-theme .header-cogi-status .cogi-label {
+    color: #ffffff;
+}
+
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
     body { font-size: 15px; }
     header {
         flex-direction: column;
-        align-items: stretch; /* Stretch items like title/info container */
+        align-items: stretch;
         text-align: center;
-        padding: 1rem 1rem; /* Adjust padding */
-        margin-bottom: 1rem; /* Adjust margin */
-        gap: 0.75rem; /* Reduce gap in column layout */
-    }
-    header h1 {
-        font-size: 1.7rem; /* Adjust size */
-        text-align: center;
-    }
-    /* Adjust header info container for column layout */
-    .header-info-container {
-        justify-content: center; /* Center items horizontally */
+        padding: 1rem 1rem;
+        margin-bottom: 1rem;
         gap: 0.75rem;
     }
-    .ingredient-status,
-    .header-cogi-status { /* Apply to both status boxes */
-        width: auto; /* Let them size naturally or wrap */
-        justify-content: center; /* Center internal items */
-        padding: 0.5rem 0.5rem;
-        flex-grow: 0; /* Don't force growth */
+    header h1 {
+        font-size: 1.7rem;
+        text-align: center;
     }
-    .ingredient-status h2 { display: none; }
+    /* Center header items when stacked */
+    .header-cogi-status,
+    .ingredient-status {
+        width: auto; /* Allow natural sizing */
+        justify-content: center;
+        padding: 0.5rem 0.75rem; /* Adjust padding */
+        flex-grow: 0;
+    }
     .status-box { font-size: 0.95rem; }
-    .header-cogi-status { font-size: 0.95rem; } /* Match size */
+    .header-cogi-status { font-size: 0.95rem; }
 
     main {
-        padding: 0 0.5rem; /* Adjust padding */
-        gap: 1rem; /* Adjust gap */
+        padding: 0 0.5rem;
+        gap: 1rem;
     }
-    section { padding: 1rem; } /* Adjust section padding */
+    section { padding: 1rem; }
 
     th, td {
-        padding: 0.5rem 0.6rem; /* Adjust table padding */
-        font-size: 0.85rem; /* Adjust font size */
+        padding: 0.5rem 0.6rem;
+        font-size: 0.85rem;
         white-space: normal; /* Allow wrapping */
     }
 
-    .rail-summary /* Removed .cogi-summary */ {
+    .rail-summary {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.75rem; /* Adjust gap */
+        gap: 0.75rem;
     }
     .summary-box { padding: 0.7rem 1rem; }
     .summary-box span { font-size: 1.2rem; }
@@ -518,7 +746,10 @@ footer {
     .count-box { padding: 0.75rem; }
     .count-box table td,
     .count-box table th {
-        padding: 0.5rem 0.5rem; /* Adjust padding */
+        padding-top: 0.5rem;
+        padding-right: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 0.5rem;
     }
 }
 
@@ -526,66 +757,176 @@ footer {
     body { font-size: 14px; }
     header h1 { font-size: 1.5rem; }
     .status-box { font-size: 0.9rem; }
-    .header-cogi-status { font-size: 0.9rem; } /* Match size */
-    .status-indicator { font-size: 0.8rem; min-width: 45px; padding: 0.2rem 0.4rem; }
+    .header-cogi-status { font-size: 0.9rem; }
+
+    /* Stack header items vertically and center */
+    .header-cogi-status,
+    .ingredient-status {
+        width: 90%; /* Give some width */
+        margin-left: auto; /* Center block */
+        margin-right: auto;
+        justify-content: space-around;
+        flex-direction: column; /* Stack internal items if needed */
+        gap: 0.5rem; /* Reduce internal gap */
+    }
+    /* Adjust dropdown size on smallest screens */
+     .status-dropdown {
+        min-width: 80px;
+        padding: 0.3rem 0.6rem;
+        padding-right: 1.8rem; /* Adjust for arrow */
+        font-size: 0.85rem;
+    }
+
+
     main { padding: 0 0.25rem; }
     section { padding: 0.75rem; }
     th, td { padding: 0.4rem 0.4rem; font-size: 0.8rem;}
     .count-box table td,
     .count-box table th {
-        padding: 0.4rem 0.4rem; /* Adjust padding */
-    }
-    .header-info-container {
-        flex-direction: column; /* Stack status/cogi vertically */
-        align-items: center; /* Center stack */
-    }
-    .ingredient-status, .header-cogi-status {
-        width: 90%; /* Give them some width */
-        justify-content: space-around; /* Space out content */
+        padding: 0.4rem 0.4rem;
     }
 }
 
-/* --- Status Color Formatting (Applied via JS/Backend) --- */
+.light-theme section h2 {
+    color: var(--header-color); /* Blue */
+    border-bottom-color: var(--accent-color-alt); /* Teal */
+}
+
+.light-theme section h3 {
+    color: var(--header-color); /* Blue */
+     border-bottom: 1px solid var(--border-color); /* Softer border */
+}
+.light-theme .count-box h3 {
+     color: var(--header-color); /* Blue */
+}
+
+.light-theme .count-box h3 span {
+    /* Color determined by positive/negative classes */
+}
+
+.light-theme th {
+    background-color: var(--table-header-bg); /* Light blue header */
+    color: var(--header-color); /* Dark blue text */
+}
+
+.light-theme .summary-box {
+    background-color: var(--table-header-bg);
+    border-color: var(--border-color);
+}
+.light-theme .summary-box span { /* Count value */
+    color: var(--header-color); /* Blue */
+}
+
+.light-theme footer {
+    background-color: #f8f8f8; /* Slightly off-white footer */
+    border-top-color: var(--border-color);
+    color: var(--text-color-muted);
+}
+
+.light-theme #theme-toggle-icon-button {
+    color: #555555; /* Darker icon stroke */
+}
+.light-theme #theme-toggle-icon-button:hover {
+    background-color: rgba(0, 0, 0, 0.08); /* Subtle dark hover */
+    color: #000000; /* Black icon on hover */
+}
+
+/* --- Light Theme Icon State --- */
+.light-theme #theme-icon .bulb-fill {
+    fill: #ffdc00; /* Fill bulb with secondary highlight yellow */
+}
+
+.light-theme #theme-icon .bulb-outline {
+    stroke: #a78700; /* Darker stroke for outline when 'on' */
+}
+
+/* Glowing effect for light theme */
+.light-theme #theme-icon {
+     filter: drop-shadow(0 0 5px #ffdc00); /* Yellow glow */
+}
+
+/* --- Dropdown styling for light theme --- */
+.light-theme .status-dropdown {
+    border-color: var(--border-color);
+    /* Reset background/color, rely on specific state classes */
+    background-color: #eee;
+    color: (--text-color);
+    /* Update SVG arrow color for light theme */
+     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23333333'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+}
+.light-theme .status-dropdown.good {
+    background-color: var(--status-good);
+    color: #ffffff;
+    border-color: var(--status-good);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+}
+.light-theme .status-dropdown.caution {
+    background-color: var(--status-warning);
+    color: #ffffff; /* White text often better on orange */
+    border-color: var(--status-warning);
+     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+}
+.light-theme .status-dropdown.bad {
+    background-color: var(--status-bad);
+    color: #ffffff;
+    border-color: var(--status-bad);
+     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /%3E%3C/svg%3E");
+}
+.light-theme .status-dropdown option {
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+}
+/* Style options specifically if needed */
+.light-theme .status-dropdown option.good { color: var(--status-good); }
+.light-theme .status-dropdown option.caution { color: var(--status-warning); }
+.light-theme .status-dropdown option.bad { color: var(--status-bad); }
+}
+
+/* --- Status Color Formatting --- */
+/* Applied via JS for specific elements/columns */
+
 /* Style for 'Yes' or generally Good status / Positive numbers */
 .status-yes,
-.status-good,
+.status-good, /* Used by JS for railcar location */
 .positive {
     color: var(--status-good) !important;
-    font-weight: 600; /* Semi-bold for status colors */
+    font-weight: 600; /* Maintain boldness */
 }
 
 /* Style for 'No' or generally Bad/Attention status / Negative numbers */
 .status-no,
-.status-bad,
+.status-bad,  /* Used by JS for railcar location */
 .negative {
     color: var(--status-bad) !important;
-    font-weight: 600; /* Semi-bold for status colors */
+    font-weight: 600; /* Maintain boldness */
+}
+/* --- Light Theme Icon State --- */
+.light-theme #theme-icon .bulb-fill {
+    fill: #ffdc00; /* Fill bulb with secondary highlight yellow */
+}
+
+.light-theme #theme-icon .bulb-outline {
+    stroke: #a78700; /* Darker stroke for outline when 'on' */
+}
+/* Glowing effect for light theme */
+.light-theme #theme-icon {
+     filter: drop-shadow(0 0 5px #ffdc00); /* Yellow glow */
 }
 
 /* Style for Warning/Caution status */
-.status-caution {
+.status-caution { /* Used by JS for railcar location */
     color: var(--status-warning) !important;
-    font-weight: 600; /* Semi-bold for status colors */
+    font-weight: 600; /* Maintain boldness */
 }
 
-/* Apply coloring to COGI count spans if they have the .negative class */
-/* Now applies to elements within .header-cogi-status */
-.header-cogi-status .negative {
-    /* .negative rule above handles the color */
-    /* font-weight is set by .negative rule */
-}
+/* Apply coloring to COGI count spans */
+.header-cogi-status .negative,
 .header-cogi-status .positive {
-     /* .positive rule above handles the color */
-    /* font-weight is set by .positive rule */
+    /* Colors/weight applied by .negative/.positive rules above */
 }
 
-
-/* Apply coloring to Inventory Count Total spans (within h3) */
-#cycleCountTotal.positive, #scrapTotal.positive {
-    /* .positive rule above handles the color */
-}
+/* Apply coloring to Inventory Count Total spans */
+#cycleCountTotal.positive, #scrapTotal.positive,
 #cycleCountTotal.negative, #scrapTotal.negative {
-     /* .negative rule above handles the color */
+     /* Colors/weight applied by .negative/.positive rules above */
 }
-
-/* Centering for cycle/scrap tables covered by .count-box table td rule */

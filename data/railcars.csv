@@ -1,17 +1,17 @@
-RailNumber,Material,Location,BOL,Romer
-CNW180163,"RICE,CLND BRKN","On Site",true,true
-AEX24360,BARLEY,"On Site",true,true
-BN448895,BARLEY,"On Site",true,true
-BNSF436766,OATS,"On Site",true,true
-MWCX463795,"PEAS,NEC,DRIED","On Site",true,true
-AEX24637,BREWERS RICE,"On Site",true,true
-NDYX516357,BREWERS RICE,"On Site",true,true
+RailNumber,Material,Location,BOL,Romer,Released
+CNW180163,"RICE,CLND BRKN","On Site",true,true,true,true
+AEX24360,BARLEY,"On Site",true,true,true
+BN448895,BARLEY,"On Site",true,true,true
+BNSF436766,OATS,"On Site",true,true,true
+MWCX463795,"PEAS,NEC,DRIED","On Site",true,true,true
+AEX24637,BREWERS RICE,"On Site",true,true,true
+NDYX516357,BREWERS RICE,"On Site",true,true,true
 BNSF435944,"Milo","On Site",false,true
-ITFX90983,BARLEY,"On Site",true,fasle
-ITFX91183,OATS,"On Site",true,true
-ITFX91194,BARLEY,"On Site",true,true
-CMO10517,"RICE,CLND BRKN","On Site",true,true
-SP496601,"RICE,CLND BRKN","On Site",true,true
+ITFX90983,BARLEY,"On Site",true,false
+ITFX91183,OATS,"On Site",true,true,true
+ITFX91194,BARLEY,"On Site",true,true,true
+CMO10517,"RICE,CLND BRKN","On Site",true,true,true
+SP496601,"RICE,CLND BRKN","On Site",true,true,true
 SSW70267,BREWERS RICE,"In Yard",false,false
 CNW180206,"RICE,CLND BRKN","In Yard",false,false
 ITFX91453,OATS,"In Yard",false,false

@@ -9,7 +9,6 @@
 </head>
 <body>
     <header>
-        <!-- <h1>Supply DDS</h1> -->
         <div class="header-cogi-status">
             <div class="status-box"> <span class="cogi-label">Batching:</span> <span class="cogi-value" id="cogiBatchingCount">0</span> </div>
             <div class="status-box"> <span class="cogi-label">Packaging:</span> <span class="cogi-value" id="cogiPackagingCount">0</span> </div>
@@ -17,11 +16,9 @@
         <div class="ingredient-status">
             <h2>Ingredient Status</h2>
             <div id="status-24hr" class="status-box">
-                <span>24hr:</span> <span class="status-indicator loading">Loading...</span>
-            </div>
+                <span>24hr:</span> </div>
             <div id="status-48hr" class="status-box">
-                <span>48hr:</span> <span class="status-indicator loading">Loading...</span>
-            </div>
+                <span>48hr:</span> </div>
         </div>
     </header>
 
@@ -66,10 +63,11 @@
                             <th>Location</th>
                             <th>BOL</th>
                             <th>Romer</th>
+                            <th>Released</th>
                         </tr>
                     </thead>
                     <tbody id="railcarsTableBody">
-                        <tr><td colspan="5">Loading data...</td></tr>
+                        <tr><td colspan="6">Loading data...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -79,7 +77,7 @@
             <h2>Inventory Accuracy</h2>
             <div class="count-container">
                 <div class="count-box cycle-counts">
-                    <h3>Cycle Counts (PTD: <span id="cycleCountTotal">0</span>)</h3>
+                    <h3>Cycle Counts (PTD: <span id="cycleCountTotal">$0.00</span>)</h3>
                      <div class="table-container small-table">
                         <table>
                             <thead>
@@ -92,7 +90,7 @@
                      </div>
                 </div>
                 <div class="count-box scrap-transactions">
-                    <h3>Scrap Transactions (PTD: <span id="scrapTotal">0</span>)</h3>
+                    <h3>Scrap Transactions (PTD: <span id="scrapTotal">$0.00</span>)</h3>
                     <div class="table-container small-table">
                         <table>
                             <thead>
@@ -106,24 +104,87 @@
                 </div>
             </div>
         </section>
-        <section id="coming-soon">
-            <h2>Coming Soon</h2>
-            <div class="coming-soon-content">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Under_construction_animated.gif" alt="Under Construction" style="display: block; margin: 20px auto; max-width: 100%; height: auto;">
-                <!-- You might want to add a message back if needed -->
-                <!-- <p>Stay tuned for updates!</p> -->
+        <section id="financial-insights">
+            <h2>Financial Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-cell total-ptd">
+                    <h3>Total Inventory Adj. (PTD)</h3>
+                    <span class="insight-value" id="financialTotalPTD">$0.00</span>
+                </div>
+
+                <div class="insight-cell top-item">
+                    <h4>Top Cycle Count Adj. #1</h4>
+                    <span class="item-name" id="top-cycle-item-1">N/A</span>
+                    <span class="item-cost" id="top-cycle-cost-1">$0.00</span>
+                </div>
+                <div class="insight-cell top-item">
+                    <h4>Top Cycle Count Adj. #2</h4>
+                    <span class="item-name" id="top-cycle-item-2">N/A</span>
+                    <span class="item-cost" id="top-cycle-cost-2">$0.00</span>
+                </div>
+                <div class="insight-cell top-item">
+                    <h4>Top Cycle Count Adj. #3</h4>
+                    <span class="item-name" id="top-cycle-item-3">N/A</span>
+                    <span class="item-cost" id="top-cycle-cost-3">$0.00</span>
+                </div>
+
+                <div class="insight-cell top-item">
+                    <h4>Top Scrap Item #1</h4>
+                    <span class="item-name" id="top-scrap-item-1">N/A</span>
+                    <span class="item-cost" id="top-scrap-cost-1">$0.00</span>
+                </div>
+                <div class="insight-cell top-item">
+                    <h4>Top Scrap Item #2</h4>
+                    <span class="item-name" id="top-scrap-item-2">N/A</span>
+                    <span class="item-cost" id="top-scrap-cost-2">$0.00</span>
+                </div>
+                <div class="insight-cell top-item">
+                    <h4>Top Scrap Item #3</h4>
+                    <span class="item-name" id="top-scrap-item-3">N/A</span>
+                    <span class="item-cost" id="top-scrap-cost-3">$0.00</span>
+                </div>
+
+                <div class="insight-cell comments-cell">
+                    <h4>Comments</h4>
+                    <div class="comments-content" id="dashboardCommentsArea">
+                        Loading comments...
+                    </div>
+                </div>
             </div>
-
         </section>
-
-        
-
     </main>
 
     <footer>
-        <p>Local Operations Dashboard | Last Updated: <span id="lastUpdated"></span></p>
+        <p>Last Updated: <span id="lastUpdated"></span></p>
+        <button id="theme-toggle-icon-button" aria-label="Toggle Theme">
+            <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 100 100"
+                 width="100"
+                 height="100"
+                 stroke="currentColor"
+                 fill="none"
+                 stroke-width="3"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 role="img"
+                 aria-labelledby="lightbulbTitle">
+
+                <title id="lightbulbTitle">Light Bulb Icon</title>
+
+                <path class="bulb-outline" d="M 40 78 C 30 65, 30 45, 50 25 C 70 45, 70 65, 60 78" />
+                <path class="bulb-fill"   d="M 40 78 C 30 65, 30 45, 50 25 C 70 45, 70 65, 60 78" /> <path class="bulb-outline" d="M 40 95 L 40 78 L 60 78 L 60 95" />
+                <path class="bulb-fill"   d="M 40 95 L 40 78 L 60 78 L 60 95" />
+
+                <line class="bulb-outline" x1="40" y1="83" x2="60" y2="83" />
+                <line class="bulb-outline" x1="40" y1="89" x2="60" y2="89" />
+
+                <path class="bulb-outline" d="M 48 78 L 48 70 M 52 78 L 52 70 M 48 70 Q 50 65 52 70" />
+                <path class="bulb-fill"   d="M 48 78 L 48 70 M 52 78 L 52 70 M 48 70 Q 50 65 52 70" />
+
+            </svg>
+        </button>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
