@@ -125,7 +125,7 @@
     /* Component Specific */
     --font-size-summary-box-label: 1.2rem; /* e.g., "Total On Site:" */
     --font-size-summary-box-value: 2rem; /* e.g., The railcar count */
-    --font-size-financial-insight-value: 2.3rem; /* e.g., Total PTD value */
+    --font-size-financial-insight-value: 2.7rem; /* e.g., Total PTD value */
     --font-size-financial-insight-item-name: 1.5rem; /* Top item name */
     --font-size-financial-insight-item-cost: 2rem; /* Top item cost */
     --font-size-total-inventory-adj-title: 2.1rem; /* "Total Inventory Adj. (PTD)" */
