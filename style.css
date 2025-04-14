@@ -125,7 +125,7 @@
     /* Component Specific */
     --font-size-summary-box-label: 1.2rem; /* e.g., "Total On Site:" */
     --font-size-summary-box-value: 2rem; /* e.g., The railcar count */
-    --font-size-financial-insight-value: 3.3rem; /* e.g., Total PTD value */
+    --font-size-financial-insight-value: 2.3rem; /* e.g., Total PTD value */
     --font-size-financial-insight-item-name: 1.5rem; /* Top item name */
     --font-size-financial-insight-item-cost: 2rem; /* Top item cost */
     --font-size-total-inventory-adj-title: 2.1rem; /* "Total Inventory Adj. (PTD)" */
@@ -859,7 +859,8 @@ tbody tr:hover {
     border: 1px solid var(--border-color); /* Use dashboard border color */
     border-radius: 8px; /* Match dashboard rounding */
     width: 80%;
-    max-width: 400px; /* Adjust max width as needed */
+    max-width: 800px; /* Adjust max width as needed */
+    max-height: 400px; /* Adjust max width as needed */
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     color: var(--text-color); /* Use dashboard text color */
     position: relative;
@@ -884,14 +885,14 @@ tbody tr:hover {
 
 #modalInput, #modalInputSingle { /* Modal Input */
     width: 95%; /* Full width minus padding */
+    min-height: 200px;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
     background-color: var(--bg-color); /* Use main background */
     color: var(--text-color);
-    font-size: 1rem;
-    resize: vertical; /* Allow textarea vertical resize */
+    font-size: 1.2rem;
 }
 
 .modal-content button { /* Modal Buttons */

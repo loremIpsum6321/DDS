@@ -1,4 +1,5 @@
 // DDS/js/utils.js
+import { loadInventoryCounts, loadFinancialInsights } from './domUpdater.js';
 
 // --- Status Options Definition (Assumed based on usage) ---
 export const statusOptionsDefinition = [
@@ -194,6 +195,7 @@ export function setupEditModal() {
     const cancelButton = document.getElementById('modalCancelButton');
     const closeButton = modal.querySelector('.modal-close-button');
     let targetElement = null; // To store the element being edited
+
     // --- Make the modal draggable ---
     makeModalDraggable(modal, modalContent); // Pass both the main modal and the handle
 
@@ -233,16 +235,71 @@ export function setupEditModal() {
             const newValue = isTextArea ? modalInput.value : modalInputSingle.value;
             targetElement.textContent = newValue;
             applyNumberFormatting(targetElement, newValue);
-            console.log(`Updated element (${targetElement.id || 'N/A'}) to: ${newValue}`);
 
-            // --- IMPORTANT ---
-            // Add logic here if you need to update the underlying data source
-            // For example, if editing a railcar material, update the `railcarStates` array
-            // You might need to pass more info (like data index) to the modal setup
-            // For simplicity, this example only updates the display text.
-            // Example: If editing comments: update dashboard_comments.csv (complex)
-            // Example: If editing cycle count: update the cell and maybe recalculate total (needs more logic)
-            // ----------------
+             // --- START: PTD Recalculation Logic ---
+
+             // Check if the edited element affects PTD calculations
+             // This requires identifying which elements are part of the PTD totals.
+             // We can check parent IDs or add data attributes to the editable elements.
+
+             // Example: Check if the edited element is a weekly cycle count or scrap value
+             const parentCycleTable = targetElement.closest('#cycleCountsWeeklyBody');
+             const parentScrapTable = targetElement.closest('#scrapTransactionsWeeklyBody');
+
+             if (parentCycleTable || parentScrapTable) {
+                 // Recalculate Inventory Counts (Cycle & Scrap) and Financial Total
+                 console.log("Recalculating PTD totals due to modal save...");
+                 // Option 1: Re-run the specific loading functions (simpler, might refetch data)
+                 // import { loadInventoryCounts, loadFinancialInsights } from './domUpdater.js'; // Make sure these are imported at the top
+                 // loadInventoryCounts(); // This will recalculate and update cycle/scrap totals
+                 // loadFinancialInsights(); // This will recalculate the grand total
+
+                  // Option 2: Manual Recalculation (more complex, avoids refetching)
+                  // This requires getting all relevant sibling values and summing them up.
+                  // Example for Cycle Counts:
+                  if (parentCycleTable) {
+                     let newCycleTotal = 0;
+                     parentCycleTable.querySelectorAll('td.editable-text').forEach(cell => {
+                        // Extract number from formatted currency if necessary
+                        const cellValue = parseFloat(cell.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+                        newCycleTotal += cellValue;
+                     });
+                     const cycleTotalEl = document.getElementById('cycleCountTotal');
+                     if (cycleTotalEl) {
+                        cycleTotalEl.textContent = formatCurrency(newCycleTotal); // Ensure formatCurrency is accessible
+                        applyNumberFormatting(cycleTotalEl, newCycleTotal); // Ensure applyNumberFormatting is accessible
+                     }
+                  }
+                  // Example for Scrap Transactions:
+                  if (parentScrapTable) {
+                     let newScrapTotal = 0;
+                     parentScrapTable.querySelectorAll('td.editable-text').forEach(cell => {
+                         const cellValue = parseFloat(cell.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+                         newScrapTotal += cellValue;
+                     });
+                     const scrapTotalEl = document.getElementById('scrapTotal');
+                      if (scrapTotalEl) {
+                         scrapTotalEl.textContent = formatCurrency(newScrapTotal);
+                         applyNumberFormatting(scrapTotalEl, newScrapTotal);
+                     }
+                  }
+                  // After updating Cycle/Scrap totals, recalculate the Financial Grand Total
+                  const cycleTotalValue = parseFloat(document.getElementById('cycleCountTotal')?.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+                  const scrapTotalValue = parseFloat(document.getElementById('scrapTotal')?.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+                  const grandTotal = cycleTotalValue + scrapTotalValue;
+                  const financialTotalEl = document.getElementById('financialTotalPTD');
+                  if (financialTotalEl) {
+                     financialTotalEl.textContent = formatCurrency(grandTotal);
+                     applyNumberFormatting(financialTotalEl, grandTotal);
+                  }
+              } else {
+                  // If the edited element wasn't a direct PTD input, still apply formatting
+                  applyNumberFormatting(targetElement, newValue);
+             }
+
+             // --- END: PTD Recalculation Logic ---
+
+             console.log(`Updated element (${targetElement.id || targetElement.tagName}) to: ${newValue}`);
         }
         hideModal();
     });
