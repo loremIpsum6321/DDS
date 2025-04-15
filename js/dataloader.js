@@ -19,13 +19,13 @@ export async function fetchCSVData(filePath) {
     }
 }
  
-/*
+/**
  * Simple CSV Parser (Assumes comma delimiter, handles basic quotes).
  * Skips the header row.
  * @param {string} text - The raw CSV text content.
  * @returns {Array<Array<string>>} An array of data rows (arrays of strings).
  */
-function parseCSV(text) {
+export function parseCSV(text) {
     const lines = text.trim().split('\n');
     if (lines.length <= 1) return []; // No data or only header
 

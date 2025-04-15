@@ -332,16 +332,11 @@ section h3 { /* Used in Inventory Counts, Financial Insights */
         grid-template-columns: 1fr 1fr;
         /* MODIFIED: Give row 2 (railcars) more initial height priority */
         /* Use minmax for shortages (row 1) to allow shrinking/growing */
-        grid-template-rows: minmax(150px, 0.6fr) 1fr; /* Adjust fraction as needed (e.g., 0.5fr or auto) */
+        grid-template-rows: 450px 1fr; /* Adjust fraction as needed (e.g., 0.5fr or auto) */
         gap: 1.5rem;
         height: calc(100% - 2rem); /* Ensure main grid takes available height */
     }
 
-    /* ADDED: Rule to force even rows when many shortages */
-    main.many-shortages {
-        /* Use !important cautiously, ensure selector specificity is enough if possible */
-        grid-template-rows: 1fr 1fr !important;
-    }
 
     #material-shortages { grid-column: 1 / 2; grid-row: 1 / 2; min-height: 0; } /* Added min-height: 0 */
     #railcar-overview   { grid-column: 1 / 2; grid-row: 2 / 3; min-height: 0; } /* Added min-height: 0 */
@@ -637,6 +632,10 @@ header .status-box {
     width: 100%;
     min-height: 0; /* Added */
     transition: border-color 0.3s ease;
+}
+
+#material-shortages .table-container {
+    height: 100%;
 }
 
 
@@ -1233,7 +1232,74 @@ footer p {
     #financial-insights .insight-cell h4 { font-size: calc(var(--font-size-h4) * 0.95); }
     #financial-insights .comments-content { font-size: calc(var(--font-size-comments) * 0.95); }
 }
+/* ========================================================================== */
+/* == 14. Drag and Drop Overlay                                            == */
+/* ========================================================================== */
 
+#drop-zone-overlay {
+    position: fixed; /* Cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1001; /* Ensure it's above other content, but below modal if needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Allow clicks/drags to pass through when hidden/inactive */
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.3s ease; /* Smooth fade */
+    background-color: rgba(0, 0, 0, 0); /* Start fully transparent */
+}
+
+#drop-zone-overlay.drop-zone-visible {
+    opacity: 1;
+    pointer-events: auto; /* Make it interactive when visible */
+    /* Use theme variables for background with translucency */
+    background-color: color-mix(in srgb, var(--card-bg-color) 85%, transparent); /* Adjust 85% for desired translucency */
+    border: 3px dashed var(--accent-color-primary); /* Dashed border using accent */
+}
+
+#drop-zone-overlay.drop-zone-active {
+    /* Optional: Slightly different style when file is directly over */
+     background-color: color-mix(in srgb, var(--card-bg-color) 95%, transparent);
+     border: 3px solid var(--accent-color-secondary); /* Solid border, different color */
+}
+
+
+.drop-zone-content {
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+     /* Slightly contrasting background for the text box itself */
+    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.drop-zone-content p {
+    font-size: 1.5rem; /* Adjust size as needed */
+    font-weight: bold;
+    color: var(--accent-color-primary); /* Use accent color for text */
+    margin: 0;
+}
+
+/* Ensure light theme also works */
+body.light-theme #drop-zone-overlay.drop-zone-visible {
+    background-color: color-mix(in srgb, var(--card-bg-color) 85%, transparent);
+    border: 3px dashed var(--accent-color-primary);
+}
+body.light-theme #drop-zone-overlay.drop-zone-active {
+    background-color: color-mix(in srgb, var(--card-bg-color) 95%, transparent);
+    border: 3px solid var(--accent-color-secondary);
+}
+body.light-theme .drop-zone-content {
+    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
+    border: 1px solid var(--border-color);
+}
+body.light-theme .drop-zone-content p {
+     color: var(--accent-color-primary);
+}
 @media (max-width: 480px) {
     body { font-size: var(--base-font-size-mobile); } /* Use variable */
     header h1 { font-size: calc(var(--font-size-header-main-title) * 0.8); } /* Adjust responsive size */
