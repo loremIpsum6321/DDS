@@ -1338,6 +1338,35 @@ body.light-theme .drop-zone-content {
 body.light-theme .drop-zone-content p {
      color: var(--accent-color-primary);
 }
+
+/* ========================================================================== */
+/* == 15. Toasty Animation                                                 == */
+/* ========================================================================== */
+
+#toasty-image {
+    position: fixed; /* Position relative to the viewport */
+    bottom: 0px;    /* Small offset from the bottom edge */
+    right: 0px;     /* Position the reference point near the right edge */
+    width: 300px;    /* Set desired width (ADJUST IF NEEDED) */
+    height: auto;    /* Maintain aspect ratio */
+    z-index: 999;    /* Below modal (1000) and dropzone (1001) */
+    pointer-events: none; /* Prevent image blocking clicks */
+
+    /* Start off-screen to the right and invisible */
+    transform: translateX(calc(100% + 20px)); /* Move right by its width + buffer */
+    opacity: 0;
+
+    /* Define the smooth transition */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+#toasty-image.toasty-visible {
+    /* Slide into view */
+    transform: translateX(0);
+    opacity: 1;
+}
+
+
 @media (max-width: 480px) {
     body {
         font-size: var(--base-font-size-mobile);
