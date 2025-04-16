@@ -149,6 +149,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 let relevantFilesProcessed = false; // Track if cycle or scrap files are processed in this drop
                 const totalFiles = files.length;
 
+                // ---> Define required files and track dropped ones <---
+                const droppedFileNames = new Set();
+                const requiredFiles = new Set([
+                    'scrap_transactions.csv',
+                    'cycle_counts.csv',
+                    'cogi_errors.csv',
+                    'dashboard_comments.csv',
+                    'ingredients_status.csv',
+                    'material_shortages.csv',
+                    'railcars.csv',
+                    'top_cycle_counts.csv',
+                    'top_scrap.csv'
+                ]);
                 for (const file of files) {
                     // console.log(`Processing file: ${file.name}, type: ${file.type}, size: ${file.size}`); // Less verbose logging
                     if (file.type === 'text/csv' || file.name.toLowerCase().endsWith('.csv')) {
@@ -156,6 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         reader.onload = (e) => {
                             let processedRelevantInThisFile = false;
                             try {
+                                // ---> Add filename to Set immediately <---
+                                droppedFileNames.add(file.name.toLowerCase());
                                 const csvText = e.target.result;
                                 const parsedData = parseCSV(csvText);
                                 // console.log(`Parsed data for ${file.name}:`, parsedData); // Less verbose
@@ -180,6 +195,20 @@ document.addEventListener('DOMContentLoaded', () => {
                                     updateTimestamp();
                                     console.log("All dropped files processed.");
                                     // Optional: Final recalculation just in case, though might be redundant
+                                    // ---> Check for Toasty AFTER processing the LAST file <---
+                                    let allRequiredPresent = requiredFiles.size === droppedFileNames.size; // Initial check
+                                    if (allRequiredPresent) {
+                                        for (const requiredFile of requiredFiles) {
+                                            if (!droppedFileNames.has(requiredFile)) {
+                                                allRequiredPresent = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (allRequiredPresent) {
+                                        console.log("All required files dropped! Toasty!");
+                                        triggerToastyAnimation(); // Call the animation function
+                                    }
                                     // if (relevantFilesProcessed) recalculateFinancialTotal();
                                 }
                             }
@@ -197,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (filesProcessed === totalFiles) updateTimestamp();
                     }
                 } // --- End loop ---
+                // ---> End definition <---
             }
         });
 
@@ -393,29 +423,177 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updateRailcarsUI(railcarData) {
             const tableBody = document.getElementById('railcarsTableBody');
-            const onSiteCountEl = document.getElementById('railOnSiteCount'), inYardCountEl = document.getElementById('railInYardCount'), totalCountEl = document.getElementById('railTotalCount');
-            if (!tableBody || !onSiteCountEl || !inYardCountEl || !totalCountEl) return console.error("Railcar elements missing.");
-            tableBody.innerHTML = '';
-            let onSiteCount = 0, inYardCount = 0;
-            if (railcarData.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6">No railcar data in file.</td></tr>';
-                 scrambleAndUpdateElement(onSiteCountEl, 0, 500); scrambleAndUpdateElement(inYardCountEl, 0, 500); scrambleAndUpdateElement(totalCountEl, 0, 500);
+            const onSiteCountEl = document.getElementById('railOnSiteCount');
+            const inYardCountEl = document.getElementById('railInYardCount');
+            const totalCountEl = document.getElementById('railTotalCount');
+
+            if (!tableBody || !onSiteCountEl || !inYardCountEl || !totalCountEl) {
+                console.error("Railcar elements missing during update.");
                 return;
             }
+
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            // --- Store State (derived from the input data) ---
+            // We need a way to reference and update the state when toggling
+            // Let's use the input railcarData array directly for simplicity here.
+            // Each element in railcarData should represent a row like:
+            // [railNum, material, location, bol, romer, released]
+
+            let onSiteCount = 0;
+            let inYardCount = 0;
+
+            if (railcarData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6">No railcar data in file.</td></tr>';
+                 scrambleAndUpdateElement(onSiteCountEl, 0, 500);
+                 scrambleAndUpdateElement(inYardCountEl, 0, 500);
+                 scrambleAndUpdateElement(totalCountEl, 0, 500);
+                // Also clear the export button's data association if necessary
+                // Clear railcarStates array if it's used globally for export elsewhere
+                return;
+            }
+
+            // --- Render Table Rows ---
             const fragment = document.createDocumentFragment();
-            railcarData.forEach(row => {
+            railcarData.forEach((rowData, index) => {
                 const tr = document.createElement('tr');
-                const railNum = row[0] || 'N/A', material = row[1] || 'N/A', location = row[2] || 'N/A';
-                const bol = row[3]?.toLowerCase() === 'true', romer = row[4]?.toLowerCase() === 'true', released = row[5]?.toLowerCase() === 'true';
-                const locationLower = location.toLowerCase();
-                if (locationLower.includes('site')) onSiteCount++; else if (locationLower.includes('yard')) inYardCount++;
-                 tr.innerHTML = `<td class="editable-text">${railNum}</td><td class="editable-text">${material}</td><td class="${locationLower.includes('site') ? 'status-good' : locationLower.includes('yard') ? 'status-caution' : 'status-bad'}">${location}</td><td class="${bol ? 'status-yes' : 'status-no'}">${bol ? 'Yes' : 'No'}</td><td class="${romer ? 'status-yes' : 'status-no'}">${romer ? 'Yes' : 'No'}</td><td class="${released ? 'status-yes' : 'status-no'}">${released ? 'Yes' : 'No'}</td>`;
-                tr.querySelectorAll('.editable-text').forEach(td => { td.onclick = () => showEditModal(td); });
+                tr.dataset.index = index; // Store index for easy lookup
+
+                // --- Create Cells Individually ---
+
+                // 1. Rail # (Editable)
+                const tdRailNum = document.createElement('td');
+                tdRailNum.textContent = rowData[0] || 'N/A';
+                tdRailNum.classList.add('editable-text');
+                tdRailNum.onclick = () => showEditModal(tdRailNum);
+                tr.appendChild(tdRailNum);
+
+                // 2. Material (Editable)
+                const tdMaterial = document.createElement('td');
+                tdMaterial.textContent = rowData[1] || 'N/A';
+                tdMaterial.classList.add('editable-text');
+                tdMaterial.onclick = () => showEditModal(tdMaterial);
+                tr.appendChild(tdMaterial);
+
+                // 3. Location (Toggleable: Site/Yard/Transit)
+                const tdLocation = document.createElement('td');
+                let currentLocation = rowData[2] || 'N/A';
+                tdLocation.style.cursor = 'pointer'; // Indicate clickable
+
+                const updateLocationAppearance = (locText) => {
+                    const locLower = locText.toLowerCase();
+                    tdLocation.textContent = locText;
+                    tdLocation.classList.remove('status-good', 'status-caution', 'status-bad');
+                    if (locLower.includes('site')) {
+                        tdLocation.classList.add('status-good');
+                    } else if (locLower.includes('yard')) {
+                        tdLocation.classList.add('status-caution');
+                    } else { // Includes 'transit' or others
+                        tdLocation.classList.add('status-bad');
+                    }
+                };
+
+                updateLocationAppearance(currentLocation); // Set initial appearance
+
+                // Location Click Listener
+                tdLocation.addEventListener('click', () => {
+                    const currentStateIndex = parseInt(tr.dataset.index);
+                    const currentLoc = (railcarData[currentStateIndex][2] || '').toLowerCase();
+                    const cycle = ['Site', 'Yard', 'Transit'];
+                    let nextLoc = 'Site'; // Default
+
+                    if (currentLoc.includes('site')) nextLoc = 'Yard';
+                    else if (currentLoc.includes('yard')) nextLoc = 'Transit';
+                    else if (currentLoc.includes('transit')) nextLoc = 'Site';
+
+                    // Update the data source directly
+                    railcarData[currentStateIndex][2] = nextLoc;
+
+                    // Update cell appearance
+                    updateLocationAppearance(nextLoc);
+
+                    // Recalculate and update counts immediately
+                    updateCounts();
+
+                    console.log(`Railcar ${railcarData[currentStateIndex][0]} location changed to: ${nextLoc} (via CSV update handler)`);
+                    // NOTE: Consider adding logic here to mark data as changed if you need to save/export later
+                });
+                tr.appendChild(tdLocation);
+
+                // --- Helper Function for Yes/No Toggles (Adapted) ---
+                const createToggleCell = (initialValueStr, dataIndex, dataColIndex) => {
+                    const td = document.createElement('td');
+                    let currentValueBool = String(initialValueStr).toLowerCase() === 'true';
+                    td.style.cursor = 'pointer';
+
+                    const updateToggleAppearance = (valueBool) => {
+                        td.textContent = valueBool ? 'Yes' : 'No';
+                        td.classList.remove('status-yes', 'status-no');
+                        td.classList.add(valueBool ? 'status-yes' : 'status-no');
+                    };
+
+                    updateToggleAppearance(currentValueBool); // Initial state
+
+                    td.addEventListener('click', () => {
+                         const currentStateIndex = parseInt(tr.dataset.index);
+                         // Toggle the boolean value in the data source
+                         const newValue = !currentValueBool;
+                         railcarData[currentStateIndex][dataColIndex] = newValue; // Store boolean directly
+                         currentValueBool = newValue; // Update local state for next click
+
+                         // Update cell appearance
+                         updateToggleAppearance(newValue);
+
+                         console.log(`Railcar ${railcarData[currentStateIndex][0]} column ${dataColIndex} changed to: ${newValue} (via CSV update handler)`);
+                         // NOTE: Consider adding logic here to mark data as changed
+                    });
+                    return td;
+                };
+
+                // 4. BOL (Toggleable Yes/No) - Index 3
+                tr.appendChild(createToggleCell(rowData[3], index, 3));
+                // 5. Romer (Toggleable Yes/No) - Index 4
+                tr.appendChild(createToggleCell(rowData[4], index, 4));
+                // 6. Released (Toggleable Yes/No) - Index 5
+                tr.appendChild(createToggleCell(rowData[5], index, 5));
+
+
+                // --- Append Row to Fragment ---
                 fragment.appendChild(tr);
-            });
+            }); // End forEach loop
+
+            // --- Append Fragment to Table Body ---
             tableBody.appendChild(fragment);
-            scrambleAndUpdateElement(onSiteCountEl, onSiteCount, 500); scrambleAndUpdateElement(inYardCountEl, inYardCount, 500); scrambleAndUpdateElement(totalCountEl, onSiteCount + inYardCount, 500);
-            console.log("Railcars UI updated.");
+
+            // --- Function to Update Counts (called initially and on location toggle) ---
+            const updateCounts = () => {
+                onSiteCount = 0;
+                inYardCount = 0;
+                railcarData.forEach(rowData => {
+                    const locationLower = (rowData[2] || '').toLowerCase();
+                    if (locationLower.includes('site')) onSiteCount++;
+                    else if (locationLower.includes('yard')) inYardCount++;
+                });
+                scrambleAndUpdateElement(onSiteCountEl, onSiteCount, 500);
+                scrambleAndUpdateElement(inYardCountEl, inYardCount, 500);
+                scrambleAndUpdateElement(totalCountEl, onSiteCount + inYardCount, 500);
+
+                // --- IMPORTANT: Update Export Button ---
+                // Find the export button and re-attach the listener with the *updated* railcarData
+                // This assumes the export button logic in domUpdater.js relies on a state accessible there.
+                // A better approach might be to pass the *current* data state to the export function directly.
+                // For now, we just log that the UI is updated. The export functionality might need adjustment
+                // depending on how it accesses the railcar data.
+                // If using the 'railcarStates' array from domUpdater.js, that array might need updating here too.
+                // Example: If 'exportRailcarsToCSV' expects a global 'railcarStates':
+                // railcarStates = railcarData.map(row => ({ /* map array to object format */ }));
+            };
+
+
+             // --- Initial Count Calculation & Update ---
+             updateCounts();
+
+            console.log("Railcars UI updated via CSV drop.");
         }
 
         function updateTopCycleCountsUI(topData) {
@@ -449,6 +627,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // --- End UI Update Functions ---
 
+        // ---> Add this new function <---
+        function triggerToastyAnimation() {
+            const toastyImg = document.getElementById('toasty-image');
+            if (!toastyImg) {
+                console.warn("Toasty image element (#toasty-image) not found!");
+                return;
+            }
+
+            // Durations in milliseconds (should match CSS transition duration)
+            const slideDuration = 500;  // 0.5s from CSS
+            const visibleDuration = 1500; // 2 seconds
+
+            // Prevent re-triggering if already visible/animating
+            if (toastyImg.classList.contains('toasty-visible')) {
+                console.log("Toasty animation already in progress.");
+                return;
+            }
+            // 1. Add class to slide in
+            toastyImg.classList.add('toasty-visible');
+            console.log("Toasty sliding in...");
+            // 2. Set timer to remove class (slide out) after it's been visible
+            setTimeout(() => {
+                toastyImg.classList.remove('toasty-visible');
+                console.log("Toasty sliding out...");
+            }, slideDuration + visibleDuration); // Wait for slide-in THEN visible time
+        }
+        // ---> End new function <---
     } // End of drag and drop setup check
 
     // --- Load Initial Data ---
