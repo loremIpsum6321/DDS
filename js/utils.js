@@ -1,6 +1,55 @@
 // DDS/js/utils.js
 import { loadInventoryCounts, loadFinancialInsights } from './domUpdater.js';
 
+/**
+ * Applies a scrambling text animation to an element before updating its content.
+ * @param {HTMLElement} element - The target HTML element.
+ * @param {string|number} finalValue - The actual value to display after animation.
+ * @param {number} duration - Total duration of the scramble effect in milliseconds.
+ * @param {function} [formatter] - Optional function to format the finalValue (e.g., formatCurrency).
+ * @param {function} [styler] - Optional function to apply styles based on the final value (e.g., applyNumberFormatting).
+ */
+export function scrambleAndUpdateElement(element, finalValue, duration = 1000, formatter, styler) {
+    if (!element) return;
+
+    const originalText = String(finalValue); // Use final value for length reference
+    const chars = '!<>-_\\/[]{}—=+*^?#________'; // Characters to use for scrambling
+    const intervalDuration = 50; // How often to update the scramble text (ms)
+    let startTime = Date.now();
+    let intervalId = null;
+
+    // Store original min-height if exists, set to current height to prevent collapse
+    const originalMinHeight = element.style.minHeight;
+    element.style.minHeight = `${element.offsetHeight}px`;
+
+    const scramble = () => {
+        let scrambledText = '';
+        for (let i = 0; i < originalText.length; i++) {
+            // Keep spaces as spaces for better visual structure
+            if (originalText[i] === ' ' || originalText[i] === '\n' || originalText[i] === '\t') {
+                scrambledText += originalText[i];
+            } else {
+                scrambledText += chars[Math.floor(Math.random() * chars.length)];
+            }
+        }
+        element.textContent = scrambledText;
+
+        if (Date.now() - startTime >= duration) {
+            clearInterval(intervalId);
+            // Apply final value and formatting/styling
+            element.textContent = formatter ? formatter(finalValue) : finalValue;
+            if (styler) {
+                styler(element, finalValue);
+            }
+            // Restore original min-height 
+            element.style.minHeight = originalMinHeight || '';
+        }
+    };
+
+    intervalId = setInterval(scramble, intervalDuration);
+    scramble(); // Run once immediately
+}
+
 // --- Status Options Definition (Assumed based on usage) ---
 export const statusOptionsDefinition = [
     { value: 'good', text: 'Good', class: 'good' },
@@ -139,7 +188,7 @@ export function exportRailcarsToCSV(railcarData, filename = 'railcars.csv') {
         if (typeof value === 'boolean') {
             return value ? 'TRUE' : 'FALSE';
         }
-        let stringValue = String(value);
+        let stringValue = String(value); 
         if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
             stringValue = stringValue.replace(/"/g, '""'); // Escape double quotes
             return `"${stringValue}"`;
@@ -262,14 +311,14 @@ export function setupEditModal() {
                      parentCycleTable.querySelectorAll('td.editable-text').forEach(cell => {
                         // Extract number from formatted currency if necessary
                         const cellValue = parseFloat(cell.textContent.replace(/[^0-9.-]+/g,"")) || 0;
-                        newCycleTotal += cellValue;
+                        newCycleTotal += cellValue; 
                      });
                      const cycleTotalEl = document.getElementById('cycleCountTotal');
                      if (cycleTotalEl) {
-                        cycleTotalEl.textContent = formatCurrency(newCycleTotal); // Ensure formatCurrency is accessible
-                        applyNumberFormatting(cycleTotalEl, newCycleTotal); // Ensure applyNumberFormatting is accessible
+                        scrambleAndUpdateElement(cycleTotalEl, newCycleTotal, 1000, formatCurrency, applyNumberFormatting);
                      }
                   }
+
                   // Example for Scrap Transactions:
                   if (parentScrapTable) {
                      let newScrapTotal = 0;
@@ -279,18 +328,16 @@ export function setupEditModal() {
                      });
                      const scrapTotalEl = document.getElementById('scrapTotal');
                       if (scrapTotalEl) {
-                         scrapTotalEl.textContent = formatCurrency(newScrapTotal);
-                         applyNumberFormatting(scrapTotalEl, newScrapTotal);
+                         scrambleAndUpdateElement(scrapTotalEl, newScrapTotal, 1000, formatCurrency, applyNumberFormatting);
                      }
                   }
                   // After updating Cycle/Scrap totals, recalculate the Financial Grand Total
                   const cycleTotalValue = parseFloat(document.getElementById('cycleCountTotal')?.textContent.replace(/[^0-9.-]+/g,"")) || 0;
                   const scrapTotalValue = parseFloat(document.getElementById('scrapTotal')?.textContent.replace(/[^0-9.-]+/g,"")) || 0;
                   const grandTotal = cycleTotalValue + scrapTotalValue;
-                  const financialTotalEl = document.getElementById('financialTotalPTD');
+                  const financialTotalEl = document.getElementById('financialTotalPTD'); 
                   if (financialTotalEl) {
-                     financialTotalEl.textContent = formatCurrency(grandTotal);
-                     applyNumberFormatting(financialTotalEl, grandTotal);
+                     scrambleAndUpdateElement(financialTotalEl, grandTotal, 1000, formatCurrency, applyNumberFormatting);
                   }
               } else {
                   // If the edited element wasn't a direct PTD input, still apply formatting

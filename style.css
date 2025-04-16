@@ -1146,6 +1146,19 @@ footer p {
 /* ========================================================================== */
 /* == 13. Responsive Design                                                == */
 /* ========================================================================== */
+@media (max-width: 1200px) {
+    /* Add adjustments for screens smaller than the main grid layout */
+    main {
+        /* Ensure main can scroll if content overflows vertically */
+        overflow-y: auto;
+        /* Adjust height calculation if header/footer size changes */
+        height: calc(100vh - 100px - 60px); /* Example: vh - approx header height - approx footer height */
+        display: block; /* Revert back to block layout if needed, or adjust grid */
+    }
+    section {
+        min-height: auto; /* Allow sections to shrink */
+    }
+}
 @media (max-width: 768px) {
     body { font-size: var(--base-font-size-tablet); } /* Use variable */
 
@@ -1177,16 +1190,41 @@ footer p {
     main {
         padding: 0 0.5rem;
         gap: 1rem;
+        /* --- ADD --- */
+        overflow-y: auto; /* Allow vertical scrolling */
+        height: auto; /* Let height be determined by content */
+        max-height: calc(100vh - 90px - 50px); /* Adjust based on actual header/footer height */
+        /* --- END ADD --- */
     }
-    section { padding: 1rem; }
+    section {
+        padding: 1rem;
+        /* --- ADD --- */
+        overflow: visible; /* Ensure section content isn't clipped */
+        min-height: auto; /* Override potential min-height from larger screens */
+        /* --- END ADD --- */
+    }
 
+    /* Ensure table containers can scroll if needed */
+    .table-container {
+        /* --- ADD --- */
+        max-height: 300px; /* Example max height, adjust as needed */
+        overflow: auto; /* Allow both horizontal and vertical scroll */
+        /* --- END ADD --- */
+    }
+    .table-container.small-table {
+        max-height: none; /* Remove max-height for small tables if desired */
+        overflow-y: hidden; /* Keep vertical scroll hidden for small tables */
+    }
 
-    th, td {
+    th,
+    td {
         padding: 0.5rem 0.6rem;
         font-size: var(--font-size-xs); /* Use specific smaller size */
         white-space: normal;
     }
-    th { font-size: calc(var(--font-size-table-header) * 0.95); } /* Adjust header size */
+    th {
+        font-size: calc(var(--font-size-table-header) * 0.95);
+    } /* Adjust header size */
     #inventory-counts .count-box table td,
     #inventory-counts .count-box table th {
          font-size: var(--font-size-xs); /* Make small table text smaller */
@@ -1299,6 +1337,117 @@ body.light-theme .drop-zone-content {
 }
 body.light-theme .drop-zone-content p {
      color: var(--accent-color-primary);
+}
+@media (max-width: 480px) {
+    body {
+        font-size: var(--base-font-size-mobile);
+    } /* Use variable */
+
+    /* ... other 480px header styles ... */
+
+    main {
+        padding: 0 0.25rem;
+        /* --- ADD --- */
+        overflow-y: auto; /* Allow vertical scrolling */
+        height: auto;
+        max-height: calc(100vh - 80px - 45px); /* Adjust based on actual header/footer height */
+        /* --- END ADD --- */
+    }
+    section {
+        padding: 0.75rem;
+        /* --- ADD --- */
+        overflow: visible;
+        min-height: auto;
+        /* --- END ADD --- */
+    }
+/* ========================================================================== */
+/* == 14. Drag and Drop Overlay                                            == */
+/* ========================================================================== */
+
+#drop-zone-overlay {
+    position: fixed; /* Cover the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1001; /* Ensure it's above other content, but below modal if needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Allow clicks/drags to pass through when hidden/inactive */
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.3s ease; /* Smooth fade */
+    background-color: rgba(0, 0, 0, 0); /* Start fully transparent */
+}
+
+#drop-zone-overlay.drop-zone-visible {
+    opacity: 1;
+    pointer-events: auto; /* Make it interactive when visible */
+    /* Use theme variables for background with translucency */
+    background-color: color-mix(in srgb, var(--card-bg-color) 85%, transparent); /* Adjust 85% for desired translucency */
+    border: 3px dashed var(--accent-color-primary); /* Dashed border using accent */
+}
+
+#drop-zone-overlay.drop-zone-active {
+    /* Optional: Slightly different style when file is directly over */
+     background-color: color-mix(in srgb, var(--card-bg-color) 95%, transparent);
+     border: 3px solid var(--accent-color-secondary); /* Solid border, different color */
+}
+
+
+.drop-zone-content {
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+     /* Slightly contrasting background for the text box itself */
+    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.drop-zone-content p {
+    font-size: 1.5rem; /* Adjust size as needed */
+    font-weight: bold;
+    color: var(--accent-color-primary); /* Use accent color for text */
+    margin: 0;
+}
+
+/* Ensure light theme also works */
+body.light-theme #drop-zone-overlay.drop-zone-visible {
+    background-color: color-mix(in srgb, var(--card-bg-color) 85%, transparent);
+    border: 3px dashed var(--accent-color-primary);
+}
+body.light-theme #drop-zone-overlay.drop-zone-active {
+    background-color: color-mix(in srgb, var(--card-bg-color) 95%, transparent);
+    border: 3px solid var(--accent-color-secondary);
+}
+body.light-theme .drop-zone-content {
+    background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
+    border: 1px solid var(--border-color);
+}
+body.light-theme .drop-zone-content p {
+     color: var(--accent-color-primary);
+}
+
+    .table-container {
+        /* --- ADD --- */
+        max-height: 250px; /* Example max height, adjust as needed */
+        overflow: auto;
+        /* --- END ADD --- */
+    }
+
+    .table-container.small-table {
+        max-height: none;
+        overflow-y: hidden;
+    }
+}
+/* --- Optional: Adjust body/html overflow --- */
+/* If the above isn't enough, you might need to allow body/html to scroll on small screens */
+@media (max-width: 1200px) {
+    html, body {
+        overflow: auto; /* Or overflow-y: auto; */
+        height: auto;
+    }
 }
 @media (max-width: 480px) {
     body { font-size: var(--base-font-size-mobile); } /* Use variable */
